@@ -1,0 +1,28 @@
+/* custom.css */
+
+h1 {
+    color: magenta !important; /* same as \x1b[95m */
+}
+
+
+h2 {
+    color: rgb(235, 37, 253) !important; /* same as \x1b[95m */
+}
+
+h3 {
+    color: rgb(198, 86, 250) !important; /* same as \x1b[95m */
+}
+
+h4 {
+    color: rgb(167, 115, 250) !important; /* same as \x1b[95m */
+}
+
+
+article {
+  max-width: 100% !important;
+  width: 95% !important;
+}
+
+.main {
+  max-width: 100% !important;
+}
