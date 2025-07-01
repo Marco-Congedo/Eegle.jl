@@ -1,7 +1,7 @@
 name = "Eegle"
 uuid = "1260424e-cd79-4b74-a0ea-47c69c296663"
 authors = ["Marco-Congedo <marco.congedo@gmail.com>"]
-version = "0.1.0"
+version = "0.0.1"
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
@@ -27,24 +27,31 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"
 
 [compat]
-CSV = "0.10.15"
-CovarianceEstimation = "0.2.13"
-DSP = "0.8.4"
-DataFrames = "1.7.0"
-Diagonalizations = "0.2.4"
-Distributions = "0.25.120"
-EzXML = "1.2.1"
-FourierAnalysis = "v1.2.4"
-HDF5 = "0.17.2"
-LinearAlgebra = "1.11.0"
-NPZ = "0.4.3"
-PermutationTests = "0.2.0"
-PosDefManifold = "0.5.3"
-PosDefManifoldML = "0.5.10"
-PrettyTables = "2.4.0"
-Reexport = "1.2.2"
-Revise = "3.8.0"
-Statistics = "1.11.1"
-StatsBase = "0.34.5"
-Test = "1.11.0"
-YAML = "0.4.14"
+CSV = "0.10"
+CovarianceEstimation = "0.2"
+DSP = "0.8"
+DataFrames = "1.7"
+Diagonalizations = "0.2"
+Distributions = "0.25"
+EzXML = "1.2"
+FourierAnalysis = "v1.2"
+HDF5 = "0.17"
+LinearAlgebra = "1.11"
+NPZ = "0.4"
+PermutationTests = "0.2"
+PosDefManifold = "0.5"
+PosDefManifoldML = "0.5"
+PrettyTables = "2.4"
+Reexport = "1.2"
+Revise = "3.8"
+Statistics = "1.11"
+StatsBase = "0.34"
+Test = "1.11"
+YAML = "0.4"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Statistics", "Test"]
+
