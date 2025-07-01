@@ -17,7 +17,7 @@ using PosDefManifoldML: PosDefManifoldML, transform!, Tikhonov
 
 using Eegle.Preprocessing, Eegle.InOut, Eegle.ERPs
 
-include("tools/tyler.jl")
+include("tools/Tyler.jl")
 using .Tyler  # relative import with dot     
 
 export  covmat, 
