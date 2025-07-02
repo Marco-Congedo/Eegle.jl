@@ -66,6 +66,7 @@ deploydocs(
    # target = "build", # add this folder to .gitignore!
    repo = "github.com/Marco-Congedo/Eegle.jl.git",
    branch = "gh-pages",
+   push_preview = true,
    # osname = "linux",
    # deps = Deps.pip("pygments", "mkdocs"),
    devbranch = "master",
