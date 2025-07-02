@@ -21,6 +21,8 @@ weightsdb       | get weights for each session of a database for statistical ana
 
 =#
 
+import Eegle
+
 export
     infoDB,
     loadNYdb, 

@@ -11,6 +11,8 @@ using StatsBase, Statistics, LinearAlgebra, DSP, PosDefManifold
 import DSP:resample
 import StatsBase.standardize
 
+import Eegle
+
 export
     standardize,
     resample,
@@ -61,6 +63,7 @@ end
     function resample(  X::AbstractMatrix{T},
                         sr::S,
                         rate::Union{T, S, Rational};
+        Nϕ::Integer = 32,
         rel_bw::Float64 = 1.0,
         attenuation::Int = 60,
         stim::Union{Vector{S}, Nothing} = nothing) 
@@ -75,17 +78,20 @@ as per the [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resa
 - `rate`: the resampled data will have sampling rate `sr` * `rate`.
 
 **Optional Keyword Arguments**
-- `rel_bw` and `attenuation`: see [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resample).
+- `Nϕ`, `rel_bw` and `attenuation`: see [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resample).
 - a [stimulation vector](@ref). If it is passed, it will be resampled so as to match the resampling of `X` as precisely as possible. `stim` must be a vector of ``T`` integers.
 
-!!! tip "Resampling"
+!!! tip "resampling"
     If you need to work with individual trials (or epochs), do not resample trials individually; rather, resample the whole EEG recording and then
     extract the trials — see [`Eegle.ERPs.trials`](@ref). Function [`Eegle.InOut.readNY`](@ref) allows you to do resampling and extract trials this way.
 
-!!! warning "Real resampling rate"
-    The use of a real resampling `rate` need to be tested.
+!!! warning "high-frequencies"
+    This kind of resampling does not accurately preserve the shape of the high frequencies. If you need precision on those and you wish to downsample,
+    consider a low-pass filter to ensure the suppression above the Nyquist frequency (``sr/2``) 
+    and resampling by decimation — see [`Eegle.Processing.filtfilt`](@ref) and the examples for decimating in 
+    [`Eegle.Miscellaneous.remove`](@ref) and [`removeSamples`](@ref).
 
-**Return** the resampled data matrix.
+**Return** the resampled data matrix.   
 
 **Examples**
 ```julia
@@ -104,9 +110,10 @@ Y=resample(X, sr, 100/sr) # downsample to 100 samples per second
 function resample(X::AbstractMatrix{T},
                   sr::S,
                   rate::Union{T, S, Rational};
-                  rel_bw::T = 1.0,
-                  attenuation::S = 60,
-                  stim::Union{Vector{S}, Nothing} = nothing) where {T<:Real, S<:Int}
+                Nϕ::Integer = 32,
+                rel_bw::T = 1.0,
+                attenuation::S = 60,
+                stim::Union{Vector{S}, Nothing} = nothing) where {T<:Real, S<:Int}
 
 
     if rate==1 return stim===nothing ? X : (X, stim) end
@@ -117,7 +124,9 @@ function resample(X::AbstractMatrix{T},
 
     # resample data
     ne = size(X, 2) # of electrodes
-    h = DSP.resample_filter(rate, rel_bw, attenuation)
+    h = (rate isa Int || rate isa Rational) ?   DSP.resample_filter(rate, rel_bw, attenuation) :
+                                                DSP.resample_filter(rate, Nϕ, rel_bw, attenuation)
+                                                    
     # first see how long will be the resampled data
     x = DSP.resample(X[:, 1], rate, h)
     t = length(x)
@@ -226,7 +235,7 @@ X, stim, ne = removeSamples(X, 2, stim)
 # remove the first 128 samples
 X, stim, ne = removeSamples(X, collect(1:128), stim)
 
-# remove every other sample (naive downsampling by a factor 2)
+# remove every other sample (decimation by a factor of 2)
 X, stim, ne = removeSamples(X, collect(1:2:length(stim)), stim)
 ```
 """

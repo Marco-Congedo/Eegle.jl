@@ -20,6 +20,8 @@ using Eegle.Preprocessing, Eegle.InOut, Eegle.ERPs
 include("tools/Tyler.jl")
 using .Tyler  # relative import with dot     
 
+import Eegle
+
 export  covmat, 
         encode
 

@@ -8,7 +8,7 @@ using StatsBase, Statistics, LinearAlgebra, PosDefManifold, DSP
 
 import DSP:filtfilt
 
-# functions:
+import Eegle
 
 export
     filtfilt,
