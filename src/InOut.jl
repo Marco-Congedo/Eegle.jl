@@ -67,11 +67,11 @@ export
         trials        :: Union{Vector{Matrix{T}}, Nothing} 
     where T<:Real 
 ```
-Data structure for an EEG BCI (Brain-Computer Interface) session, holding data and metadata.
+Data structure for an EEG BCI (Brain-Computer Interface) [session](@ref), holding data and metadata.
 
 It is written by [`readNY`](@ref).
 
-While conceived specifically for BCI data, the structure can be used also for general EEG recordings.
+While conceived specifically for BCI sessions, the structure can be used also for general EEG recordings.
 
 **Fields**
 
@@ -92,7 +92,7 @@ While conceived specifically for BCI data, the structure can be used also for ge
 - `y`: the markers in vectors `mark` concatenated in an unique vector
 - `X`: the ``T×N`` EEG data, with ``T`` and ``N`` the number of samples and channels (sensors), respectively
 - `trials`: a vector of trials, each of size ``N×wl``, extracted in the order of tags given in `stim` (optional)
-- the keys for dictionaries `id`, `acquisition`, and `documentation` are — see [NY Metadata (YAML)](@ref)) — :
+- the keys for dictionaries `id`, `acquisition`, and `documentation` are — see [NY Metadata (YAML)](@ref)):
 
 | id          | acquisition   |documentation  |
 |:------------|:--------------|:--------------|
@@ -259,7 +259,7 @@ end
 ```
 Read EEG/BCI data in [NY format](#NY), prepreprocess them if desired, and create an [`EEG`](@ref) structure.
 
-If requested, the preprocessing operations are performed in the order of the kwargs.
+If requested, the preprocessing operations are performed in the order of the [kwargs](@ref Acronyms).
 
 **Arguments**
 - `filename`: the complete path of either the *.npz* or the *.yml* file of the recording to be read.
@@ -289,7 +289,7 @@ If requested, the preprocessing operations are performed in the order of the kwa
     The standardization is case-insensitive but requires correct spelling of class names.
     When used with `getTrials` as a vector of class labels, standardization is applied after class selection.
     If class labels are already standardized, the original mapping is preserved.
-    I is recommended to set `stdClass` to true when all relevant classes are available in your database configuration.
+    Ii is recommended to set `stdClass` to true when all relevant classes are available in your database configuration.
 - `msg`: print string `msg` on exit if it is not empty. By default it is empty.
 
 !!! note "resampling"
@@ -355,7 +355,7 @@ function readNY(filename    :: AbstractString;
   conversion = eltype(data["data"])≠Float64 && toFloat64
   
   if !isempty(bandStop)
-    BSfilter = digitalfilter(BandStop(first(bandPass)/(sr/2), last(bandPass)/(sr/2)), bsDesign)
+    BSfilter = digitalfilter(BandStop(first(bandStop)/(sr/2), last(bandStop)/(sr/2)), bsDesign)
     X        = filtfilt(BSfilter, conversion ? Float64.(data["data"]) : data["data"])
   end
 
@@ -689,7 +689,7 @@ Write a data matrix `X` into an ASCII text file that can be read by [`readASCII`
 - `digits`: the number of decimal digits written for each value. Default: 6
 - `msg`: print string `msg` on exit if it is not empty (empty by default).
 
-If you need to remove columns of `X` before writing, see [`removeChannels`](@ref).
+If you need to remove columns of `X` before writing, see [`Eegle.Miscellaneous.remove`](@ref) or [`removeChannels`](@ref).
 
 (2)
 

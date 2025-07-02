@@ -179,22 +179,22 @@ For details, see *Appendix I* in [Congedo2017Review](@cite).
 
 **Arguments**
 - `o`: an instance of the [`EEG`](@ref) data structure containing trials and metadata
-- `paradigm`: BCI paradigm, either `:ERP`, `:P300`, or `:MI`:
+- `paradigm`: [BCI paradigm](@ref), either `:ERP`, `:P300`, or `:MI`:
     - for `:ERP`, prototypes for all classes are stacked and covariance is computed on super-trials
     - for `:P300`, only the target class prototype is stacked
     - for `:MI`, no prototype is used; covariance is computed on the trial as it is.
 
 **Optional Keyword Arguments**
 - `covtype`, `useBLAS`, `tol`, `maxiter` and `verbose` — see [`Eegle.CovarianceMatrix.covmat`](@ref), to which they are passed.
-- `targetLabel`: mandatory label of the target class (P300 paradigm only)
+- `targetLabel`: mandatory label of the target class (P300 paradigm only, usually: "target")
 - `overlapping`: for prototype mean ERP estimations (ERP/P300 only). Default = false:
-    - if true, use multivariate regression — see [Congedo2016STCP](@cite)
-    - if false, use the arithmetic average.
+    - if true, use multivariate regression
+    - if false, use the arithmetic average — see [`mean`](@ref).
 - `weights`: weights for prototype mean ERP estimations (ERP/P300 only). Default = `:a` — see [`mean`](@ref)
 - `pcadim`: number of PCA components of the prototype. They replace the prototype (ERP/P300 only, default = 0, which does not apply PCA)
-- `standardize`: standardize trials and prototype (global mean 0 and sd 1) before covariance estimation. Default = false
+- `standardize`: standardize trials and prototype (global mean 0 and sd 1) before covariance estimation (default: false)
 - `tikh`: Tikhonov regularization parameter (0, the default, does not apply regularization). It is applied after covariance estimation
-- `threaded`: enable multi-threaded covariance estimations across trials. true by default
+- `threaded`: enable multi-threaded covariance estimations across trials (default: true). 
 
 **Throw**
 - `ArgumentError` if class label `targetLabel` is not found in `o.clabels` (for P300 paradigm).
@@ -204,8 +204,10 @@ For details, see *Appendix I* in [Congedo2017Review](@cite).
 A vector of ``k`` covariance matrix estimations as a [HermitianVector](https://marco-congedo.github.io/PosDefManifold.jl/stable/MainModule/#%E2%84%8DVector-type) type.
 
 **Examples**
+```julia
 using Eegle # or using Eegle.CovarianceMatrix
 xxx
+```
 """
 function encode(o::EEG, paradigm::Symbol;
                 covtype=SCM,
