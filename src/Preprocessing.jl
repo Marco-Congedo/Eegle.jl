@@ -85,11 +85,10 @@ as per the [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resa
     If you need to work with individual trials (or epochs), do not resample trials individually; rather, resample the whole EEG recording and then
     extract the trials — see [`Eegle.ERPs.trials`](@ref). Function [`Eegle.InOut.readNY`](@ref) allows you to do resampling and extract trials this way.
 
-!!! warning "high-frequencies"
-    This kind of resampling does not accurately preserve the shape of the high frequencies. If you need precision on those and you wish to downsample,
-    consider a low-pass filter to ensure the suppression above the Nyquist frequency (``sr/2``) 
-    and resampling by decimation — see [`Eegle.Processing.filtfilt`](@ref) and the examples for decimating in 
-    [`Eegle.Miscellaneous.remove`](@ref) and [`removeSamples`](@ref).
+!!! warning "downsampling"
+    Downsampling must be always preceeded by low-pass filtering to ensure the suppression of all energies above the Nyquist frequency (``s/2``),
+    where ``s`` is the new sampling rate after downsampling. The cut_off frequencies is usually taken as ``s/3`` and a sharp filter is used (see examples). 
+    This applies also if you wish to apply downsampling by decimation — see the examples for decimating in [`Eegle.Miscellaneous.remove`](@ref) and [`removeSamples`](@ref).
 
 **Return** the resampled data matrix.   
 
@@ -97,14 +96,18 @@ as per the [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resa
 ```julia
 using Eegle # or using Eegle.Preprocessing
 
-sr = 128
+sr = 512
 X = randn(sr*10, 19)
 
-Y=resample(X, sr, 1//4) # downsample by a factor 4
+# low-pass filter at s/3 = sr/(4*3) Hz and downsample by a factor 4
+Z = filtfilt(X, sr, Bandpass(1, sr/(4*3)); designMethod = Butterworth(8))
+Y=resample(Z, sr, 1//4) 
 
 Y=resample(X, sr, 2) # upsample by a factor 2, i.e., double the sampling rate
 
-Y=resample(X, sr, 100/sr) # downsample to 100 samples per second
+sr = 100
+X = randn(sr*10, 19)
+Y=resample(X, sr, 128/sr) # upsample to 128 samples per second
 ```
 """
 function resample(X::AbstractMatrix{T},
@@ -176,23 +179,25 @@ Return the 3-tuple (`newX`, `s`, `ne`), where `newX` is the new EEG recording, `
 ```julia
 using Eegle # or using Eegle.Preprocessing
 
-# xxx load data
+using Eegle # or using Eegle.Preprocessing
+
+X = randn(128, 7)
+sensors=["F7", "F8", "C3", "Cz", "C4", "P7", "P8"]
 
 # remove second channel
-X, sensors, ne = removeChannels(X, 2, sensors)
+X_, sensors_, ne = removeChannels(X, 2, sensors)
 
 # remove the first five channels
-X, sensors, ne = removeChannels(X, collect(1:5), sensors)
+X_, sensors_, ne = removeChannels(X, collect(1:5), sensors)
 
 # remove the channel labeled as "Cz" in `sensors`
-X, sensors, ne = removeChannels(X, findfirst(x->x=="Cz", sensors), sensors)
+X_, sensors_, ne = removeChannels(X, findfirst(x->x=="Cz", sensors), sensors)
 
 # remove the channels labeled as "C3", "Cz", and "C4" in `sensors`
-X, sensors, ne = removeChannels(X, findall(x->x∈("Cz", "C3", "C4"), sensors), sensors)
+X_, sensors_, ne = removeChannels(X, findall(x->x∈("Cz", "C3", "C4"), sensors), sensors)
 
 # keep only channels labeled as "C3", "Cz", and "C4" in `sensors`
-X, sensors, ne = removeChannels(X, findall(x->x∉("Cz", "C3", "C4"), sensors), sensors)
-
+X_, sensors_, ne = removeChannels(X, findall(x->x∉("Cz", "C3", "C4"), sensors), sensors)
 ```
 """
 function removeChannels(X::AbstractMatrix{T}, what::Union{Int, Vector{S}},
@@ -207,7 +212,7 @@ end
 ```julia
     function removeSamples( X::AbstractMatrix{T}, 
                             what::Union{Int, Vector{S}},
-                            stim::Vector{String}) 
+                            stim::Vector{S}) 
     where {T<:Real, S<:Int}
 
 ```
@@ -240,7 +245,7 @@ X, stim, ne = removeSamples(X, collect(1:2:length(stim)), stim)
 ```
 """
 function removeSamples(X::AbstractMatrix{T}, what::Union{Int, Vector{S}},
-                       stim::Vector{String}) where {T<:Real, S<:Int}
+                       stim::Vector{S}) where {T<:Real, S<:Int}
     di = findfirst(length(stim).==(size(X)))
     X = Eegle.Miscellaneous.remove(X, what; dims=di)
     if what isa Int
