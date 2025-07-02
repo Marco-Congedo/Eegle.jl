@@ -16,7 +16,7 @@ This module implements **preprocessing** for EEG data.
 | [`Eegle.Preprocessing.standardize`](@ref) | standardize EEG data |
 | [`Eegle.Preprocessing.removeChannels`](@ref) | remove channels from EEG data |
 | [`Eegle.Preprocessing.removeSamples`](@ref) | remove samples from EEG data |
-| [`Eegle.Preprocessing.embedLags`](@ref) | lag-embedding of EEG data |
+| [`Eegle.Preprocessing.emdedLags`](@ref) | lag-embedding of EEG data |
 
 📖
 ```@docs
@@ -24,5 +24,5 @@ This module implements **preprocessing** for EEG data.
     Eegle.Preprocessing.resample
     Eegle.Preprocessing.removeChannels
     Eegle.Preprocessing.removeSamples
-    Eegle.Preprocessing.embedLags
+    Eegle.Preprocessing.emdedLags
 ```

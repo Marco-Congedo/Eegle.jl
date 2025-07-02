@@ -18,7 +18,7 @@ export
     resample,
     removeChannels,
     removeSamples,
-    embedLags
+    emdedLags
 
 """
 ```julia
@@ -38,24 +38,24 @@ thus, `prop` is used only if `robust` is true.
 ```julia
 using Eegle # or using Eegle.Preprocessing
 
-X=randn(1024, 19)
+X = randn(1024, 19)
 
-stX=standardize(X)
+stX = standardize(X)
 
-stX=standardize(X; robust=true, prop=0.1)
+stX = standardize(X; robust=true, prop=0.1)
 ```
 """
 function standardize(X::AbstractArray{T}; robust = false, prop::Real=0.20) where T<:Real
     vec=X[:]
     if robust
-        μ=mean(winsor(vec; prop=prop))
-        σ=√trimvar(vec; prop=prop)
+        μ = mean(winsor(vec; prop=prop))
+        σ = √trimvar(vec; prop=prop)
     else
-        μ=mean(vec)
-        σ=std(vec; mean=μ)
+        μ = mean(vec)
+        σ = std(vec; mean=μ)
     end
 
-    return  ((X.-μ)./σ) 
+    return  (X.-μ)./σ
 end
 
 """
@@ -101,13 +101,13 @@ X = randn(sr*10, 19)
 
 # low-pass filter at s/3 = sr/(4*3) Hz and downsample by a factor 4
 Z = filtfilt(X, sr, Bandpass(1, sr/(4*3)); designMethod = Butterworth(8))
-Y=resample(Z, sr, 1//4) 
+Y = resample(Z, sr, 1//4) 
 
-Y=resample(X, sr, 2) # upsample by a factor 2, i.e., double the sampling rate
+Y = resample(X, sr, 2) # upsample by a factor 2, i.e., double the sampling rate
 
 sr = 100
 X = randn(sr*10, 19)
-Y=resample(X, sr, 128/sr) # upsample to 128 samples per second
+Y = resample(X, sr, 128/sr) # upsample to 128 samples per second
 ```
 """
 function resample(X::AbstractMatrix{T},
@@ -119,8 +119,8 @@ function resample(X::AbstractMatrix{T},
                 stim::Union{Vector{S}, Nothing} = nothing) where {T<:Real, S<:Int}
 
 
-    if rate==1 return stim===nothing ? X : (X, stim) end
-    newsr=round(Int, sr*rate)
+    if rate≈1 return stim===nothing ? X : (X, stim) end
+    newsr = round(Int, sr*rate)
 
     # This may be necessary: must be tested with rate a real number
     # sr*rate-newsr≠0 && throw(ArgumentError("resample function: sr*rate must be an integer"))
@@ -141,11 +141,11 @@ function resample(X::AbstractMatrix{T},
 
     # resample stimulation channel
     if stim≠nothing
-        newstim=zeros(Int, t) 
-        for i=1:length(stim)
+        newstim = zeros(Int, t) 
+        for i = 1:length(stim)
             if stim[i]≠0
-                newsample=clamp(round(Int, i/sr*newsr), 1, t)
-                newstim[newsample]=stim[i]
+                newsample = clamp(round(Int, i/sr*newsr), 1, t)
+                newstim[newsample] = stim[i]
             end
         end
     end
@@ -182,7 +182,7 @@ using Eegle # or using Eegle.Preprocessing
 using Eegle # or using Eegle.Preprocessing
 
 X = randn(128, 7)
-sensors=["F7", "F8", "C3", "Cz", "C4", "P7", "P8"]
+sensors = ["F7", "F8", "C3", "Cz", "C4", "P7", "P8"]
 
 # remove second channel
 X_, sensors_, ne = removeChannels(X, 2, sensors)
@@ -232,16 +232,18 @@ Return the 3-tuple (`newX`, `s`, `ne`), where `newX` is the new data, `s` is the
 ```julia
 using Eegle
 
-# load data xxx
+sr, ne = 256, 7
+X = randn(sr, ne)
+stim = rand(0:3, sr)
 
 # remove second sample
-X, stim, ne = removeSamples(X, 2, stim)
+X_, stim_, ns = removeSamples(X, 2, stim)
 
 # remove the first 128 samples
-X, stim, ne = removeSamples(X, collect(1:128), stim)
+X_, stim_, ns = removeSamples(X, collect(1:128), stim)
 
 # remove every other sample (decimation by a factor of 2)
-X, stim, ne = removeSamples(X, collect(1:2:length(stim)), stim)
+X_, stim_, ns = removeSamples(X, collect(1:2:length(stim)), stim)
 ```
 """
 function removeSamples(X::AbstractMatrix{T}, what::Union{Int, Vector{S}},
@@ -261,7 +263,7 @@ end
 
 """
 ```julia
-    function embedLags( X::AbstractMatrix{T}, 
+    function emdedLags( X::AbstractMatrix{T}, 
                         lags = 0) 
     where T<:Real 
 ```
@@ -305,12 +307,12 @@ Notice also that the lag-embedded data has the same size of the input, however t
 ```julia
 using Eegle # or using Eegle.Preprocessing
 
-X=randn(1024, 19)
+X = randn(8, 2) # small example to see the effect
 
-elX=emdedLags(X, 4)
+elX = emdedLags(X, 3)
 ```
 """
-function embedLags(X::AbstractMatrix{T}, lags = 0) where T<:Real 
+function emdedLags(X::AbstractMatrix{T}, lags = 0) where T<:Real 
     ne = size(X, 2)
     if lags>0
         return hcat((vcat(zeros(T, lags-l, ne), X[1:end-lags, :], zeros(T, l, ne)) for l=0:lags)...)
