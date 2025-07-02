@@ -31,3 +31,9 @@ ranges = epoching(X, sr;
 ranges = epoching(X, sr;
         wl = sr * 4)
 @test ranges[1:2]==[1:512, 513:1024]
+
+# adaptive epoching of θ (4Hz-7.5Hz) oscillations (execute only)
+Xθ = filtfilt(X, sr, Bandpass(4, 7.5))
+ranges = epoching(Xθ, sr;
+        minSize = round(Int, sr ÷ 4), # at least one θ cycle
+        lowPass = 7.5)  # ignore minima due to higher frequencies
