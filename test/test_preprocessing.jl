@@ -1,6 +1,4 @@
-using Eegle, Statistics, Test
-
-# standardize
+## standardize
 @testset "standardize" begin
         X = randn(128, 19)
         stX = standardize(X)
@@ -44,4 +42,11 @@ X_, sensors_, ne = removeChannels(X, findall(x->x∈("Cz", "C3", "C4"), sensors)
 
 # keep only channels labeled as "C3", "Cz", and "C4" in `sensors`
 X_, sensors_, ne = removeChannels(X, findall(x->x∉("Cz", "C3", "C4"), sensors), sensors)
+
+## emdedLags (executed only, check visually the example)
+using Eegle # or using Eegle.Preprocessing
+
+X = randn(8, 2) # small example to see the effect
+
+elX = emdedLags(X, 3)
 

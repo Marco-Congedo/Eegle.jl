@@ -1,4 +1,4 @@
-using Test
+using Eegle, Statistics, LinearAlgebra, Test
 
 tol = 1e-12
 

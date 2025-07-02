@@ -95,7 +95,7 @@ where ``I_d`` is the d-dimensional identity matrix and ``\\mathbf{1}_d`` is the 
 ```julia
 using Eegle
 
-X= randn(128, 19)
+X = randn(128, 19)
 
 # CAR
 X_car = X * centeringMatrix(size(X, 2))
@@ -177,7 +177,7 @@ g = globalFieldRMS(X * ℌ(size(X, 2)); func=x->x^2)
 ```
 """
 function globalFieldRMS(X::AbstractMatrix{T}; func=identity) where T<:Real
-    func.(sqrt.(globalFieldPower(X)/size(X, 1))) # global field root mean square
+    func.(sqrt.(globalFieldPower(X)./size(X, 2))) # global field root mean square
 end   
 
 
