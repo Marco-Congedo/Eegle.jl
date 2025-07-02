@@ -15,7 +15,6 @@ export
     centeringMatrix, ℌ,
     globalFieldPower,
     globalFieldRMS,
-    expVar,
     minima,
     epoching
 
@@ -181,76 +180,7 @@ function globalFieldRMS(X::AbstractMatrix{T}; func=identity) where T<:Real
 end   
 
 
-function _expVar(A, B, C, i)
-      e = PosDefManifold.quadraticForm(B[:, i], C)
-      return sum(A[i, j]^2*e for j=1:size(A, 2))
-end
 
-# all expected variances for i=1 size(A, 1)
-_expVar(A, B, C) = [_expVar(A, B, C, i) for i=1:size(A, 1)]
-
-"""
-```julia
-    function expVar(A, B::AbstractMatrix, 
-                    C::Union{Symmetric, Hermitian, AbstractMatrix}; 
-        i::Union{Symbol, Int}=:all)
-    end
-```
-The explained variance is useful when working with *spatial filters* and with sources in *blind source separation* [congedo2008bss](@cite).
-
-Given:
-- a covariance (or cospectral) matrix ``C``,
-- a spatial filter (or demixing) matrix ``B``, with the filters in columns,
-- a spatial pattern (or mixing) matrix ``A``, such that ``B^\\top A=I`` and with the patterns in columns, 
-
-return by default the total explained variance of filtered ``C``, as
-
-``\\operatorname{tr}\\left( A \\left( B^\\top C B \\right) A^\\top \\right)``.
-
-If [kwarg](#Acronym) ``i`` is an index (integer) for the columns of ``A`` and ``B``, 
-return instead the variance of ``C`` explained by the ``i^{th}`` component (or source) only, as
-
-``\\operatorname{tr}\\left( a_i \\left( b_i^\\top C b_i \\right) a_i^\\top \\right)``,
-
-where ``a_i`` and ``b_i`` are the ``i^{th}`` column of ``A`` and ``B``, 
-
-and
-
-``a_i^\\top`` and ``b_i^\\top`` are the ``i^{th}`` row of ``A`` and ``B``.
-
-!!! tip 
-    If ``A`` and ``B`` are square, that is, if all filters are retained,
-    the total explained variance is equal to ``\\operatorname{tr}\\left( C \\right)``, i.e., to the variance of C.
-
-In general, the columns of ``B`` are normalized before entering this function and ``A`` is obtained as
-the right-inverse of ``B^\\top`` — See [normalizeCol!](https://marco-congedo.github.io/PosDefManifold.jl/stable/linearAlgebra/#PosDefManifold.normalizeCol!)
-
-**Examples**
-```julia
-using Eegle, LinearAlgebra, PosDefManifold
-
-N=32 # channels
-
-# generate random spatial filters and patterns matrices
-# and normalize their columns
-A=randn(N, N)
-BT=Matrix((inv(A))')
-PosDefManifold.normalizeCol!(BT, 1:N)
-B = Matrix(BT')
-normalizeCol!(A, 1:N)
-
-# random NxN covariance matrix
-C=PosDefManifold.randP(N) 
-
-# vector of explained variances for each component of B
-ev = [expVar(A, B, C; i) for i=1:N]
-```
-"""
-function expVar(A, B::AbstractMatrix, C::Union{Symmetric, Hermitian, AbstractMatrix}; 
-                i::Union{Symbol, Int}=:all)
-    size(A)==size(B) || error("Eegle.Processing, `expVar` function: A and B must have the same size")
-    return i isa Int ? _expVar(A, B, C, i) : _expVar(A, B, C)
-end
 
 
 # Given EEG data in `X` and its sampling rate `sr`, computes the global field root mean square (GFRMS), 
