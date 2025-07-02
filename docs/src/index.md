@@ -19,9 +19,22 @@ It also provides some modules for advanced EEG analysis.
 
 Execute the following commands in Julia's REPL:
 
-```
+```julia
 ]add Eegle
 ```
+
+## Testing
+
+Hit the backspace key (🡐) on your keyboard to get back the Julia prompt, then
+
+```julia
+using Pkg
+Pkg.test("Eegle")
+```
+
+## Quick Start
+Read the [next page](#Eegle) of this documentation for general informations, then work out the tutorials.
+When you need a function, check its documentation and the examples given therein.
 
 ## About the Authors
 
