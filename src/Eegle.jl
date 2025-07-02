@@ -22,6 +22,8 @@ const separatorFont = "\x1b[35m"
 const defaultFont   = "\x1b[0m"
 const greyFont      = "\x1b[90m"
 
+export Eegle
+
 include("FileSystem.jl");       @reexport using .FileSystem
 include("Miscellaneous.jl");    @reexport using .Miscellaneous
 include("Preprocessing.jl");    @reexport using .Preprocessing

@@ -23,6 +23,8 @@ using .Tyler  # relative import with dot
 import Statistics: mean
 import Base: merge
 
+import Eegle
+
 export
     mean,
     stim2mark,

@@ -13,6 +13,8 @@ module FileSystem
 # getFilesInDir | get all files in a directory 
 # getFoldersInDir | get all folders in a directory
 
+import Eegle
+
 export
     fileBase,
     fileExt,

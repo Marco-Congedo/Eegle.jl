@@ -27,6 +27,7 @@ using NPZ, YAML, HDF5, EzXML, DSP
 using Eegle.FileSystem, Eegle.Preprocessing, Eegle.ERPs
 
 import Statistics: mean
+import Eegle
 
 export
     EEG,

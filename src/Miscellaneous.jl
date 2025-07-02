@@ -13,6 +13,8 @@ using PosDefManifold: AnyMatrix
 # remove    | remove one or several elements from arrays
 # isSquare  | check if a matrix is square
 
+import Eegle
+
 export
     remove,
     isSquare,
@@ -58,6 +60,10 @@ C=remove(A, [1, 4]) # remove rows 1 and 4
 A=randn(10, 10)
 B=remove(A, [collect(2:3); collect(8:10)]; dims=2)
 # remove columns 2, 3, 8, 9, 10
+
+A=randn(10, 10)
+B=remove(A, collect(1:2:size(A, 1)); dims=1)
+# remove every other sample (decimation by a factor of 2)
 ```
 """
 function remove(X::Union{Vector, Matrix}, what::Union{Int, Vector{Int}}; dims=1)
