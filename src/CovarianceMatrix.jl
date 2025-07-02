@@ -39,7 +39,7 @@ export  covmat,
         verbose::Bool = false) 
     where T<:Union{Real, Complex}
 
-(2)  function covmat(𝐗::Vector{Matrix{T}};
+(2)  function covmat(𝐗::AbstractVector{<:AbstractArray{T}};
         < same arguments as method (1) > ...
 ```
 Covariance matrix estimation(s) of a single data matrix (e.g., a trial) `X` (1) or of a vector of ``K`` data matrices `𝐗` (2).
@@ -126,7 +126,7 @@ function covmat(X::AbstractMatrix{T};
 end
 
 
-function covmat(𝐗::Vector{Matrix{T}}; 
+function covmat(𝐗::AbstractVector{<:AbstractArray{T}}; 
                 covtype=SCM, 
                 prototype::Union{AbstractMatrix, Nothing}=nothing, 
                 standardize::Bool = false, 
@@ -145,11 +145,11 @@ function covmat(𝐗::Vector{Matrix{T}};
 
     if threaded 
         @threads for i ∈ eachindex(𝐗) 
-            𝐂[i] = covmat(𝐗[i]; covtype=SCM, prototype, standardize, useBLAS, reg, tol, maxiter, verbose)
+            𝐂[i] = covmat(𝐗[i]; covtype, prototype, standardize, useBLAS, reg, tol, maxiter, verbose)
         end
     else
         @simd for i ∈ eachindex(𝐗) 
-            @inbounds 𝐂[i] = covmat(𝐗[i]; covtype=SCM, prototype, standardize, useBLAS, reg, tol, maxiter, verbose)
+            @inbounds 𝐂[i] = covmat(𝐗[i]; covtype, prototype, standardize, useBLAS, reg, tol, maxiter, verbose)
         end
     end
 
