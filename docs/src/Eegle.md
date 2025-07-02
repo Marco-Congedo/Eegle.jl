@@ -149,6 +149,7 @@ using Eegle
 - Use acronym and refer to the [Acronyms](@ref) section, e.g., [BSS](@ref Acronyms)
 - Do not confuse the em dash hyphen — (a long dash used in text punctuation) with the usual en dash, used, for example, to make lists in markdown.
 - Only the last item of a list or sub-list should ened with a dot
+- The first word of the title of admonitions ('tip', 'warning', etc.) is capitalized, unless it is a function or argument.
 - Fully qualify links to functions of other modules, for example: [`Eegle.Preprocessing.removeSamples`](@ref), except:
     - functions whose name is imported from an existing external package, for example: [`mean`](@ref)
     - functions defined in the same module you are writing the documentation in.

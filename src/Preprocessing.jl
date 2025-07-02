@@ -81,11 +81,11 @@ as per the [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resa
 - `Nϕ`, `rel_bw` and `attenuation`: see [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resample).
 - a [stimulation vector](@ref). If it is passed, it will be resampled so as to match the resampling of `X` as precisely as possible. `stim` must be a vector of ``T`` integers.
 
-!!! tip "resampling"
+!!! tip "Resampling"
     If you need to work with individual trials (or epochs), do not resample trials individually; rather, resample the whole EEG recording and then
     extract the trials — see [`Eegle.ERPs.trials`](@ref). Function [`Eegle.InOut.readNY`](@ref) allows you to do resampling and extract trials this way.
 
-!!! warning "downsampling"
+!!! warning "Downsampling"
     Downsampling must be always preceeded by low-pass filtering to ensure the suppression of all energies above the Nyquist frequency (``s/2``),
     where ``s`` is the new sampling rate after downsampling. The cut_off frequencies is usually taken as ``s/3`` and a sharp filter is used (see examples). 
     This applies also if you wish to apply downsampling by decimation — see the examples for decimating in [`Eegle.Miscellaneous.remove`](@ref) and [`removeSamples`](@ref).

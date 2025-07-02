@@ -293,7 +293,7 @@ If requested, the preprocessing operations are performed in the order of the [kw
     Ii is recommended to set `stdClass` to true when all relevant classes are available in your database configuration.
 - `msg`: print string `msg` on exit if it is not empty. By default it is empty.
 
-!!! note "resampling"
+!!! note "Resampling"
     If you use resampling, the new sampling rate will be rounded to the nearest integer.
 
 !!! warning "stim and mark" 
