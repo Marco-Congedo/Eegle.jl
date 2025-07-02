@@ -294,8 +294,8 @@ ranges = epoching(Xθ, sr;
 
 # If only the covariance matrices are needed,
 # a more memory-efficient way skipping the extraction of 𝐗 is
-𝐂 = ℍVector(covmat([@view X[r, :] for r ∈ ranges]))
-𝐂θ = ℍVector(covmat(@view Xθ[r, :] for r ∈ ranges]))
+𝐂 = ℍVector(covmat([view(X, r, :) for r ∈ ranges]))
+𝐂θ = ℍVector(covmat([view(Xθ, r, :) for r ∈ ranges]))
 ```
 **See** [`Eegle.CovarianceMatrix.covmat`](@ref)
 """
