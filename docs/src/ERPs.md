@@ -82,6 +82,8 @@ For **spatial filters** increasing the signal-to-noise ratio of ERPs — see the
 
 For the analysis of **time-locked and phase-locked components of ERPs**, as well as **ERP synchronization measures**, in the time-frequency domain — see package [FourierAnalysis.jl](https://github.com/Marco-Congedo/FourierAnalysis.jl) and companion article [congedo2018non](@cite).
 
+[Unfold](https://github.com/unfoldtoolbox/Unfold.jl) is a package dedicated to ERP analysis.
+
 
 ## Methods
 

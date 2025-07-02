@@ -74,9 +74,8 @@ end
 The common average reference (CAR) operator for referencing EEG data 
 potentials so that their mean across sensors (space) is zero at all samples.
 
-Let ``X`` be the ``T×N`` EEG recording, where ``T`` and ``N`` denotes the number of samples and channels (sensors), respectively.
-
-Let ``H_N`` be the ``N×N`` recentering matrix, then 
+Let ``X`` be the ``T×N`` EEG recording, where ``T`` and ``N`` denotes the number of samples and channels (sensors), respectively,
+and let ``H_N`` be the ``N×N`` recentering matrix, then 
 
 ``Y=XH`` 
 
@@ -88,7 +87,7 @@ is the CAR (or *centered*) data.
 
 where ``I_d`` is the d-dimensional identity matrix and ``\\mathbf{1}_d`` is the ``d``-dimensional vector of ones.
 
-**Alias:** ℌ (U+0210C, with escape sequence "frakH")
+**Alias** ℌ (U+0210C, with escape sequence "frakH")
 
 **Return** the ``d×d`` centering matrix.
 
@@ -155,7 +154,7 @@ The global field root mean square (GFRMS) is the square root of the [`globalFiel
 this has been divided by the number of electrodes.
 
 Let ``X`` be the ``T×N`` EEG recording, where ``T`` and ``N`` denotes the number of samples and channels, respectively,
-and ``x_t`` be the vector of ``N`` potentials at sample ``t∈{1,...T}``, then the GFRMS at each sample is given by
+and let ``x_t`` be the vector of ``N`` potentials at sample ``t∈{1,...T}``, then the GFRMS at each sample is given by
 
 ``\\sqrt{\\frac{1}{N} (x_t^\\top x_t)}``.
 
@@ -197,7 +196,7 @@ _expVar(A, B, C) = [_expVar(A, B, C, i) for i=1:size(A, 1)]
         i::Union{Symbol, Int}=:all)
     end
 ```
-The **explained variance** is useful when working with *spatial filters* and with sources in *blind source separation* [congedo2008bss](@cite).
+The explained variance is useful when working with *spatial filters* and with sources in *blind source separation* [congedo2008bss](@cite).
 
 Given:
 - a covariance (or cospectral) matrix ``C``,
@@ -208,8 +207,7 @@ return by default the total explained variance of filtered ``C``, as
 
 ``\\operatorname{tr}\\left( A \\left( B^\\top C B \\right) A^\\top \\right)``.
 
-If [kwarg](#Acronym) ``i`` is an index (integer) for the columns of ``A`` and ``B``,
-
+If [kwarg](#Acronym) ``i`` is an index (integer) for the columns of ``A`` and ``B``, 
 return instead the variance of ``C`` explained by the ``i^{th}`` component (or source) only, as
 
 ``\\operatorname{tr}\\left( a_i \\left( b_i^\\top C b_i \\right) a_i^\\top \\right)``,
@@ -323,11 +321,11 @@ local minima of the low-pass filtered [global field root mean square](@ref globa
 
 **Return**
 
-- *Standard:* if `richReturn=false` (default) ``r``, else the 3-tuple (``r``, 0 and `wl`).
+- *Standard:* if `richReturn=false` (default) ``r``, else the 3-tuple (``r``, 0 and `wl`)
 - *Adaptive:* if `richReturn=false` (default) ``r``, else the 3-tuple (``r``, ``m``, ``l``),
 
 where ``r`` is the computed vector of unit ranges (a `Vector{UnitRange{Int64}}` type), 
-``m`` the vector with the low-pass filtered GFMRS and ``l`` the vector of epoch lengths;
+``m`` the vector with the low-pass filtered GFMRS and ``l`` the vector of epoch lengths.
 
 !!! note "epochs definition"
     With the *adaptive* method, the last sample of an epoch coincides with the first sample of the successive epoch,
@@ -338,17 +336,19 @@ where ``r`` is the computed vector of unit ranges (a `Vector{UnitRange{Int64}}` 
 
 using Eegle
 
-X=randn(1280, 19)
+X=randn(6144, 19)
 sr = 128
 
 # standard 1s epoching with 50% overlap
 ranges = epoching(X, sr;
         wl = sr,
         slide = sr ÷ 2)
+# return (1:64, 65:128, ...)
 
 # standard 4s epoching with no overlap
 ranges = epoching(X, sr;
         wl = sr * 4)
+# return (1:512, 513:1024, ...)
 
 # adaptive epoching of θ (4Hz-7.5Hz) oscillations
 Xθ = filtfilt(X, sr, Bandpass(4, 7.5))
@@ -362,9 +362,10 @@ ranges = epoching(Xθ, sr;
 # Get the covariance matrices of the epochs from any of the above
 𝐂 = covmat(𝐗) # See CovarianceMatrices.jl
 
-# A more memory-efficient way skipping the extraction of 𝐗
-𝐂 = ℍVector(covmat([X[r, :] for r ∈ ranges]))
-𝐂θ = ℍVector(covmat([Xθ[r, :] for r ∈ ranges]))
+# If only the covariance matrices are needed,
+# a more memory-efficient way skipping the extraction of 𝐗 is
+𝐂 = ℍVector(covmat([@viewX[r, :] for r ∈ ranges]))
+𝐂θ = ℍVector(covmat(@view[Xθ[r, :] for r ∈ ranges]))
 ```
 **See** [`Eegle.CovarianceMatrix.covmat`](@ref)
 """

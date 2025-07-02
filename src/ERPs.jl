@@ -57,6 +57,10 @@ export
 Estimate the weighted mean ERPs (event-related potentials), as the standard arithmetic mean (default) 
 or using the multivariate regression method, as detailed in [Congedo2016STCP](@cite).
 
+**Tutorials**
+
+xxx
+
 **METHOD (1)**
 
 **Arguments**
@@ -64,16 +68,17 @@ or using the multivariate regression method, as detailed in [Congedo2016STCP](@c
 - `wl`: the window (trial or ERP) length in samples
 - `mark`: the [marker vectors](@ref).
 
-If `mark` holds empty vectors, they will be ignored and the mean will
-not be computed for those marks. The number of means therefore will
-be equal to the number of non-empty mark vectors.
+!!! warning "empty markers vectors"
+    If `mark` holds empty vectors, they will be ignored and the mean will
+    not be computed for those marks. The number of means therefore will
+    be equal to the number of non-empty mark vectors.
 
 **Optional Keyword Arguments**
 - `overlapping`: see [overlapping](@ref)
 - `offset`: see [offset](@ref)
 - `weights`: can be used to obtain weighted means. By default, equal weights are used. It can be: 
     - a vector of vectors of non-negative real weights for the trials, with the same dimensions as `mark`
-    - `:a` : adaptive weights are computed as the inverse of the squared Frobenius norm of the trials data, along the lines of [Congedo2016STCP](@cite).
+    - `:a` : adaptive weights computed as the inverse of the squared Frobenius norm of the trials data, along the lines of [Congedo2016STCP](@cite).
        
 !!! warning "offset"
     If `mark` has been created using an offset when reading the data using [`Eegle.InOut.readNY`](@ref), set offset to zero here.
@@ -123,11 +128,6 @@ M=mean(X, wl, [mark[1]]; weights=:a)[1]
 # xxx Load a NY file
 𝐌=mean(o; overlapping=true, weights=:a)
 ```
-
-**Tutorials**
-
-xxx
-
 """
 function mean(X::Matrix{R}, wl::S, mark::Vector{Vector{S}};
             overlapping :: Bool = false,
@@ -192,9 +192,11 @@ Convert a [stimulation vector](@ref) into [marker vectors](@ref).
     which may or may not hold instances of all integers up to the largest.
     If there are missing integers, the corresponding marker vector will be empty.
     Alternatively, a vector of tags coding the classes of stimulations in `stim` can be passed as 
-    kwarg `code`. In this case, arbitrary tags can be used (even negative)
+    kwarg `code`. In this case, arbitrary non-zero tags can be used (even negative)
     and the number of marker vectors will be equal to the number of
-    unique integers in `code`.
+    unique integers in `code`. If `code` is provided, the marker vectors are arranged in the order given there,
+    otherwise the first vector corresponds to the tag 1, the second to tag 2, etc.
+    In ant case, in each vector, the samples are sorted in ascending order.
 
 !!! warning "offset"
     Markers which value plus the offset exceeds ``t`` minus the window length will be ignored, as they cannot define a complete ERP (or trial).
@@ -203,10 +205,6 @@ Convert a [stimulation vector](@ref) into [marker vectors](@ref).
 
 A vector of ``z`` marker vectors, where ``z`` is the number of classes, i.e.,
 the highest integer in `stim` or the number of non-zero elements in `code` if it is provided.
-
-If `code` is provided, the marker vectors are arranged in the order given there,
-otherwise the first vector correspond to the tag 1, the second to tag 2, etc.
-In each vector, the samples are sorted in ascending order.
 
 **See** [`Eegle.ERPs.mark2stim`](@ref)
 
@@ -236,7 +234,7 @@ Reverse transformation of [`Eegle.ERPs.stim2mark`](@ref).
     If an `offset` has been used in `stim2mark`, -offset must be used here
     in order to get back to the original [stimulation vector](@ref).
 
-If a code is given, it must not contain 0. 
+If `code` is provided, it must not contain 0. 
 
 **Examples**
 ```julia
@@ -278,70 +276,6 @@ xxx #
 """
 merge(mark::Vector{Vector{S}}, mergeClasses::Vector{Vector{S}}) where S <: Int =
     [sort(vcat(mark[m]...)) for m ∈ mergeClasses]
-
-"""
-```julia
-    function trialsWeights( X::Matrix{R}, 
-                            stimOrMark::Union{Vector{S}, Vector{Vector{S}}}, 
-                            wl::S;
-        M::Union{Matrix{R}, Nothing} = nothing,
-        offset::S = 0) 
-    where {R<:Real, S<:Int}
-
-```
-Compute adaptive weights for trials as the inverse of their squared
-Frobenius norm, along the lines of [Congedo2016STCP](@cite).
-The method is unsupervised, i.e., agnostic of class labels,
-but a supervised version is available using the `M` arguments.
-
-This function is called by [`mean`](@ref).
-
-**Arguments**
-
-- `X`: the whole EEG recording, a matrix of size ``T×N``, where ``T`` is the number of samples and ``N`` the number of channels (sensors), respectively
-- `stimOrMark`: either a [stimulation vector](@ref) or [marker vectors](@ref). For empty mark vectors, an empty vector is returned
-- `wl`: the window (trial or ERP) length in samples.
-
-**Optional Keyword Arguments**
-
-- `M`: (defalut = `nothing`)
-    - if `stimOrMark` is a stimulation vector and a matrix is passed as `M`, then the weights are computed as the squared norm of ``X_j-M`` for all trials ``X_j``, ``j \\in \\{1, \\ldots, k\\}``, regardless their class
-    - if `stimOrMark` are marker vectors and a vector of ``z`` matrices is passed as `M`, then the weights are computed as the squared norm of ``X_{j(i)}-M_i`` for all trials  ``X_{j(i)}``, ``j \\in \\{1, \\ldots, k\\}``, ``i \\in \\{i, \\ldots, z\\}`` for each class ``i`` separately.
-- `offset`: see [offset](@ref).
-
-**Examples**
-```julia
-using Eegle # or using Eegle.ERPs
-xxx # 
-```
-"""
-function trialsWeights(X::Matrix{R}, stim::Vector{S}, wl::S;
-                        M::Union{Matrix{R}, Nothing} = nothing,
-                        offset::S = 0) where {R<:Real, S<:Int}
-    if isempty(stim)
-        return []
-    else
-        if M===nothing
-            w = [1/(norm(X[m+offset:m+offset+wl-1, :])^2) for m ∈ stim]
-        else
-            w = [1/(norm(X[m+offset:m+offset+wl-1, :]-M)^2) for m ∈ stim]
-        end
-        return w./mean(w)
-    end
-end
-
-
-function trialsWeights(X::Matrix{R}, mark::Vector{Vector{S}}, wl::S;
-                        M::Union{Vector{Matrix{R}}, Nothing} = nothing,
-                        offset::S = 0) where {R<:Real, S<:Int}
-    M===nothing || length(M)==length(mark) || throw(ArgumentError("The length of arguments `mark` and `𝐌` must be the same."))
-    if M===nothing
-        return [trialsWeights(X, m, wl; offset=offset) for m ∈ mark]
-    else
-        return [trialsWeights(X, m, wl; M=g, offset=offset) for (m, g) ∈ zip(mark, M)]
-    end
-end
-
 
 # Given `𝐓`, the output of `trials`, which is either a vector of trials or a vector of vectors of trials, one for each class
 # (empty vectors are allowed), return `𝐓` if `linComb` is nothing (default), the `linComb` columns of the trials in `𝐓` if `linComb`
@@ -390,7 +324,7 @@ Optionally, multiply them by `weights` and compute a linear combination across s
     For non-tagged data — see [`Eegle.Processing.epoching`](@ref).
 
 **Arguments**
-- `X`: the whole EEG recording, a matrix of size ``t×n``, where ``t`` is the number of samples and ``n`` the number of electrodes.
+- `X`: the whole EEG recording, a matrix of size ``T×N``, where ``T`` is the number of samples and ``N`` the number of channels (sensors).
 - `stimOrMark`: either a [stimulation vector](@ref) or [marker vectors](@ref). 
 - `wl`: the window (trial, e.g., ERP) length in samples.
 
@@ -416,8 +350,8 @@ Optionally, multiply them by `weights` and compute a linear combination across s
 By default `shape` is equal to `:cat`. Empty marker vectors are ignored if `shape` is equal to `:cat`, otherwise
 an empty vector is returned in their corresponding positions.
 
-Each extracted trial is a ``wl×n`` matrix if `linComb` is `nothing` (default), 
-otherwise it a vector of ``wl`` elements.
+Each extracted trial is a ``wl×N`` matrix if `linComb` is `nothing` (default), 
+otherwise it a vector ``wl`` elements.
 
 **Examples**
 ```julia
@@ -461,6 +395,71 @@ trials( X::Matrix{R}, mark::Vector{Vector{S}}, wl::S;
 
 """
 ```julia
+    function trialsWeights( X::Matrix{R}, 
+                            stimOrMark::Union{Vector{S}, Vector{Vector{S}}}, 
+                            wl::S;
+        M::Union{Matrix{R}, Nothing} = nothing,
+        offset::S = 0) 
+    where {R<:Real, S<:Int}
+
+```
+Compute adaptive weights for trials as the inverse of their squared
+Frobenius norm, along the lines of [Congedo2016STCP](@cite).
+The method is unsupervised, i.e., agnostic of class labels,
+but a supervised version is available using the `M` arguments.
+
+!!! tip "mean ERPs"
+    You don't need this function to compute mean ERPs, as this function is called by [`mean`](@ref).
+
+**Arguments**
+
+- `X`: the whole EEG recording, a matrix of size ``T×N``, where ``T`` is the number of samples and ``N`` the number of channels (sensors), respectively
+- `stimOrMark`: either a [stimulation vector](@ref) or [marker vectors](@ref). For empty mark vectors, an empty vector is returned
+- `wl`: the window (trial or ERP) length in samples.
+
+**Optional Keyword Arguments**
+
+- `M`: (defalut = `nothing`)
+    - if `stimOrMark` is a stimulation vector and a matrix is passed as `M`, then the weights are computed as the squared norm of ``X_j-M`` for all trials ``X_j``, ``j \\in \\{1, \\ldots, k\\}``, regardless their class
+    - if `stimOrMark` are marker vectors and a vector of ``z`` matrices is passed as `M`, then the weights are computed as the squared norm of ``X_{j(i)}-M_i`` for all trials  ``X_{j(i)}``, ``j \\in \\{1, \\ldots, k\\}``, ``i \\in \\{i, \\ldots, z\\}`` for each class ``i`` separately.
+- `offset`: see [offset](@ref).
+
+**Examples**
+```julia
+using Eegle # or using Eegle.ERPs
+xxx # 
+```
+"""
+function trialsWeights(X::Matrix{R}, stim::Vector{S}, wl::S;
+                        M::Union{Matrix{R}, Nothing} = nothing,
+                        offset::S = 0) where {R<:Real, S<:Int}
+    if isempty(stim)
+        return []
+    else
+        if M===nothing
+            w = [1/(norm(X[m+offset:m+offset+wl-1, :])^2) for m ∈ stim]
+        else
+            w = [1/(norm(X[m+offset:m+offset+wl-1, :]-M)^2) for m ∈ stim]
+        end
+        return w./mean(w)
+    end
+end
+
+
+function trialsWeights(X::Matrix{R}, mark::Vector{Vector{S}}, wl::S;
+                        M::Union{Vector{Matrix{R}}, Nothing} = nothing,
+                        offset::S = 0) where {R<:Real, S<:Int}
+    M===nothing || length(M)==length(mark) || throw(ArgumentError("The length of arguments `mark` and `𝐌` must be the same."))
+    if M===nothing
+        return [trialsWeights(X, m, wl; offset=offset) for m ∈ mark]
+    else
+        return [trialsWeights(X, m, wl; M=g, offset=offset) for (m, g) ∈ zip(mark, M)]
+    end
+end
+
+
+"""
+```julia
     function reject(X::Matrix{R}, 
                     stim::Vector{Int}, 
                     wl::S;
@@ -471,24 +470,25 @@ trials( X::Matrix{R}, mark::Vector{Vector{S}}, wl::S;
 ```
 Automatic rejection of artefacted trials in tagged EEG data by automatic amplitude thresholding.
 
-This function is called by [`Eegle.InOut.readNY`](@ref) to perform artifact rejection while reading
-EEG data in the [NY format](#NY format).
+!!! tip "read data and reject artifacts"
+    This function is called by [`Eegle.InOut.readNY`](@ref) to perform artifact rejection while reading
+    EEG data in the [NY format](#NY format).
 
 **Arguments**
 - `X`: the whole EEG recording, a matrix of size ``T×N``, where ``T`` is the number of samples and ``N`` the number of electrodes
 - `stim`: a [stimulation vector](@ref)
-- `wl`: the trial length, i.e., the ERPs duration, in samples.
+- `wl`: the trial length, i.e., the ERPs or trial duration, in samples.
 
 **Optioanl Keyword Arguments**
 - `offset`: see [offset](@ref)
 - `upperLimit`: modulate the definition of the upper threshold (see below). a reasonable value ∈[1, 1.6]
 - `upperLimit`: determine the output (see below).
 
-**Method**
+**Description**
 
 Let ``v`` be the natural logarithm of the **field root mean square** (FRMS, see [`Eegle.Processing.globalFieldRMS`](@ref)) of `X` sorted in ascending order.
 
-The lower threshold ``l`` is defined as the tenth value of ``v`` (robust estimator).
+The lower threshold ``l`` is defined as the tenth value of ``v`` (robust minimum estimator).
 
 The upper threshold ``h`` is defined as
 
@@ -498,7 +498,7 @@ where:
 - ``m`` is the mean of the ``2wl`` central values of ``v``, taken as a robust central tendency estimator
 - ``u`` is [kwarg](#Acronyms) `upperlimit` (default=1.2).
 
-All trials in which at least one sample of the log-FRMS exceeds ``h`` or in which ``l`` exceeds the average log-FRMS are rejected.
+All trials in which at least one sample of the log-FRMS exceeds ``h`` or in which ``l`` exceeds the log-FRMS are rejected.
 
 **Return**
 - if `returnDetails` is false (default), a 5-tuple holding the following objects:

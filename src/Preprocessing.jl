@@ -26,8 +26,8 @@ export
     where T<:Real
 ```
 Standardize the whole ``T×N`` EEG recording `X`, where ``T`` and ``N`` denotes the number of samples and channels (sensors), respectively, using: 
-- the arithmetic mean and standard deviation if `robust` is false (default)
-- the Winsorized (trimmed) mean and standard deviation if `robust` is true.
+- the arithmetic mean and standard deviation of all data in `X` if `robust` is false (default)
+- the Winsorized (trimmed) mean and standard deviation of all data in `X` if `robust` is true.
 
 The trimmed statistics are computed excluding the `prop` proportion of data at both sides (default=0.2),
 thus, `prop` is used only if `robust` is true.
@@ -66,21 +66,26 @@ end
         stim::Union{Vector{S}, Nothing} = nothing) 
     where {T<:Real, S<:Int}
 ```
-Resampling of the ``T×N`` EEG recording `X`, where ``T`` and ``N`` denotes the number of samples and channels (sensors), respectively,
-using the polyphase FIR filter with Kaiser window filter taps,  
+Resampling of an EEG data matrix using the polyphase FIR filter with Kaiser window filter taps,  
 as per the [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resample) method in DSP.jl.
 
-For [kwarg](#Acronyms) `rel_bw` and `attenuation` — see [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resample).
+**Arguments**
+- `X`: the ``T×N`` EEG matrix, where ``T`` and ``N`` denotes the number of samples and channels (sensors), respectively
+- `sr`: the original sampling rate of `X`
+- `rate`: the resampled data will have sampling rate `sr` * `rate`.
 
-If a [stimulation vector](@ref) `stim` is passed as kwarg, It will be resampled so as to match the resampling of `X`
-as precisely as possible. `stim` must be a vector of ``T`` integers.
+**Optional Keyword Arguments**
+- `rel_bw` and `attenuation`: see [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resample).
+- a [stimulation vector](@ref). If it is passed, it will be resampled so as to match the resampling of `X` as precisely as possible. `stim` must be a vector of ``T`` integers.
 
 !!! tip "Resampling"
-    If you need to work with individual trials, do not resample trials individually; rather, resample the whole EEG recording and then
-    extract the trials. Function [`Eegle.InOut.readNY`](@ref) allows you to do resampling and extract trials this way.
+    If you need to work with individual trials (or epochs), do not resample trials individually; rather, resample the whole EEG recording and then
+    extract the trials — see [`Eegle.ERPs.trials`](@ref). Function [`Eegle.InOut.readNY`](@ref) allows you to do resampling and extract trials this way.
 
 !!! warning "Real resampling rate"
-    The use of real resampling rates need to be tested
+    The use of a real resampling `rate` need to be tested.
+
+**Return** the resampled data matrix.
 
 **Examples**
 ```julia
@@ -92,6 +97,8 @@ X = randn(sr*10, 19)
 Y=resample(X, sr, 1//4) # downsample by a factor 4
 
 Y=resample(X, sr, 2) # upsample by a factor 2, i.e., double the sampling rate
+
+Y=resample(X, sr, 100/sr) # downsample to 100 samples per second
 ```
 """
 function resample(X::AbstractMatrix{T},
@@ -148,10 +155,11 @@ Remove one or more channels, i.e., columns, from the ``T×N`` EEG recording `X`,
 where ``T`` and ``N`` denotes the number of samples and channels (sensors), respectively,
 and remove the corresponding elements from `sensors`, the provided associated vector of ``N`` sensor labels.
 
-For the use of [kwarg](#Acronyms) `what` — see method [`Eegle.Miscellaneous.remove`](@ref), which can be used if all you need is to remove channels from `X`.
+For the use of [kwarg](#Acronyms) `what`, see method [`Eegle.Miscellaneous.remove`](@ref), which can be used instead of this function
+if you do not need to remove channels from a sensor labels vector.
 
 Return the 3-tuple (`newX`, `s`, `ne`), where `newX` is the new EEG recording, `s` is the new sensor labels vector and
-`ne` is the new number of channels (sensors) in `newX`.
+`ne` is the new number of channels (sensors) in `newX` (`s`).
 
 **See Also** [`Eegle.InOut.readSensors`](@ref)
 
@@ -167,8 +175,15 @@ X, sensors, ne = removeChannels(X, 2, sensors)
 # remove the first five channels
 X, sensors, ne = removeChannels(X, collect(1:5), sensors)
 
-# remove the channel labeled as 'Cz' in `sensors`
+# remove the channel labeled as "Cz" in `sensors`
 X, sensors, ne = removeChannels(X, findfirst(x->x=="Cz", sensors), sensors)
+
+# remove the channels labeled as "C3", "Cz", and "C4" in `sensors`
+X, sensors, ne = removeChannels(X, findall(x->x∈("Cz", "C3", "C4"), sensors), sensors)
+
+# keep only channels labeled as "C3", "Cz", and "C4" in `sensors`
+X, sensors, ne = removeChannels(X, findall(x->x∉("Cz", "C3", "C4"), sensors), sensors)
+
 ```
 """
 function removeChannels(X::AbstractMatrix{T}, what::Union{Int, Vector{S}},
@@ -191,7 +206,8 @@ Remove one or more samples, i.e., rows, from the ``T×N`` EEG recording `X`,
 where ``T`` and ``N`` denotes the number of samples and channels (sensors), respectively,
 and remove the corresponding elements from `stim`, the associated [stimulation vector](@ref).
 
-For the use of kwarg `what` — see method [`Eegle.Miscellaneous.remove`](@ref), which can be used instead if all you need is to remove samples from `X`.
+For the use of [kwarg](#Acronyms) `what`, see method [`Eegle.Miscellaneous.remove`](@ref), which can be used instead of this function
+if you do not need to remove tags from a stimulation vector.
 
 Print a warning if elements in `what` correspond to non-zero tags in `stim`.
 
@@ -210,7 +226,7 @@ X, stim, ne = removeSamples(X, 2, stim)
 # remove the first 128 samples
 X, stim, ne = removeSamples(X, collect(1:128), stim)
 
-# remove every other sample
+# remove every other sample (naive downsampling by a factor 2)
 X, stim, ne = removeSamples(X, collect(1:2:length(stim)), stim)
 ```
 """
@@ -240,13 +256,17 @@ hold information not only of volume condution and instantaneous connectivity, bu
 These matrices can be used, for example, in blind source separation
 and Riemannian classification.
 
+**Tutorials** xxx, xxx
+
+**Description**
+
 Given the ``T×N`` EEG recording `X`, where ``T`` and ``N`` denotes the number of samples and channels (sensors), respectively, 
-and ``L>0`` `lags`, return the ``T×N(L+1)`` lag-embedded data matrix 
+and ``L>0`` `lags`, the ``T×N(L+1)`` lag-embedded data matrix is
 
 ```math
 X_{\\text{lags}} = \\left[ 
 X^{(0)} \\;\\; X^{(1)} \\;\\; \\cdots \\;\\; X^{(L)}
-\\right]
+\\right],
 ```
 
 where, letting ``\\mathbf{0}_{A \\times B}`` the ``A \\times B`` matrix of zeros,
@@ -264,6 +284,8 @@ X[1:(T - L), \\: :] \\\\
 
 Notice that the are no zeros appended to the first partition and no zeros prepended to the last partition.
 Notice also that the lag-embedded data has the same size of the input, however the last ``L`` samples are lost.
+
+**Return** the ``T×N(L+1)`` lag-embedded data matrix ``X_{\\text{lags}}``.
 
 **Example**
 ```julia

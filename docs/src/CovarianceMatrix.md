@@ -15,9 +15,9 @@ For **manipulating covariance matrices using Riemannian geometry** — see packa
 
 For **machine learning based on Riemannian geometry** — see package [PosDefManifoldML.jl](https://github.com/Marco-Congedo/PosDefManifoldML.jl).
 
-For methods based on the **diagonalization of one or more covariance matrices** — see package [Diagonalizations.jl](https://github.com/Marco-Congedo/Diagonalizations.jl).
+For methods based on the **diagonalization of one or more covariance matrices**, see package [Diagonalizations.jl](https://github.com/Marco-Congedo/Diagonalizations.jl).
 
-Fourier cross-spectra and coherence matrices are special forms of covariance matrices. For producing them — see [FourierAnalysis.jl](https://github.com/Marco-Congedo/FourierAnalysis.jl).
+Fourier cross-spectra and coherence matrices are special forms of covariance matrices. For producing them, see [FourierAnalysis.jl](https://github.com/Marco-Congedo/FourierAnalysis.jl).
 
 
 ## Methods
