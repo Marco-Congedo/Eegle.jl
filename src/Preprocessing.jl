@@ -253,7 +253,7 @@ function removeSamples(X::AbstractMatrix{T}, what::Union{Int, Vector{S}},
     else
         positions = [i for i∈what if stim[i]≠0]
         tags = [stim[i] for i∈what if stim[i]≠0]
-        isempty(check) || @warn "Eegle.Preprocessing, `removeSample` function: tags have been removed" positions tags
+        isempty(positions) || @warn "Eegle.Preprocessing, `removeSample` function: tags have been removed" positions tags
     end
     return X, Eegle.Miscellaneous.remove(stim, what), size(X, di)
 end
