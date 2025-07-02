@@ -24,10 +24,11 @@ makedocs(;
    plugins=[bib],
    sitename="Eegle",
    authors="Marco Congedo, Fahim Doumi and Contributors",
-   format = Documenter.HTML(repolink = "...", 
-                            assets = ["assets/custom.css"],   
+   format = Documenter.HTML(),
+   #format = Documenter.HTML(repolink = "...")
+                            #assets = ["assets/custom.css"],   
                             #theme = "mytheme",
-   ),
+   #),
    modules = [Eegle, Eegle.Miscellaneous, Eegle.Processing, Eegle.FileSystem, 
                Eegle.Preprocessing, Eegle.ERPs, Eegle.InOut, 
                Eegle.CovarianceMatrix, Eegle.Database],
@@ -67,7 +68,7 @@ deploydocs(
    branch = "gh-pages",
    # osname = "linux",
    # deps = Deps.pip("pygments", "mkdocs"),
-   devbranch = "dev",
+   devbranch = "master",
    devurl = "dev",
    # versions = ["stable" => "v^", "v#.#", devurl => devurl],
 )
