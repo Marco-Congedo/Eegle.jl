@@ -27,7 +27,7 @@ export  covmat,
 
 """
 ```julia
-(1) function covmat(X::Matrix{T};
+(1) function covmat(X::AbstractMatrix{T};
         covtype = SCM,
         prototype::Union{AbstractMatrix, Nothing} = nothing,
         standardize::Bool = false,
@@ -95,7 +95,7 @@ C = covmat(𝐗; covtype=LShrLW)
 C = covmat(𝐗; covtype=:Tyler)
 ```    
 """
-function covmat(X::Matrix{T};
+function covmat(X::AbstractMatrix{T};
                 covtype = SCM,
                 prototype::Union{AbstractMatrix, Nothing} = nothing,
                 standardize::Bool = false,
