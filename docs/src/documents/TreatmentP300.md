@@ -18,7 +18,7 @@ This document describes all the changes applied to downloaded P300 databases fro
 
 - **Channel removal**: Flash channel removed
 - **Session handling**: 3 sessions with identical experimental conditions (no separation required)
-- **Epoch labeling correction**: In the original data, entire epochs were labeled with the corresponding event class, which could cause problems in [NY format](#NY format) and misinterpretation during epoch slicing. This was corrected by maintaining the label only at the first sample of each epoch, setting all other samples in the labeled blocks to 0.
+- **Epoch labeling correction**: In the original data, entire epochs were labeled with the corresponding event class, which could cause problems in [NY format](#NY-format) and misinterpretation during epoch slicing. This was corrected by maintaining the label only at the first sample of each epoch, setting all other samples in the labeled blocks to 0.
 
 **Technical Note:** Typically, the stimulation channel has a non-zero value when an event is triggered (e.g., 1 for nontarget) at one specific sample. When data is sliced into epochs, an epoch starts at the trigger sample and ends at the trigger sample + window length samples (window length = trial length × sampling rate, e.g., for this database: trial length = 1s, sampling rate = 256Hz, window length = 1×256 = 256 samples).
 
@@ -114,8 +114,8 @@ This document describes all the changes applied to downloaded P300 databases fro
 
 - **Channel merging**: Original file contained separate nontarget and target stimulation channels (both using value 1 at trial beginning). These were merged into a single stimulation channel with standardized labels.
 - **Database separation**:
-  - **bi2012-Training**: Offline training session (offline, predefined target sequence)
-  - **bi2012-Online**: Online testing session (online, randomized sequence)
+  - **bi2012-T**: Offline training session (offline, predefined target sequence)
+  - **bi2012-O**: Online testing session (online, randomized sequence)
 
 ## bi2013a
 

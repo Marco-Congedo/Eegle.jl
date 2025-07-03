@@ -509,7 +509,7 @@ Automatic rejection of artefacted trials in tagged EEG data by automatic amplitu
 
 !!! tip "Read data and reject artifacts"
     This function is called by [`Eegle.InOut.readNY`](@ref) to perform artifact rejection while reading
-    EEG data in the [NY format](#NY format).
+    EEG data in the [NY format](#NY-format).
 
 **Arguments**
 - `X`: the whole EEG recording, a matrix of size ``T×N``, where ``T`` is the number of samples and ``N`` the number of electrodes

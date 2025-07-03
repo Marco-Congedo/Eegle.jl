@@ -16,7 +16,7 @@ This document describes all the changes applied to downloaded Motor Imagery data
 
 **Specific Treatments:**
 
-- **Epoch labeling correction**: In the original data, entire epochs were labeled with the corresponding event class, which could cause problems in [NY format](#NY format) and misinterpretation during epoch slicing. This was corrected by maintaining the label only at the first sample of each epoch, setting all other samples in the labeled blocks to 0.
+- **Epoch labeling correction**: In the original data, entire epochs were labeled with the corresponding event class, which could cause problems in [NY format](#NY-format) and misinterpretation during epoch slicing. This was corrected by maintaining the label only at the first sample of each epoch, setting all other samples in the labeled blocks to 0.
 
 **Technical Note:** Typically, the stimulation channel has a non-zero value when an event is triggered (e.g., 1 for left-hand) at one specific sample. When data is sliced into epochs, an epoch starts at the trigger sample and ends at the trigger sample + window length samples (window length = trial length × sampling rate, e.g., for this database: trial length = 3s, sampling rate = 256Hz, window length = 3×256 = 768 samples).
 

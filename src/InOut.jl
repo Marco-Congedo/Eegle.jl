@@ -10,7 +10,7 @@
 # EEG | holds data and metadata of an EEG recording
 
 # FUNCTIONS:
-# readNY        | read an EEG recording in [NY format](#NY format)
+# readNY        | read an EEG recording in [NY format](#NY-format)
 # readgTec      | read an EEG recording from a HDF5 file saved by g.Tec g.Recorder software
 # readSensors   | read a list of electrodes from an ICoN electrodes ASCII file
 # readASCII (2 methods) | read one ASCII file or all ASCII files in a directory
@@ -266,7 +266,7 @@ end
         stdClass    :: Bool = true, 
         msg         :: String="") 
 ```
-Read EEG/BCI data in [NY format](#NY), prepreprocess them if desired, and create an [`EEG`](@ref) structure.
+Read EEG/BCI data in [NY format](#NY-format), prepreprocess them if desired, and create an [`EEG`](@ref) structure.
 
 If requested, the preprocessing operations are performed in the order of the [kwargs](@ref Acronyms).
 
