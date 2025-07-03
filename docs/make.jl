@@ -33,32 +33,34 @@ makedocs(;
                Eegle.Preprocessing, Eegle.ERPs, Eegle.InOut, 
                Eegle.CovarianceMatrix, Eegle.Database],
    # remotes = nothing, # ELIMINATE for deploying
-   pages =
-   [
+    pages = [
         "index.md",
         "Eegle Package" => "Eegle.md",
         "Tutorials" => "Tutorials.md",
         "Eegle Modules" => [
-                "Preprocessing" => "Preprocessing.md",
-                "Processing" => "Processing.md",
-                "Event-Related Potentials" => "ERPs.md",
-                "Covariance Matrices" => "CovarianceMatrix.md",
-      ],
+            "Preprocessing" => "Preprocessing.md",
+            "Processing" => "Processing.md",
+            "Event-Related Potentials" => "ERPs.md",
+            "Covariance Matrices" => "CovarianceMatrix.md",
+        ],
         "Utilities" => [
-        "Input/Output" => "InOut.md",
-        "File System" => "FileSystem.md",
-        "Miscellaneous" => "Miscellaneous.md",
-      ],       
-        "BCI DBs Documentation" => [
-        "BCI DBs Overview" => "documents/BCI Databases Overview.md", 
-        "databases Summary MI" => "documents/Databases Summary MI.md",
-        "TreatmentMI" => "documents/TreatmentMI.md",
-        "databases Summary P300" => "documents/Databases Summary P300.md",
-        "TreatmentP300" => "documents/TreatmentP300.md",
-        "NY metadata (YAML)" => "documents/yamlstruct.md",
-      ], 
+            "Input/Output" => "InOut.md",
+            "File System" => "FileSystem.md",
+            "Miscellaneous" => "Miscellaneous.md",
+        ],
+        "Data" => [
+            "Example Data" => "documents/Example Data.md",
+            "BCI DBs Documentation" => [
+                "BCI DBs Overview" => "documents/BCI Databases Overview.md",
+                "databases Summary MI" => "documents/Databases Summary MI.md",
+                "TreatmentMI" => "documents/TreatmentMI.md",
+                "databases Summary P300" => "documents/Databases Summary P300.md",
+                "TreatmentP300" => "documents/TreatmentP300.md",
+                "NY metadata (YAML)" => "documents/yamlstruct.md",
+            ]
+        ],
         "References" => "references.md"
-   ]
+    ]
 )
 
 deploydocs(

@@ -1,6 +1,6 @@
 # NY Metadata (YAML)
 
-This document describes the standard dictionary structure used in `.yml` metadata files for EEG time series data in the [NY format](#NY format).
+This document describes the standard dictionary structure used in `.yml` metadata files for EEG time series data in the [NY format](#NY-format).
 
 ## Overview
 
