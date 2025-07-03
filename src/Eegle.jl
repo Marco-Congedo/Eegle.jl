@@ -24,6 +24,8 @@ const greyFont      = "\x1b[90m"
 
 # Example data
 const EXAMPLE_P300_1 = abspath("data_examples", "P300", "subject_01_session_01.npz")
+const EXAMPLE_MI_1 = abspath("data_examples", "MI", "subject_01_session_01.npz")
+
 
 export  Eegle,
         EXAMPLE_P300_1

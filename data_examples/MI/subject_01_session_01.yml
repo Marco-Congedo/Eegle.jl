@@ -1,0 +1,54 @@
+acquisition:
+  filter: Low-Pass 83Hz (Butterworth order 4 zero phase) for downsampling
+  ground: N/A
+  hardware: g.tec EEG - g.USBamp EEg amplifier
+  reference: N/A
+  samplingrate: 256
+  sensors:
+  - Fpz
+  - F7
+  - F3
+  - Fz
+  - F4
+  - F8
+  - T7
+  - C3
+  - Cz
+  - C4
+  - T8
+  - P7
+  - P3
+  - Pz
+  - P4
+  - P8
+  sensortype: Ag/AgCl Wet electrodes
+  software: N/A
+documentation:
+  description: https://zenodo.org/records/806023
+  doi: https://theses.hal.science/tel-01196752
+  investigators: Alexandre Barachant
+  place: 'Laboratoire Electronique et systeme pour la sante CEA-LETI dans l''Ecole
+    Doctorale : EEATS, Universite de Grenoble'
+  repository: https://zenodo.org/records/806023
+formatversion: 0.0.1
+id:
+  condition: None
+  database: AlexMI
+  paradigm: MI
+  run: 1
+  session: 1
+  subject: 1
+  timestamp: 2012
+stim:
+  labels:
+    right_hand: 2
+    feet: 3
+    rest: 4
+  nclasses: 3
+  trials_per_class:
+    right_hand: 20
+    feet: 20
+    rest: 20
+  offset: 0
+  windowlength: 768
+
