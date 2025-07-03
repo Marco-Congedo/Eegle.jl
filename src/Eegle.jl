@@ -22,7 +22,11 @@ const separatorFont = "\x1b[35m"
 const defaultFont   = "\x1b[0m"
 const greyFont      = "\x1b[90m"
 
-export Eegle
+# Example data
+const EXAMPLE_P300_1 = abspath("data_examples", "P300", "subject_01_session_01.npz")
+
+export  Eegle,
+        EXAMPLE_P300_1
 
 include("FileSystem.jl");       @reexport using .FileSystem
 include("Miscellaneous.jl");    @reexport using .Miscellaneous
