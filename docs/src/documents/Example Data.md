@@ -2,7 +2,8 @@
 
 **Eegle** deploys example EEG data files in [NY format](#NY-format) to be used in examples and tutorials.
 This format is read by fucntion [`readNY`](@ref), which creates an [`EEG`](@ref) structure including the data and metadata. 
-The complete path to the file is exported as a constant, equal to the headings here below. See the [tutorials](#tutorials).
+The complete path to the file is is accessible anywhere as Eegle.{CONSTANT},
+where {CONSTANT} is one of the heading here below. See the [tutorials](#tutorials).
 
 ## `EXAMPLE_MI_1`
 
