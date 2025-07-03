@@ -45,9 +45,9 @@ end;
 end;
 
 
-## emdedLags (executed only, check visually the example)
+## embedLags (executed only, check visually the example)
 @testset "removeChannels" begin
     X3 = randn(8, 2) # small example to see the effect
-    elX = emdedLags(X3, 3)
+    elX = embedLags(X3, 3)
 end;
 
