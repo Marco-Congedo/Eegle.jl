@@ -361,10 +361,10 @@ Optionally, multiply them by `weights` and compute a linear combination across s
 
 **Optional Keyword Arguments**
 - `shape`: see below.
-- `weights`: Optional weights to be multiplied to the trials. It has the same size as `stimOrMark`. Adaptive weights can be obtained passing the [`Eegle.ERPs.trialsWeights`](@ref) function.
+- `weights`: optional weights to be multiplied to the trials. It has the same size as `stimOrMark`. Adaptive weights can be obtained passing the [`Eegle.ERPs.trialsWeights`](@ref) function.
 
 !!! warning "Weights normalization"
-    If you provide custom weights, their mean should be 1 across trials with the same tag.
+    If you provide custom weights, their mean should be 1 across trials with the same tag if `stimOrMark` is a stimumatios vector, within each vector if they are marker vectors.
 
 - `linComb`: Optional linear combination to be applied to the trials, e.g., a spatial filter. It can be:
     - an integer: extract for each (weighted) trial only the data at the electrode indexed by `linComb` ``∈[1,..,n]`` (linear combination by a one-hot vector)
@@ -436,11 +436,11 @@ trials( X::Matrix{R}, mark::Vector{Vector{S}}, wl::S;
 ```
 Compute adaptive weights for trials as the inverse of their squared
 Frobenius norm, along the lines of [Congedo2016STCP](@cite).
-The method is unsupervised, i.e., agnostic of class labels,
+The method is unsupervised, i.e., agnostic to class labels,
 but a supervised version is available using the `M` arguments.
 
 !!! tip "Mean ERPs"
-    You don't need this function to compute mean ERPs, as this function is called by [`mean`](@ref).
+    You don't need this function to compute weighted mean ERPs, as this function is called by [`mean`](@ref).
 
 **Arguments**
 

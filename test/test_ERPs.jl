@@ -64,4 +64,9 @@ end;
     @test merged[1] == [128, 245, 367, 765, 986] && merged[2] == [467, 728, 880, 1025, 1230, 1330, 1456, 1550, 1980]
 end;
 
+# xxx add trials
+# xxx add trialsWeights
+# xxx add reject
+
+
 
