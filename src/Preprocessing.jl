@@ -24,7 +24,7 @@ export
     resample,
     removeChannels,
     removeSamples,
-    emdedLags
+    embedLags
 
 """
 ```julia
@@ -269,7 +269,7 @@ end
 
 """
 ```julia
-    function emdedLags( X::AbstractMatrix{T}, 
+    function embedLags( X::AbstractMatrix{T}, 
                         lags = 0) 
     where T<:Real 
 ```
@@ -315,10 +315,10 @@ using Eegle # or using Eegle.Preprocessing
 
 X = randn(8, 2) # small example to see the effect
 
-elX = emdedLags(X, 3)
+elX = embedLags(X, 3)
 ```
 """
-function emdedLags(X::AbstractMatrix{T}, lags = 0) where T<:Real 
+function embedLags(X::AbstractMatrix{T}, lags = 0) where T<:Real 
     ne = size(X, 2)
     if lags>0
         return hcat((vcat(zeros(T, lags-l, ne), X[1:end-lags, :], zeros(T, l, ne)) for l=0:lags)...)
