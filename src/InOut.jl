@@ -479,7 +479,6 @@ function readNY(filename    :: AbstractString;
      X, # whole EEG recording
      trials # all trials, by class, if requested, nothing otherwise
   )
-  println("$(repeat("═", 65))") # added for more readability (printing stdClass if true and offset if !=0)
 end
 
 ## #######################  g.Tec HDF5 files ############################## ##

@@ -1,4 +1,3 @@
-
 # v 0.1 Nov 2024
 # v 0.2 June 2025
 # Part of the Eegle.jl package.
@@ -87,7 +86,7 @@ This is checked by **Eegle** when you read a database.
 - `.cLabels`: list of class labels
 - `.sr`: sampling rate of the recordings (in samples)
 - `.wl`: for BCI, this is the duration of trials (in samples)
-- `.os`: shift to be applied to markers in order to determine the trial onset (in samples)
+- `.offset`: shift to be applied to markers in order to determine the trial onset (in samples)
 - `.filter`: temporal filter that has been applied to the data
 - `.hardware`: equipment used to obtain the recordings (typically, the EEG amplifier)
 - `.software`: software used to obtain the recordings
@@ -247,7 +246,7 @@ function infoNYdb(dbDir)
         stim = info["stim"]
         push!(wl, stim["windowlength"])
         push!(labels, stim["labels"])
-        push!(os, stim["offset"])
+        push!(offset, stim["offset"])
         push!(nClasses, stim["nclasses"])
         push!(nTrials, stim["trials_per_class"])
 
@@ -282,7 +281,7 @@ function infoNYdb(dbDir)
     length(unique(labels)) > 1 && mywarn("Class labels are not unique across the database")
     length(unique(sr)) > 1 && mywarn("Sampling rate is not unique across the database")
     length(unique(wl)) > 1 && mywarn("Trial duration (windowlength) is not unique across the database")
-    length(unique(os)) > 1 && mywarn("Trial offset is not unique across the database")
+    length(unique(offset)) > 1 && mywarn("Trial offset is not unique across the database")
 
     # CRITICAL ERROR CHECK: unicity of triplets (subject, session, run)
     ssr = Tuple[]
@@ -368,7 +367,7 @@ function infoNYdb(dbDir)
         db_cLabels,
         db_sr,
         db_wl,
-        db_os,
+        db_offset,
         db_filter,
         db_hardware,
         db_software,
