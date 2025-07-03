@@ -1,0 +1,51 @@
+acquisition:
+  filter: None
+  ground: FZ
+  hardware: NeXus-32 EEG
+  reference: Hardware common average reference
+  samplingrate: 128
+  sensors:
+  - F7
+  - F3
+  - F4
+  - F8
+  - T7
+  - C3
+  - Cz
+  - C4
+  - T8
+  - P7
+  - P3
+  - Pz
+  - P4
+  - P8
+  - O1
+  - O2
+  sensortype: Ag/AgCl Wet electrodes
+  software: OpenVibe
+documentation:
+  description: https://hal.science/hal-02126068
+  doi: https://doi.org/10.5281/zenodo.2649006
+  investigators: Korczowski, Ostaschenko, Andreev, Rodrigues, Cattan, Congedo, Gautheret
+  place: University of Grenoble Alpes, GipsaLab France
+  repository: https://github.com/plcrodrigues/py.BI.EEG.2012-GIPSA
+formatversion: 0.0.1
+id:
+  condition: Training
+  database: bi2012
+  paradigm: P300
+  run: 1
+  session: 1
+  subject: 1
+  timestamp: 2012
+stim:
+  labels:
+    NonTarget: 1
+    Target: 2
+  nclasses: 2
+  trials_per_class:
+    NonTarget: 640
+    Target: 128
+  offset: 0
+  windowlength: 128
+
