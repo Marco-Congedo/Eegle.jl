@@ -15,6 +15,13 @@ module FileSystem
 
 import Eegle
 
+# Module REPL text colors
+const titleFont     = "\x1b[95m"
+const separatorFont = "\x1b[35m"
+const defaultFont   = "\x1b[0m"
+const greyFont      = "\x1b[90m"
+
+
 export
     fileBase,
     fileExt,
