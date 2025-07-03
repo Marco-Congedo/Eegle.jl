@@ -42,6 +42,10 @@ When you need a function, check its documentation and the examples given therein
 
 [Fahim Doumi](https://www.linkedin.com/in/fahim-doumi-4888a9251/?locale=fr_FR) at the time of writing was a research ingeneer at the Department of Enginnering of the [University federico II of Naples](https://www.unina.it/en_GB/home).
 
+## Contributors: 
+
+[Alexandre Bleuzé](https://www.linkedin.com/in/alexandre-bleuz%C3%A9-069b37154/)
+
 ## TroubleShoothing
 | Problem   | Solution |
 |:----------|:----------|

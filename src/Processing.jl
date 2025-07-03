@@ -257,7 +257,7 @@ local minima of the low-pass filtered [global field root mean square](@ref globa
 where ``r`` is the computed vector of unit ranges (a `Vector{UnitRange{Int64}}` type), 
 ``m`` the vector with the low-pass filtered GFMRS and ``l`` the vector of epoch lengths.
 
-!!! note "epochs definition"
+!!! note "Epochs definition"
     With the *adaptive* method, the last sample of an epoch coincides with the first sample of the successive epoch,
     whereas with the *standard* method there is no overlapping if ``slide`` is equal to 0 (default).
 

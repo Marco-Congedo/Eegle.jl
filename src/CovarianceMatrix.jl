@@ -106,6 +106,8 @@ function covmat(X::AbstractMatrix{T};
                 maxiter::Int = 200,
                 verbose::Bool = false) where T<:Union{Real, Complex}
 
+    T<:Complex && covtype≠SCM && throw(ArgumentError("Eegle.CovarianceMatrix, function `covmat`: for complex data only `covtype=SCM` is supported"))
+
     transform = standardize ? Eegle.Preprocessing.standardizeEEG : identity
 
     if (covtype==SCM && useBLAS) # fast computations of the sample covariance matrix
@@ -136,6 +138,8 @@ function covmat(𝐗::AbstractVector{<:AbstractArray{T}};
                 tol::Real = real(T)(1e-6),
                 maxiter::Int = 200,
                 verbose::Bool = false) where T<:Union{Real, Complex}
+
+    T<:Complex && covtype≠SCM && throw(ArgumentError("Eegle.CovarianceMatrix, function `covmat`: for complex data only `covtype=SCM` is supported"))
 
     transform = standardize ? Eegle.Preprocessing.standardizeEEG : identity
     
@@ -223,6 +227,8 @@ function encode(o::EEG, paradigm::Symbol;
                 tikh = 0, 
                 useBLAS = true,
                 threaded = true)
+
+    o.trials===nothing && throw(ArgumentError("Eegle.CovarianceMatrix, function `encode`: The `EEG` structure given as first argument does not holds the trials. Make sure argument `getTrials` is not set to false when you open the EEG data in NY format using the `readNY` function"))
 
     if paradigm==:ERP
         # multivariate regression or arithmetic average ERP mean for ALL CLASSES with data-driven weights

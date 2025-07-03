@@ -40,20 +40,20 @@ export
 
 """
 ```julia
-(1) function mean(  X::Matrix{R}, 
+(1) function mean(  X::Matrix{T}, 
                     wl::S, 
                     mark::Vector{Vector{S}};
         overlapping :: Bool = false,
         offset :: S = 0,
         weights :: Union{Vector{Vector{R}}, Symbol}=:none) 
-    where {R<:Real, S<:Int}
+    where {T<:Real, S<:Int}
 
 (2) function mean(  o::EEG; 
         overlapping :: Bool = false,
         offset :: S = 0,
-        weights :: Union{Vector{Vector{R}}, Symbol} = :none,
+        weights :: Union{Vector{Vector{T}}, Symbol} = :none,
         mark :: Union{Vector{Vector{S}}, Nothing} = nothing) 
-    where {R<:Real, S<:Int}
+    where {T<:Real, S<:Int}
 ```
 
 Estimate the weighted mean ERPs (event-related potentials), as the standard arithmetic mean (default) 
@@ -70,7 +70,7 @@ xxx
 - `wl`: the window (trial or ERP) length in samples
 - `mark`: the [marker vectors](@ref).
 
-!!! warning "empty markers vectors"
+!!! warning "Empty markers vectors"
     If `mark` holds empty vectors, they will be ignored and the mean will
     not be computed for those marks. The number of means therefore will
     be equal to the number of non-empty mark vectors.
@@ -79,7 +79,7 @@ xxx
 - `overlapping`: see [overlapping](@ref)
 - `offset`: see [offset](@ref)
 - `weights`: can be used to obtain weighted means. By default, equal weights are used. It can be: 
-    - a vector of vectors of non-negative real weights for the trials, with the same dimensions as `mark`
+    - a vector of vectors of non-negative real weights for the trials, with the same shape as `mark`, where the empty vectors of `mark` are ignored
     - `:a` : adaptive weights computed as the inverse of the squared Frobenius norm of the trials data, along the lines of [Congedo2016STCP](@cite).
        
 !!! warning "offset"
@@ -131,23 +131,32 @@ M=mean(X, wl, [mark[1]]; weights=:a)[1]
 𝐌=mean(o; overlapping=true, weights=:a)
 ```
 """
-function mean(X::Matrix{R}, wl::S, mark::Vector{Vector{S}};
+function mean(X::Matrix{T}, wl::S, mark::Vector{Vector{S}};
             overlapping :: Bool = false,
             offset :: S = 0,
-            weights:: Union{Vector{Vector{R}}, Symbol}=:none) where {R<:Real, S<:Int}
+            weights:: Union{Vector{Vector{T}}, Symbol}=:none) where {T<:Real, S<:Int}
+
+    weights isa Symbol && weights ∉ (:none, :a) && throw(ArgumentError("Eegle.ERPs, function `mean`: possible symbols for `weights` are :none and :a"))
     nc=count(x->!isempty(x), mark) # num of classes: ignore empty mark vectors
-    nc<1 && throw(ArgumentError("ERPs.jl, function `mean`: the `mark` argument is empty"))
+    nc<1 && throw(ArgumentError("Eegle.ERPs, function `mean`: the `mark` argument is empty"))
     nonempty=findall(!isempty, mark) # valid indeces: ignore empty mark vectors
     nonempty_mark = mark[nonempty] # Create mark with non empty marker
-    nonempty_mark ≠ mark && @warn "There are no markers for one or more classes"
-    if overlapping # multivariate regression
+    nonempty_mark ≠ mark && @info "There are no markers for one or more classes"
+    if !(weights isa Symbol)
+        length(weights)==length(nonempty_mark) || throw(ArgumentError("Eegle.ERPs, function `mean`: `weights` must hold the same number of vectors as non-empty vectors in `mark`"))
+        for i in eachindex(weights)
+            length(weights[i])==length(nonempty_mark[i]) || throw(ArgumentError("Eegle.ERPs, function `mean`: the $(i)th vector of `weights` and non-empty vector of `mark` are not of the same size"))
+        end
+    end
+
+    if overlapping # Multivariate Regression, see Congedo et al., 2016. use Toeplitz_Alg
         N = size(X, 2)
         L = size(X, 1)
         Tn = Vector{Toeplitz}(undef, nc)
-        weights==:a ? weights=trialsWeights(X, mark, wl; offset=offset) : nothing
+        weights==:a && (weights=trialsWeights(X, mark, wl; offset=offset))
         for (i, marki) = enumerate(nonempty_mark)
                 marki = marki .+ offset
-                delete_ids =findall(e->(0>e || e>L-N+2), marki)
+                delete_ids = findall(e->(0>e || e>L-N+2), marki)
                 if !isempty(delete_ids)
                         @warn "Element(s) showing incomplete diagonals will be deleted for mark[i] at index 'delete_ids'  with" i delete_ids marki[delete_ids]
                         deleteat!(marki, delete_ids)
@@ -159,8 +168,8 @@ function mean(X::Matrix{R}, wl::S, mark::Vector{Vector{S}};
         if weights==:none
             Xbar = Tn_time_Tn_transpose(Tn)\Tn_time_X(Tn,X)
         else
-            w=[sum(weight.^2)/sum(weight) for weight in weights if !isempty(weight)]
-            Xbar=Diagonal(vcat(fill.(w, wl)...)) * (Tn_time_Tn_transpose(Tn)\Tn_time_X(Tn,X))
+            w = [sum(weight.^2)/sum(weight) for weight in weights if !isempty(weight)]
+            Xbar = Diagonal(vcat(fill.(w, wl)...)) * (Tn_time_Tn_transpose(Tn)\Tn_time_X(Tn,X))
         end
         return [Xbar[wl*(c-1)+1:wl*c, :] for c=1:nc]
 
@@ -168,8 +177,8 @@ function mean(X::Matrix{R}, wl::S, mark::Vector{Vector{S}};
         if  weights==:none
             return [mean(X[mark[c][j]+offset:mark[c][j]+offset+wl-1, :] for j=1:length(mark[c])) for c∈nonempty]
         else
-            weights==:a ? weights=trialsWeights(X, mark, wl; offset=offset) : nothing
-            w=[weight./sum(weight) for weight ∈ weights if !isempty(weight)]
+            weights==:a && (weights = trialsWeights(X, mark, wl; offset=offset))
+            w = [weight./sum(weight) for weight ∈ weights if !isempty(weight)]
             return [sum(X[mark[c][j]+offset:mark[c][j]+offset+wl-1, :]*w[c][j] for j=1:length(mark[c])) for c∈nonempty]
         end
     end
@@ -201,26 +210,38 @@ Convert a [stimulation vector](@ref) into [marker vectors](@ref).
     In ant case, in each vector, the samples are sorted in ascending order.
 
 !!! warning "offset"
-    Markers which value plus the offset exceeds ``t`` minus the window length will be ignored, as they cannot define a complete ERP (or trial).
+    Markers which value plus the offset is non-positive or exceeds the length of `stim` minus ``wl`` will be ignored,
+    as they cannot define a complete ERP (or trial). If this happens, passing the output to [`mark2stim`](@ref) will not return
+    `stim` back exactly. Actually, calling this function and reverting the operation with `mark2stim` ensures that the 
+    stimulation vector is valid.
 
 **Return**
 
 A vector of ``z`` marker vectors, where ``z`` is the number of classes, i.e.,
 the highest integer in `stim` or the number of non-zero elements in `code` if it is provided.
 
-**See** [`Eegle.ERPs.mark2stim`](@ref)
+**See** [`mark2stim`](@ref)
 
 **Examples**
 ```julia
 using Eegle # or using Eegle.ERPs
-xxx # 
+
+sr, wl = 128, 256 # sampling rate, window length of trials
+ns = sr*100 # number of samples of the recording
+
+# simulate a valid stimulations vector for three classes
+stim = vcat([rand()<0.01 ? rand(1:3) : 0 for i = 1:ns-wl], zeros(Int, wl))
+
+mark = stim2mark(stim, wl)
+
+stim2 = mark2stim(mark, ns) # is identical to stim
 ```
 
 """
 function stim2mark(stim::Vector{S}, wl::S;
                 offset::S=0, code=nothing) where S <: Int
     unic = code===nothing ? collect(1:maximum(unique(stim))) : sort(code)
-    return [[i+offset for i ∈ eachindex(stim) if stim[i]==j && i+offset+wl-1<=length(stim)] for j∈unic] 
+    return [[i+offset for i ∈ eachindex(stim) if stim[i]==j && i+offset+wl-1<=length(stim) && i+offset>1] for j∈unic] 
 end
 
 """
@@ -230,7 +251,7 @@ end
         offset::S=0, code=nothing) 
     where S <: Int
 ```
-Reverse transformation of [`Eegle.ERPs.stim2mark`](@ref).
+Reverse transformation of [`stim2mark`](@ref).
 
 !!! note
     If an `offset` has been used in `stim2mark`, -offset must be used here
@@ -238,11 +259,7 @@ Reverse transformation of [`Eegle.ERPs.stim2mark`](@ref).
 
 If `code` is provided, it must not contain 0. 
 
-**Examples**
-```julia
-using Eegle # or using Eegle.ERPs
-xxx # 
-```
+**Examples** see [`stim2mark`](@ref)
 """
 function mark2stim(mark::Vector{Vector{S}}, ns::S;
                 offset::S=0, code=nothing) where S <: Int
@@ -261,19 +278,31 @@ end
     where S <: Int
 ```
 Merge the vectors of [marker vectors](@ref) `mark` and sort the markers within each class.
-
 Return another marker vectors.
+The merging pattern is determined by `mergeClasses`.
 
-For example, suppose `mark` holds 4 vectors of markers and
+As an example, suppose `mark` holds 4 vectors of markers and
 `mergeClasses`=[[1, 2], [3, 4]],
-then the result will hold 2 markers vector, vectors 1 and 2 of `mark`
+then the result will hold two markers vectors, vectors 1 and 2 of `mark`
 concatenated and sorted and vectors 3 and 4 of in `mark` concatenated and sorted.
 Empty mark vectors will be ignored.
+
+This can be used to merge classes in ERP and BCI experiments.
 
 **Examples**
 ```julia
 using Eegle # or using Eegle.ERPs
-xxx # 
+mark =  [   [128, 367], 
+            [245, 765, 986],
+            [467, 880, 1025, 1456],
+            [728, 1230, 1330, 1550, 1980],  
+        ]
+
+merged = merge(mark, [[1, 2], [3, 4]])
+
+# return: 2-element Vector{Vector{Int64}}:
+#           [128, 245, 367, 765, 986]
+#           [467, 728, 880, 1025, 1230, 1330, 1456, 1550, 1980]
 ```
 """
 merge(mark::Vector{Vector{S}}, mergeClasses::Vector{Vector{S}}) where S <: Int =
@@ -322,8 +351,8 @@ Extract trials of duration `wl` from a tagged EEG recording `X`.
 Optionally, multiply them by `weights` and compute a linear combination across sensors thereof.
 
 !!! tip
-    To extract trials and compute their mean — see [`mean`](@ref).
-    For non-tagged data — see [`Eegle.Processing.epoching`](@ref).
+    To extract trials and compute their mean, see [`mean`](@ref);
+    for segmenting non-tagged data, see [`Eegle.Processing.epoching`](@ref).
 
 **Arguments**
 - `X`: the whole EEG recording, a matrix of size ``T×N``, where ``T`` is the number of samples and ``N`` the number of channels (sensors).
@@ -332,10 +361,10 @@ Optionally, multiply them by `weights` and compute a linear combination across s
 
 **Optional Keyword Arguments**
 - `shape`: see below.
-- `weights`: Optional weights to be multiplied to the trials. It has the same size as `stimOrMark`. Adaptive weights can be obtained passing the [`Eegle.ERPs.trialsWeights`](@ref) function.
+- `weights`: optional weights to be multiplied to the trials. It has the same size as `stimOrMark`. Adaptive weights can be obtained passing the [`Eegle.ERPs.trialsWeights`](@ref) function.
 
 !!! warning "Weights normalization"
-    If you provide custom weights, their mean must be 1 if `stimOrMark` is a stimulations vector, or, the mean in each vector of `stimOrMark` must be 1 if `stimOrMark` are marker vectors.
+    If you provide custom weights, their mean should be 1 across trials with the same tag if `stimOrMark` is a stimumatios vector, within each vector if they are marker vectors.
 
 - `linComb`: Optional linear combination to be applied to the trials, e.g., a spatial filter. It can be:
     - an integer: extract for each (weighted) trial only the data at the electrode indexed by `linComb` ``∈[1,..,n]`` (linear combination by a one-hot vector)
@@ -362,9 +391,9 @@ xxx #
 ```
 """
 trials( X::Matrix{R}, stim::Vector{S}, wl::S;
-        weights::Union{Vector{R}, Nothing}=nothing,
+        weights::Union{Vector{R}, Nothing} = nothing,
         linComb::Union{Vector{R}, S, Nothing} = nothing,
-        offset::S=0) where {R<:Real, S<:Int} =
+        offset::S = 0) where {R<:Real, S<:Int} =
     if isempty(stim)
         return []
     else
@@ -407,11 +436,11 @@ trials( X::Matrix{R}, mark::Vector{Vector{S}}, wl::S;
 ```
 Compute adaptive weights for trials as the inverse of their squared
 Frobenius norm, along the lines of [Congedo2016STCP](@cite).
-The method is unsupervised, i.e., agnostic of class labels,
+The method is unsupervised, i.e., agnostic to class labels,
 but a supervised version is available using the `M` arguments.
 
-!!! tip "mean ERPs"
-    You don't need this function to compute mean ERPs, as this function is called by [`mean`](@ref).
+!!! tip "Mean ERPs"
+    You don't need this function to compute weighted mean ERPs, as this function is called by [`mean`](@ref).
 
 **Arguments**
 
@@ -472,7 +501,7 @@ end
 ```
 Automatic rejection of artefacted trials in tagged EEG data by automatic amplitude thresholding.
 
-!!! tip "read data and reject artifacts"
+!!! tip "Read data and reject artifacts"
     This function is called by [`Eegle.InOut.readNY`](@ref) to perform artifact rejection while reading
     EEG data in the [NY format](#NY format).
 

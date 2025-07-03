@@ -53,6 +53,6 @@ This version is a **pre-release** for testing purpose.
 Please contact the authors if you are interested in contributing.
 
 ---
-| **Documentation**  | 
-|:---------------------------------------:|:---------------------------------------:|
+| **Documentation**  | |
+|:-------------------------------------:|:---------------------------------------:|
 | [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://Marco-Congedo.github.io/Eegle.jl/stable) | [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://Marco-Congedo.github.io/Eegle.jl) | 

@@ -10,7 +10,6 @@
 # EEG | holds data and metadata of an EEG recording
 
 # FUNCTIONS:
-# CreateEEG     | create an EEG object with minimal arguments
 # readNY        | read an EEG recording in [NY format](#NY format)
 # readgTec      | read an EEG recording from a HDF5 file saved by g.Tec g.Recorder software
 # readSensors   | read a list of electrodes from an ICoN electrodes ASCII file
@@ -18,6 +17,8 @@
 # writeASCII    | write one abstractArray data matrix in ASCII format
 # writeASCII    | write a vector of strings in ASCII format (in 1 line or multiple lines)
 # writeVector   | write a vector of strings as an ASCII file
+##### Methods of the EEG structure
+# mean          | mean ERPs
 
 module InOut
 
@@ -113,17 +114,17 @@ A simplified constructor is also available, as
     EEG(    X::Matrix{T}, 
             sr::Int, 
             sensors::Vector{String};
-        db::String="",
-        subject::Int=0,
-        session::Int=1,
-        run::Int=1,
-        wl::Int=sr,
-        offset::Int=0,
-        nc::Int=1,
-        clabels::Vector{String}=[""],
-        stim::Vector{Int}=["0"],
-        mark::Vector{Vector{Int}}=[[""]],
-        y::Vector{Int}=[0])
+        db::String = "",
+        subject::Int = 0,
+        session::Int = 1,
+        run::Int = 1,
+        wl::Int = sr,
+        offset::Int = 0,
+        nc::Int = 1,
+        clabels::Vector{String} = [""],
+        stim::Vector{Int} = ["0"],
+        mark::Vector{Vector{Int}} = [[""]],
+        y::Vector{Int} = [0])
     where T<:Real
 ```
 The above creates an EEG structure providing, *ad minima*:
@@ -167,17 +168,17 @@ end
 
 
 EEG(X::Matrix{T}, sr::Int, sensors::Vector{String};
-    db::String="",
-    subject::Int=0,
-    session::Int=1,
-    run::Int=1,
-    wl::Int=sr,
-    offset::Int=0,
-    nc::Int=1,
-    clabels::Vector{String}=[""],
-    stim::Vector{Int}=["0"],
-    mark::Vector{Vector{Int}}=[[""]],
-    y::Vector{Int}=[0]) where T<:Real =
+    db::String = "",
+    subject::Int = 0,
+    session::Int = 1,
+    run::Int = 1,
+    wl::Int = sr,
+    offset::Int = 0,
+    nc::Int = 1,
+    clabels::Vector{String} = [""],
+    stim::Vector{Int} = ["0"],
+    mark::Vector{Vector{Int}} = [[""]],
+    y::Vector{Int} = [0]) where T<:Real =
     EEG(Dict(), Dict(), Dict(), "0.0.1", db, subject,
         session, run, sensors, sr, size(X, 2), size(X, 1), wl, offset,
         nc, clabels, stim, mark, y, X, nothing)
@@ -275,10 +276,11 @@ If requested, the preprocessing operations are performed in the order of the [kw
 - `upperLimit`: argument passed to [`Eegle.ERPs.reject`](@ref) for artifact rejection (default: 0, no artifact rejection)
 - `getTrials`: 
     - if true (default), the `.trials` field of the [`EEG`](@ref) structure is filled with the trials for all classes
-    - If it is a vector of class labels (strings), only the trials with those class labels will be stored. 
+    - If it is a vector of class labels (strings), only the trials with those class labels will be stored 
         For example, `getTrials=["left_hand", "right_hand"]` will store only the trials corresponding to "left\\_hand" class label
         and "right\\_hand" class label. The tags corresponding to each class labels will be replaced by natural numbers (1, 2,...) 
-        and written in the `.stim` field of the output — see [stimulation vector](@ref).
+        and written in the `.stim` field of the output — see [stimulation vector](@ref)
+    - If false, the field `trials` of the returned EEG structure will be set to `nothing`.
 - `stdClass`: 
     - if true (default), class labels are standardized according to predefined conventions to facilitate transfer learning
         and model training across heterogeneous databases.
@@ -293,7 +295,7 @@ If requested, the preprocessing operations are performed in the order of the [kw
     Ii is recommended to set `stdClass` to true when all relevant classes are available in your database configuration.
 - `msg`: print string `msg` on exit if it is not empty. By default it is empty.
 
-!!! note "resampling"
+!!! note "Resampling"
     If you use resampling, the new sampling rate will be rounded to the nearest integer.
 
 !!! warning "stim and mark" 
@@ -335,19 +337,19 @@ function readNY(filename    :: AbstractString;
   
   paradigm = Symbol(info["id"]["paradigm"]) # June 2025, added for stdClass
 
-  (ns, ne)= size(data["data"])       # of sample, # of electrodes)
+  (ns, ne) = size(data["data"])       # of sample, # of electrodes)
   
   os = info["stim"]["offset"]        # offset for trial starting sample
 
   if os-round(Int, os) ≠ 0 || !(os isa Int)
     @warn "Eegle.InOut, function `readNY`: the offset is not an integer. It will be rounded to the nearest integer"
-    os=round(Int, os)
+    os = round(Int, os)
   end
 
   wl = info["stim"]["windowlength"]  # trial duration
   if wl-round(Int, wl) ≠ 0 || !(wl isa Int)
     @warn "Eegle.InOut, function `readNY`: the trial duration (windowlength) is not an integer. It will be rounded to the nearest integer"
-    wl=round(Int, wl)
+    wl = round(Int, wl)
   end
 
   # convert to Float64 and band-pass the data if requested
@@ -434,7 +436,7 @@ function readNY(filename    :: AbstractString;
   else
       # only mark, i.e., samples where the trials start for each class 1, 2,...
       # argument code added 4 Avril 2025 to read MI files with arbitrary label numbers (not just 1, 2, 3...)
-      mark=stim2mark(stim, wl; offset=os, code=sort(unique(stim))[2:end]) 
+      mark = stim2mark(stim, wl; offset=os, code=sort(unique(stim))[2:end]) 
       #mark=[[i+os for i in eachindex(stim) if stim[i]==j && i+os+wl<=ns] for j=1:nc]
   end
 
@@ -442,7 +444,7 @@ function readNY(filename    :: AbstractString;
 
   if os≠0 # offset reset to 0
     println("✓ Initial offset ($os samples) has been applied and `offset` has been reset to 0")
-    os=0
+    os = 0
   end
 
   length(mark) == nc || @error "Eegle.InOut, function `readNY`: the number of classes in .mark does not correspond to the number of markers found in .stim"
@@ -596,11 +598,11 @@ function readASCII(fileName::AbstractString; msg::String="")
         return nothing
     end
 
-    S=readlines(fileName) # read the lines of the file as a vector of strings
+    S = readlines(fileName) # read the lines of the file as a vector of strings
     filter!(!isempty, S)
-    t=length(S) # number of samples
-    n=length(split(S[1])) # get the number of electrodes
-    X=Matrix{Float64}(undef, t, n) # declare the X Matrix
+    t = length(S) # number of samples
+    n = length(split(S[1])) # get the number of electrodes
+    X = Matrix{Float64}(undef, t, n) # declare the X Matrix
     for j=1:t
         x=split(S[j]) # this get the n potentials from a string
         for i=1:n
