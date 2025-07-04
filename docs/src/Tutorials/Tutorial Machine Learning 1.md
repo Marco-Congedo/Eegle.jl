@@ -1,20 +1,21 @@
 # Tutorial Machine Learning 1
 
-This tutorial shows how to
+A common task in [BCI](#acronyms) reasearch is to test a machine learning model (MLM) on a large amount of real data.
+This tutorial uses the FII-BCI corpus in [NY format](#ny-format) as an example.
 
-1. Select databases from the FII-BCI corpus in [NY format](#ny-format) accoording to:
+The tutorial shows how to
+
+1. Select databases and sessions from the FII-BCI corpus accoording to:
     - BCI Paradigm (Motor Imagery or P300)
     - availability of specific classes
     - minimum number of trials per class
-2. Run a cross-validation for all [sessions](#session) in all [databases](#database) and show a summary of the results.
+2. Run a cross-validation for all selected [sessions](#session) in all selected [databases](#database)
+3. Show a summary of the cross-validation results for each session.
 
-As a machine learning model (MLM), the [MDM](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/mdm/) Riemannian classifier 
-employing the affine-invariant (Fisher-Rao) metric is used ([barachant2012multi](@cite), [Congedo2017Review](@cite)).
+As a MLM, the [MDM](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/mdm/) Riemannian classifier employing the affine-invariant (Fisher-Rao) metric is used ([barachant2012multi](@cite), [Congedo2017Review](@cite)).
 
 For each session, an 8-fold stratified cross-validation is run. The summary of results comprises the mean and standard deviation of the
-balanced accuracy obtained across the folds as well as the z-score and p-value of the cross-validation test-statistic — see 
-in [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval) for details.
-
+balanced accuracy obtained across the folds as well as the z-score and p-value of the cross-validation test-statistic — see [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval) for details.
 
 ```julia
 using Eegle # tell julia you want to use the Eegle package

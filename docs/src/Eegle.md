@@ -196,6 +196,7 @@ The following nomenclature is used consistently:
 - ENLR: elastic-net logistic regression
 - ERP: event-related potential
 - kwarg: (optional) keyword argument
+- MLM: machine learning model
 - MDM: minimum distance to mean
 - MI: motor Imagery (a BCI paradigm)
 - P300: the P300 BCI paradigm
