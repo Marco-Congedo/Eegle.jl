@@ -29,7 +29,7 @@ documentation:
   investigators: Korczowski, Ostaschenko, Andreev, Rodrigues, Cattan, Congedo, Gautheret
   place: University of Grenoble Alpes, GipsaLab France
   repository: https://github.com/plcrodrigues/py.BI.EEG.2012-GIPSA
-formatversion: 0.0.1
+formatversion: 0.0.2
 id:
   condition: Training
   database: bi2012
@@ -40,12 +40,12 @@ id:
   timestamp: 2012
 stim:
   labels:
-    NonTarget: 1
-    Target: 2
+    nontarget: 1
+    target: 2
   nclasses: 2
   trials_per_class:
-    NonTarget: 640
-    Target: 128
+    nontarget: 640
+    target: 128
   offset: 0
   windowlength: 128
 

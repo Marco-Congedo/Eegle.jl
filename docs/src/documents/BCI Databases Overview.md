@@ -40,7 +40,7 @@ Based on the [terminology](#Terminology) section, we have selected and separated
 
 Motor Imagery databases contain various classes, sometimes including paradigm-specific movements (e.g., compound movements). We selected only databases that included at least two of these following standard classes: 
 
-"left\\_hand" → 1, "right\\_hand" → 2, "feet" → 3, "rest" → 4, "both\\_hands" → 5, "tongue" → 6
+`left_hand` → 1, `right_hand` → 2, `feet` → 3, `rest` → 4, `both_hands` → 5, `tongue` → 6
 
 Other classes were excluded. Additionally, databases containing executed movements or mental tasks (rather than imagined movements) were also excluded.
 

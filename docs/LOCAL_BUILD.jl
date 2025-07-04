@@ -41,6 +41,7 @@ makedocs(;
             "Processing" => "Processing.md",
             "Event-Related Potentials" => "ERPs.md",
             "Covariance Matrices" => "CovarianceMatrix.md",
+            "Database" => "Database.md",
         ],
         "Utilities" => [
             "Input/Output" => "InOut.md",

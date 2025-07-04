@@ -129,7 +129,7 @@ can turn useful.
 ### Documentation
 
 - For simple functions and methods, the documentation should be short and rather illustrated by examples
-- For complex functions and methods (four or more arguments), the documentation can comprise up to six sections: 
+- For complex functions and methods (in general, four or more arguments), the documentation can comprise up to six sections: 
     - **Tutorial** (if tutorials are available)
     - **Description** (if the method is not simple and common knowledge)
     - **Arguments** (if applicable) 
@@ -143,17 +143,17 @@ can turn useful.
 ```julia 
 using Eegle 
 ```
-- When a function has more then two arguments and optional keyword arguments (kargs), they are given as a list 
+- When a function has more then two arguments and optional keyword arguments (kwargs), they are given as a list 
     and their possible values, whenever relevant, as a sub-list 
 - Enclose functions, arguments and optional keyword arguments in backticks, for example, `mean`
-- Use acronym and refer to the [Acronyms](@ref) section, e.g., [BSS](@ref Acronyms)
+- Use acronym and refer to the [Acronyms](#acronym) section, e.g., [BSS](#acronym)
+- The correct way to link composite headings is [NY format](#ny-format) (note the lower case and dash)
 - Do not confuse the em dash hyphen — (a long dash used in text punctuation) with the usual en dash, used, for example, to make lists in markdown.
-- Only the last item of a list or sub-list should ened with a dot
+- Only the last item of a list or sub-list should end with a dot
 - The first word of the title of admonitions ('tip', 'warning', etc.) is capitalized, unless it is a function or argument.
 - Fully qualify links to functions of other modules, for example: [`Eegle.Preprocessing.removeSamples`](@ref), except:
     - functions whose name is imported from an existing external package, for example: [`mean`](@ref)
     - functions defined in the same module you are writing the documentation in.
-- End a list without punctuation, except for the last item of the list, like in the list you are reading now
 - For Markdown text:
     - headings of level 1 and 2 capitalze all words
     - headings of level 3 capitalize only the first word
@@ -193,7 +193,7 @@ The following nomenclature is used consistently:
 - CAR: common average reference
 - cv: cross-validation
 - EEG: electroencephalography
-- ENLR: elastic-net gogistic regression
+- ENLR: elastic-net logistic regression
 - ERP: event-related potential
 - kwarg: (optional) keyword argument
 - MDM: minimum distance to mean
