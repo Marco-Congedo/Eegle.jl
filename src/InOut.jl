@@ -214,9 +214,9 @@ function _standardizeClasses(paradigm::Symbol,
         standard_mapping = Dict("nontarget" => 1, "target" => 2)
         supported_classes = keys(standard_mapping)
     elseif paradigm == :ERP
-        throw(ArgumentError("Eegle.InOut package, function `_standardizeClasses` called by `readNY`: ERP paradigm not supported yet for class standardization"))
+        throw(ArgumentError("Eegle.InOut package, internal function `_standardizeClasses` called by `readNY`: ERP paradigm not supported yet for class standardization"))
     else
-        throw(ArgumentError("Eegle.InOut package, function `_standardizeClasses` called by `readNY`: Unknown paradigm: $paradigm. Supported paradigms: MI, P300"))
+        throw(ArgumentError("Eegle.InOut package, internal function `_standardizeClasses` called by `readNY`: Unknown paradigm: $paradigm. Supported paradigms: MI, P300"))
     end
     
     clabels_lower = lowercase.(clabels)
@@ -224,11 +224,11 @@ function _standardizeClasses(paradigm::Symbol,
 
     # Throw error if unsupported classes found
     if !isempty(unsupported_classes)
-        error_msg = "Eegle.InOut package, function `_standardizeClasses` called by `readNY`: only these classes are compatible with standardization for $paradigm paradigm: " *
+        error_msg = "Eegle.InOut package, internal function `_standardizeClasses` called by `readNY`: only these classes are compatible with standardization for $paradigm paradigm: " *
                    "$(join(supported_classes, ", ")). " *
                    "\nUnsupported classes found: $(join(unsupported_classes, ", ")). " *
                    "\nPlease verify the correct spelling of your classes (case insensitive)"
-        throw(ArgumentError("Eegle.InOut, function `readNY`: "* error_msg))
+        throw(ArgumentError("Eegle.InOut, internal function `_standardizeClasses` called by `readNY`: "* error_msg))
     end
     
     # Create mapping and check if already standardized
@@ -365,7 +365,7 @@ function readNY(filename    :: AbstractString;
   conversion = eltype(data["data"])≠Float64 && toFloat64
   
   if !isempty(bandStop)
-    BSfilter = digitalfilter(BandStop(first(bandStop)/(sr/2), last(bandStop)/(sr/2)), bsDesign)
+    BSfilter = digitalfilter(Bandstop(first(bandStop)/(sr/2), last(bandStop)/(sr/2)), bsDesign)
     X        = filtfilt(BSfilter, conversion ? Float64.(data["data"]) : data["data"])
   end
 
@@ -834,7 +834,7 @@ function Base.show(io::IO, ::MIME{Symbol("text/plain")}, o::EEG)
     println(io, "y (all c labels): $(length(o.y))-Vector{Int}")
     println(io, "X (EEG data)    : $(r)x$(c)-Matrix{$(type)}")
     o.trials==nothing ? println("                : nothing") :
-    println(io, "trials          : $(length(o.trials))-Matrix{$(type)}")
+                        println(io, "trials          : $(length(o.trials))-Vector{Matrix{$(type)}}")
     r≠l && @warn "number of class labels in y does not match the data size in X" l r
 end
 

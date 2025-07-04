@@ -1,7 +1,7 @@
 name = "Eegle"
 uuid = "1260424e-cd79-4b74-a0ea-47c69c296663"
 authors = ["Marco-Congedo <marco.congedo@gmail.com>"]
-version = "0.0.5"
+version = "0.0.7"
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"

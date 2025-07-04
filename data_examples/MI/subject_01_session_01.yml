@@ -30,7 +30,7 @@ documentation:
   place: 'Laboratoire Electronique et systeme pour la sante CEA-LETI dans l''Ecole
     Doctorale : EEATS, Universite de Grenoble'
   repository: https://zenodo.org/records/806023
-formatversion: 0.0.1
+formatversion: 0.0.2
 id:
   condition: None
   database: AlexMI
