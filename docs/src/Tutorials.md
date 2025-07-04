@@ -24,7 +24,7 @@ Tutorials are organized by themes; start with those more closely ressambling to 
 ## Machine Learning
 |Tutorial | Description|
 |:---|:---|
-|[Tutorial ML 1](@ref "Tutorial Machine Learning 1") | Select databases and run a cross-validation for all [sessions](@ref "session") in all selected [databases](@ref "database") |
+|[Tutorial ML 1](@ref) | Select databases and run a cross-validation for all [sessions](@ref "session") in all selected [databases](@ref "database") |
 
 
 
