@@ -33,7 +33,7 @@ Pkg.test("Eegle")
 ```
 
 ## Quick Start
-Read the [next page](#Eegle) of this documentation for general informations, then work out the tutorials.
+Read the [next page](@ref "Eegle") of this documentation for general informations, then work out the tutorials.
 When you need a function, check its documentation and the examples given therein.
 
 ## About the Authors

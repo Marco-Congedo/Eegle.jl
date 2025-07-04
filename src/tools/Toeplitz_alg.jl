@@ -33,7 +33,7 @@ export Toeplitz,
 
 
 ## Structure that represents a toeplitz matrix.
-#`shape` is the shape of the Toeplz matrix, wl(window length) x ns (# samples).
+#`shape` is the shape of the Toeplz matrix, wl(window length) x ns ( # samples).
 #`mark` stores the indeces of the non-zero diagonals
 #`weights` stores the value of the corresponding non-zero diagonals in 'mark'.
 # Can be :none which means that all weights are equal to 1.

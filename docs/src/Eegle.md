@@ -146,8 +146,8 @@ using Eegle
 - When a function has more then two arguments and optional keyword arguments (kwargs), they are given as a list 
     and their possible values, whenever relevant, as a sub-list 
 - Enclose functions, arguments and optional keyword arguments in backticks, for example, `mean`
-- Use acronym and refer to the [Acronyms](#acronym) section, e.g., [BSS](#acronym)
-- The correct way to link composite headings is [NY format](#ny-format) (note the lower case and dash)
+- Use acronym and refer to the [Acronyms](@ref) section, e.g., [BSS](@ref "Acronyms")
+- The correct way to link composite headings is [NY format](@ref) (note the lower case and dash)
 - Do not confuse the em dash hyphen — (a long dash used in text punctuation) with the usual en dash, used, for example, to make lists in markdown.
 - Only the last item of a list or sub-list should end with a dot
 - The first word of the title of admonitions ('tip', 'warning', etc.) is capitalized, unless it is a function or argument.

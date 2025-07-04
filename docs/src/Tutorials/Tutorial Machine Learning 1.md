@@ -1,7 +1,7 @@
 # Tutorial Machine Learning 1
 
-A common task in [BCI](#acronyms) reasearch is to test a machine learning model (MLM) on a large amount of real data.
-This tutorial uses the FII-BCI corpus in [NY format](#ny-format) as an example.
+A common task in [BCI](@ref "Acronyms") reasearch is to test a machine learning model (MLM) on a large amount of real data.
+This tutorial uses the FII-BCI corpus in [NY format](@ref) as an example.
 
 The tutorial shows how to
 
@@ -9,7 +9,7 @@ The tutorial shows how to
     - BCI Paradigm (Motor Imagery or P300)
     - availability of specific classes
     - minimum number of trials per class
-2. Run a cross-validation for all selected [sessions](#session) in all selected [databases](#database)
+2. Run a cross-validation for all selected [sessions](@ref) in all selected [databases](@ref)
 3. Show a summary of the cross-validation results for each session.
 
 

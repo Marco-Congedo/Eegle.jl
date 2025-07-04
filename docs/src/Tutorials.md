@@ -18,13 +18,13 @@ Tutorials are organized by themes; start with those more closely ressambling to 
 
 |Theme| Uses|
 |:---|:---|
-| [Machine Learning](#machine-learning) | typically used in the field of Brain-Computer Interface |
+| [Machine Learning](@ref) | typically used in the field of Brain-Computer Interface |
 
 
 ## Machine Learning
 |Tutorial | Description|
 |:---|:---|
-|[Tutorial ML 1](#tutorial-machine-learning-1) | Select databases and run a cross-validation for all [sessions](#session) in all selected [databases](#database) |
+|[Tutorial ML 1](@ref "Tutorial Machine Learning 1") | Select databases and run a cross-validation for all [sessions](@ref) in all selected [databases](@ref) |
 
 
 

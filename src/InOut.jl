@@ -10,7 +10,7 @@
 # EEG | holds data and metadata of an EEG recording
 
 # FUNCTIONS:
-# readNY        | read an EEG recording in [NY format](#NY-format)
+# readNY        | read an EEG recording in [NY format](@ref)
 # readgTec      | read an EEG recording from a HDF5 file saved by g.Tec g.Recorder software
 # readSensors   | read a list of electrodes from an ICoN electrodes ASCII file
 # readASCII (2 methods) | read one ASCII file or all ASCII files in a directory
@@ -84,10 +84,10 @@ While conceived specifically for BCI sessions, the structure can be used also fo
 
 **Fields**
 
-- `db`: name of the [database](#database) to which the recording belongs
-- `subject`: serial number of the present [subject](#subject) in the above database
-- `session`: serial number of the present [session](#session) for the above subject
-- `run`: serial number of the present [run](#run) of the above session
+- `db`: name of the [database](@ref) to which the recording belongs
+- `subject`: serial number of the present [subject](@ref) in the above database
+- `session`: serial number of the present [session](@ref) for the above subject
+- `run`: serial number of the present [run](@ref) of the above session
 - `sensors`: labels of the scalp electrode leads in standard notation (10-20, 10-10,...)
 - `sr`: sampling rate in samples
 - `ne`: number of electrode leads
@@ -139,7 +139,7 @@ The above creates an EEG structure providing, *ad minima*:
 - the sampling rate `sr`
 - the sensor labels `sensors`.
 
-The [kwarg](#Acronyms) of this constructor are useful fields that can be filled.
+The [kwarg](@ref "Acronyms") of this constructor are useful fields that can be filled.
 The dictionaries of the structure are left empty.
 
 """
@@ -582,7 +582,7 @@ denoting the number of channels and samples, respectively.
 
 (1) `fileName` is the full path to the ASCII file. 
 
-- If [kwarg](#Acronyms) `msg` is not empty, print `msg` on exit.
+- If [kwarg](@ref "Acronyms") `msg` is not empty, print `msg` on exit.
 
 (2) `fileNames` is a vector of the full paths to the ASCII files. 
 

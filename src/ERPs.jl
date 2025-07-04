@@ -509,7 +509,7 @@ Automatic rejection of artefacted trials in tagged EEG data by automatic amplitu
 
 !!! tip "Read data and reject artifacts"
     This function is called by [`Eegle.InOut.readNY`](@ref) to perform artifact rejection while reading
-    EEG data in the [NY format](#NY-format).
+    EEG data in the [NY format](@ref).
 
 **Arguments**
 - `X`: the whole EEG recording, a matrix of size ``T×N``, where ``T`` is the number of samples and ``N`` the number of electrodes
@@ -533,7 +533,7 @@ The upper threshold ``h`` is defined as
 
 where:
 - ``m`` is the mean of the ``2wl`` central values of ``v``, taken as a robust central tendency estimator
-- ``u`` is [kwarg](#Acronyms) `upperlimit` (default=1.2).
+- ``u`` is [kwarg](@ref "Acronyms") `upperlimit` (default=1.2).
 
 All trials in which at least one sample of the log-FRMS exceeds ``h`` or in which ``l`` exceeds the log-FRMS are rejected.
 
