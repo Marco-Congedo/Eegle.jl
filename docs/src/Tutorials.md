@@ -14,7 +14,7 @@ Tutorials are organized by themes; start with those more closely ressambling to 
 
 - For plotting EEG traces and topographic maps we use dedicated applications running only under Windows. The output is always given as a figure so that you can follow the tutorials also if you work with another OS.
 
-## Themes
+# Themes
 
 |Theme| Uses|
 |:---|:---|

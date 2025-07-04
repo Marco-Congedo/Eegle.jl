@@ -2,7 +2,7 @@
 CurrentModule = Eegle
 ```
 
-# Processing.jl
+## Processing.jl
 
 This module implements **Processing** for EEG data.
 
