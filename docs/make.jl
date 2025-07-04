@@ -39,7 +39,7 @@ makedocs(;
         "Tutorials" => [
             "Overwiew" => "Tutorials.md",
             "Machine Learning" => [
-                "Tutorial Machine Learning 1" => "Tutorial Machine Learning 1.md",
+                "Tutorial Machine Learning 1" => "tutorials/Tutorial Machine Learning 1.md",
             ]
         ],
         "Eegle Modules" => [
