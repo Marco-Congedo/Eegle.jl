@@ -19,7 +19,7 @@ The tutorial shows how to
     For each session, an 8-fold stratified cross-validation is run. The summary of results comprises the mean and standard deviation of the
     balanced accuracy obtained across the folds as well as the z-score and p-value of the cross-validation test-statistic — see [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval) for details.
 
-___________________________________________________________________
+---
 
 ```julia
 using Eegle # tell julia you want to use the Eegle package
@@ -57,7 +57,7 @@ function cv(file; bandPass, upperLimit, paradigm, covtype, metric, nFolds)
     return cvRes    
 end
 
-# optional keyword arguments for `cv`, which are common to the MI and P300 maradigm
+# optional keyword arguments for `cv`, which are common to the MI and P300 paradigm
 args = (upperLimit = 1, covtype=LShrLW, 
         standardize = false, 
         metric = PosDefManifold.Fisher, 
