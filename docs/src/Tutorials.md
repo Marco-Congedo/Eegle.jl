@@ -20,7 +20,7 @@ Tutorials are organized by themes; start with those more closely ressambling to 
 |:---|:---|
 
 ### Machine Learning
-|[Tutorial ML 1](#tutorial-machine-learning-1) | Select databases and run a cross-validation for all [sessions](#session) in all [databases](#database) |
+|[Tutorial ML 1](#tutorial-machine-learning-1) | Select databases and run a cross-validation for all [sessions](#session) in all selected [databases](#database) |
 |:---|:---|
 
 
