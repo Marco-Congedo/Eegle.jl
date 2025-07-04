@@ -46,7 +46,7 @@ function cv(file; bandPass, upperLimit, paradigm, covtype, metric, nFolds)
     # Read session data: Eegle.InOut.readNY
     o = readNY(file; bandPass, upperLimit, getTrials=["left_hand", "right_hand"]);
 
-    # Trials encoding (An appropriate for of Covariance estimation): Eegle.CovarianceMatrix.encode
+    # Trials encoding (a form of Covariance estimation): Eegle.CovarianceMatrix.encode
     𝐂 = encode(o, paradigm; covtype);
 
     # Cross-validation: PosDefManifoldML.crval
@@ -56,7 +56,10 @@ function cv(file; bandPass, upperLimit, paradigm, covtype, metric, nFolds)
 end
 
 # optional keyword arguments for `cv`, which are common to the MI and P300 maradigm
-args = (upperLimit = 1, covtype=LShrLW, standardize = false, metric = PosDefManifold.Fisher, nFolds = 8)
+args = (upperLimit = 1, covtype=LShrLW, 
+        standardize = false, 
+        metric = PosDefManifold.Fisher, 
+        nFolds = 8)
 ```
 
 Function `cv` return a [CVres](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.CVres) structure, which store the result of the cross-validation.
@@ -68,7 +71,8 @@ function show_results(DB, res)
     println("Database: ", DB.dbName)
     println("mean and sd balanced accuracy, z and p-value against chance level")  
     for (i, r) ∈ res
-        println("File ", i, ". mean(sd): ", r.avgAcc,"(", r.stdAcc,, "); ", "z(p-value): ", r.z, "(", r.p, ")")
+        println("File ", i, ". mean(sd): ", r.avgAcc,"(", r.stdAcc,, "); ", 
+                "z(p-value): ", r.z, "(", r.p, ")")
     end
     println("\n")
 end
