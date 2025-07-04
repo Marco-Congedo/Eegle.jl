@@ -3,7 +3,7 @@ CurrentModule = Eegle
 end
 ```
 
-# InOut.jl
+## InOut.jl
 
 This module declares a structure for EEG-based BCI data and methods for reading and writing data
 

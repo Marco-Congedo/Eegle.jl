@@ -2,7 +2,7 @@
 CurrentModule = Eegle
 ```
 
-# FileSystem.jl
+## FileSystem.jl
 
 This module implements utilities for **working with files and directories**.
 
