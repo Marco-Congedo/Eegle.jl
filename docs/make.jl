@@ -36,7 +36,12 @@ makedocs(;
     pages = [
         "index.md",
         "Eegle Package" => "Eegle.md",
-        "Tutorials" => "Tutorials.md",
+        "Tutorials" => [
+            "Overwiew" => "Tutorials.md",
+            "Machine Learning" => [
+                "Tutorial Machine Learning 1" => "Tutorial Machine Learning 1.md",
+            ]
+        ],
         "Eegle Modules" => [
             "Preprocessing" => "Preprocessing.md",
             "Processing" => "Processing.md",

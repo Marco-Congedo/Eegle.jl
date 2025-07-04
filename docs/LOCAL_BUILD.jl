@@ -32,10 +32,15 @@ makedocs(;
                Eegle.Preprocessing, Eegle.ERPs, Eegle.InOut, 
                Eegle.CovarianceMatrix, Eegle.Database],
     remotes = nothing, # ELIMINATE for deploying
-    pages = [
+ pages = [
         "index.md",
         "Eegle Package" => "Eegle.md",
-        "Tutorials" => "Tutorials.md",
+        "Tutorials" => [
+            "Overwiew" => "Tutorials.md",
+            "Machine Learning" => [
+                "Tutorial Machine Learning 1" => "tutorials/Tutorial Machine Learning 1.md",
+            ]
+        ],
         "Eegle Modules" => [
             "Preprocessing" => "Preprocessing.md",
             "Processing" => "Processing.md",
