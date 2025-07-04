@@ -12,10 +12,12 @@ The tutorial shows how to
 2. Run a cross-validation for all selected [sessions](#session) in all selected [databases](#database)
 3. Show a summary of the cross-validation results for each session.
 
-As a MLM, the [MDM](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/mdm/) Riemannian classifier employing the affine-invariant (Fisher-Rao) metric is used ([barachant2012multi](@cite), [Congedo2017Review](@cite)).
 
-For each session, an 8-fold stratified cross-validation is run. The summary of results comprises the mean and standard deviation of the
-balanced accuracy obtained across the folds as well as the z-score and p-value of the cross-validation test-statistic — see [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval) for details.
+!!! info
+    As a MLM, the [MDM](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/mdm/) Riemannian classifier employing the affine-invariant (Fisher-Rao) metric is used ([barachant2012multi](@cite), [Congedo2017Review](@cite)).
+
+    For each session, an 8-fold stratified cross-validation is run. The summary of results comprises the mean and standard deviation of the
+    balanced accuracy obtained across the folds as well as the z-score and p-value of the cross-validation test-statistic — see [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval) for details.
 
 ```julia
 using Eegle # tell julia you want to use the Eegle package
