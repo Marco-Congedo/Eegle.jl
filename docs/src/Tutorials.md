@@ -21,11 +21,10 @@ Tutorials are organized by themes; start with those more closely ressambling to 
 | [Machine Learning](#machine-learning) | typically used in the field of Brain-Computer Interface |
 
 
-### Machine Learning
+## Machine Learning
 |Tutorial | Description|
 |:---|:---|
 |[Tutorial ML 1](#tutorial-machine-learning-1) | Select databases and run a cross-validation for all [sessions](#session) in all selected [databases](#database) |
-
 
 
 
