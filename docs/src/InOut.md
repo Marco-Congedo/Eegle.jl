@@ -12,7 +12,7 @@ This module declares a structure for EEG-based BCI data and methods for reading 
 |  Function      |           Description             |
 |:-----------------------|:----------------------------------|
 | [`Eegle.InOut.EEG`](@ref) | a structure for EEG-based BCI holding data and metadata |
-| [`Eegle.InOut.readNY`](@ref) | read EEG/BCI data in [NY format](#NY-format) as an [`EEG`](@ref) structure|
+| [`Eegle.InOut.readNY`](@ref) | read EEG/BCI data in [NY format](@ref) as an [`EEG`](@ref) structure|
 | [`Eegle.InOut.readgTec`](@ref) | read EEG data recorded by the *g.Tec g.Recorder* software |
 | [`Eegle.InOut.readASCII`](@ref) | read EEG data in ASCII text format (2 methods)|
 | [`Eegle.InOut.readSensors`](@ref) | read EEG sensor labels from an ASCII text file |

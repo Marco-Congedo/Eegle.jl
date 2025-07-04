@@ -36,7 +36,7 @@ Typically, the number of datasets corresponds to the number of sessions and this
 
 ## Databases Selection
 
-Based on the [terminology](#Terminology) section, we have selected and separated multiple databases primarily acquired from MOABB[^1] and supplemented by databases from their original repositories. Currently, our collection includes only P300 and Motor Imagery (MI) databases. This work was originally conducted for heterogeneous transfer learning research with the goal of "universalizing" BCI Databases, which guided our selection criteria. However, all data can be used for any purpose. For all paradigms, we have only included databases with healthy subjects.
+Based on the [terminology](@ref "Terminology") section, we have selected and separated multiple databases primarily acquired from MOABB[^1] and supplemented by databases from their original repositories. Currently, our collection includes only P300 and Motor Imagery (MI) databases. This work was originally conducted for heterogeneous transfer learning research with the goal of "universalizing" BCI Databases, which guided our selection criteria. However, all data can be used for any purpose. For all paradigms, we have only included databases with healthy subjects.
 
 Motor Imagery databases contain various classes, sometimes including paradigm-specific movements (e.g., compound movements). We selected only databases that included at least two of these following standard classes: 
 
@@ -102,7 +102,7 @@ The CSV files are organized as follows:
 Here are the common treatments applied to all databases:
 
 - Data is stored in Volts and Float64 format (to facilitate use with MNE Python[^24], which only supports data in Volt)
-- Classes were re-labeled to match the standardized numbering scheme described in the [Databases Selection](#Databases Selection) section
+- Classes were re-labeled to match the standardized numbering scheme described in the [Databases Selection](@ref) section
 - Data with sampling rates below 256 Hz was kept unchanged, while data above 256 Hz was downsampled using integer decimation factors to obtain integer sampling rates ≤ 256 Hz. For downsampling, we applied a zero-phase low-pass filter before decimation using MNE Python[^24], with cutoff frequency less than 1/3 of the desired sampling rate to prevent aliasing artifacts (e.g., original sampling rate 1000 Hz, desired sampling rate 200 Hz → low-pass filter cutoff <66 Hz before applying decimation factor of 5).
 - Irrelevant electrodes were removed (reference or ground electrodes, EMG and EOG electrodes)
 - Data from different runs within the same session with identical experimental conditions were concatenated into a single session file
@@ -115,7 +115,7 @@ Stimulation column labeling was specific to the BCI paradigm:
 - P300 was labeled as "nontarget" → 1, "target" → 2
 - Remaining samples were labeled as 0
 
-Once all databases were converted to the [CSV format](#CSV format), they were transcribed to NY format.
+Once all databases were converted to the [CSV format](@ref), they were transcribed to NY format.
 
 ### NY format
 
@@ -139,7 +139,7 @@ All scripts designed for data conversion between formats (Base repository/MOABB 
 
 These scripts facilitate the data pre-processing workflow:
 
-- **MOABB/BASE to CSV**: Python scripts with comprehensive comments guide the users through the conversion process from downloaded raw data (MOABB or original repositories) to the defined [CSV format](#CSV format)
+- **MOABB/BASE to CSV**: Python scripts with comprehensive comments guide the users through the conversion process from downloaded raw data (MOABB or original repositories) to the defined [CSV format](@ref)
 - **CSV to NY**: Python scripts with comprehensive comments guide the users through the conversion process from CSV to NY format.
 
 ## BCI DB References

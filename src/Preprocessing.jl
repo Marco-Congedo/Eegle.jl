@@ -173,7 +173,7 @@ Remove one or more channels, i.e., columns, from the ``T×N`` EEG recording `X`,
 where ``T`` and ``N`` denotes the number of samples and channels (sensors), respectively,
 and remove the corresponding elements from `sensors`, the provided associated vector of ``N`` sensor labels.
 
-For the use of [kwarg](#Acronyms) `what`, see method [`Eegle.Miscellaneous.remove`](@ref), which can be used instead of this function
+For the use of [kwarg](@ref "Acronyms") `what`, see method [`Eegle.Miscellaneous.remove`](@ref), which can be used instead of this function
 if you do not need to remove channels from a sensor labels vector.
 
 Return the 3-tuple (`newX`, `s`, `ne`), where `newX` is the new EEG recording, `s` is the new sensor labels vector and
@@ -226,7 +226,7 @@ Remove one or more samples, i.e., rows, from the ``T×N`` EEG recording `X`,
 where ``T`` and ``N`` denotes the number of samples and channels (sensors), respectively,
 and remove the corresponding elements from `stim`, the associated [stimulation vector](@ref).
 
-For the use of [kwarg](#Acronyms) `what`, see method [`Eegle.Miscellaneous.remove`](@ref), which can be used instead of this function
+For the use of [kwarg](@ref "Acronyms") `what`, see method [`Eegle.Miscellaneous.remove`](@ref), which can be used instead of this function
 if you do not need to remove tags from a stimulation vector.
 
 Print a warning if elements in `what` correspond to non-zero tags in `stim`.

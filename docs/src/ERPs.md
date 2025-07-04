@@ -62,7 +62,7 @@ that is, if a stimulus can be presented before the preceeding evoked response ha
 In this situation, the multivariate regression (MR) method can provide better ERP estimates as compared 
 to the standard arithmetic average (AE) [Congedo2016STCP](@cite).
 
-Methods estimating ERPs in **Eegle** feature the `overlapping` boolean [kwarg](#Acronums), by which you can switch
+Methods estimating ERPs in **Eegle** feature the `overlapping` boolean [kwarg](@ref "Acronyms"), by which you can switch
 between the AE (false) and MR method (true).
 
 !!! note "Overlapping"
