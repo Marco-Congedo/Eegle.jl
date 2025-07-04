@@ -14,7 +14,7 @@ Tutorials are organized by themes; start with those more closely ressambling to 
 
 - For plotting EEG traces and topographic maps we use dedicated applications running only under Windows. The output is always given as a figure so that you can follow the tutorials also if you work with another OS.
 
-## Themes
+# Themes
 
 |Theme| Uses|
 |:---|:---|
@@ -24,7 +24,7 @@ Tutorials are organized by themes; start with those more closely ressambling to 
 ## Machine Learning
 |Tutorial | Description|
 |:---|:---|
-|[Tutorial ML 1](@ref "Tutorial Machine Learning 1") | Select databases and run a cross-validation for all [sessions](@ref) in all selected [databases](@ref) |
+|[Tutorial ML 1](@ref "Tutorial Machine Learning 1") | Select databases and run a cross-validation for all [sessions](@ref "session") in all selected [databases](@ref "database") |
 
 
 

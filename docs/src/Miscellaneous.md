@@ -2,7 +2,7 @@
 CurrentModule = Eegle
 ```
 
-# Miscellaneous.jl
+## Miscellaneous.jl
 
 This module implements **miscellaneous utilities**.
 

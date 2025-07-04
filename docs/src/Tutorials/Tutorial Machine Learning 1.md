@@ -9,7 +9,7 @@ The tutorial shows how to
     - BCI Paradigm (Motor Imagery or P300)
     - availability of specific classes
     - minimum number of trials per class
-2. Run a cross-validation for all selected [sessions](@ref) in all selected [databases](@ref)
+2. Run a cross-validation for all selected [sessions](@ref "session") in all selected [databases](@ref "database")
 3. Show a summary of the cross-validation results for each session.
 
 

@@ -2,7 +2,7 @@
 CurrentModule = Eegle
 ```
 
-# ERPs.jl
+## ERPs.jl
 
 This module implements basic tools fo the analysis of **Event-Related Potentials** (ERPs). 
 Many of these tolls are useful for working with tagged EEG data in general, for example, with BCI data.
@@ -15,7 +15,7 @@ They are extracted averaging **EEG epochs** (**trials**) of fixed duration start
 
 **Eegle** handles two ways to extract ERPs:
 using a **stimulation vector** or using **marker vectors**. You can swicth from one representation to the other using
-the [`Eegle.ERPs.stim2mark`](@ref) and [`Eegle.ERPs.mark2stim`](@ref) functions.
+the [`stim2mark`](@ref) and [`mark2stim`](@ref) functions.
 
 ### stimulation vector
 

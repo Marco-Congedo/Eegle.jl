@@ -3,7 +3,7 @@ CurrentModule = Eegle
 end
 ```
 
-# CovarianceMatrix.jl
+## CovarianceMatrix.jl
 
 This module implements **covariance matrix estimations** for EEG data and **encoding of BCI trials** in the form of covariance matrices.
 
