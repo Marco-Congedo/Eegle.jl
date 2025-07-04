@@ -1,4 +1,4 @@
-# Tutorial Machine Learning 1
+# Tutorial ML 1
 
 A common task in [BCI](@ref "Acronyms") reasearch is to test a machine learning model (MLM) on a large amount of real data.
 This tutorial uses the FII-BCI corpus in [NY format](@ref) as an example.
