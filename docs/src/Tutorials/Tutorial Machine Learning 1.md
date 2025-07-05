@@ -52,9 +52,9 @@ function cv(file; paradigm, bandPass, upperLimit, getTrials, covtype, standardiz
 
     # Trials encoding (a form of Covariance estimation): Eegle.BCI.encode @Marco different encoding for P300
     if paradigm == :MI
-        𝐂 = encode(o, paradigm; covtype, standardize);
+        𝐂 = encode(o; covtype, standardize);
     elseif paradigm == :P300
-        𝐂 = encode(o, paradigm; covtype=LShrLW, targetLabel="target", standardize);
+        𝐂 = encode(o; covtype=LShrLW, targetLabel="target", standardize);
     end
 
     # Cross-validation: PosDefManifoldML.crval

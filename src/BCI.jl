@@ -41,7 +41,7 @@ export  covmat,
 """
 ```julia
 (1) function covmat(X::AbstractMatrix{T};
-        covtype = SCM,
+        covtype = LShrLW,
         prototype::Union{AbstractMatrix, Nothing} = nothing,
         standardize::Bool = false,
         useBLAS::Bool = true,
@@ -62,7 +62,7 @@ Covariance matrix estimation(s) of a single data matrix (e.g., a trial) `X` (1) 
 - (2) `𝐗`: a vector holding ``k`` such matrices.
 
 **Optional Keyword Arguments**
-- `covtype`: covariance estimator (default = `SCM`):
+- `covtype`: covariance estimator (default = `LShrLW`):
     - `SCM` : sample covariance matrix (maximum likelihood)
     - `LShrLW` : linear shrinkage estimator of [LedoitWolf2004](@cite)
     - `NShrLW` : non-linear shrinkage estimator of [LedoitWolf2020](@cite)
@@ -91,9 +91,9 @@ using Eegle # or using Eegle.BCI
 
 # Method (1)
 
-C = covmat(randn(128, 19)) # sample covariance matrix
+C = covmat(randn(128, 19)) # linear shrinkage estimator by default
 
-C = covmat(randn(128, 19); covtype=LShrLW)
+C = covmat(randn(128, 19); covtype=SCM)
 
 C = covmat(randn(128, 19); covtype=:Tyler)
 
@@ -103,13 +103,13 @@ C = covmat(randn(128, 19); covtype=:Tyler)
 
 𝐂 = covmat(𝐗)
 
-C = covmat(𝐗; covtype=LShrLW)
+C = covmat(𝐗; covtype=SCM)
 
 C = covmat(𝐗; covtype=:Tyler)
 ```    
 """
 function covmat(X::AbstractMatrix{T};
-                covtype = SCM,
+                covtype = LShrLW,
                 prototype::Union{AbstractMatrix, Nothing} = nothing,
                 standardize::Bool = false,
                 useBLAS::Bool = true,
@@ -142,7 +142,7 @@ end
 
 
 function covmat(𝐗::AbstractVector{<:AbstractArray{T}}; 
-                covtype = SCM, 
+                covtype = LShrLW, 
                 prototype::Union{AbstractMatrix, Nothing}=nothing, 
                 standardize::Bool = false, 
                 useBLAS:: Bool = true,
@@ -176,8 +176,9 @@ end
 
 """
 ```julia
-    function encode(o::EEG, paradigm::Symbol;
-        covtype=SCM,
+    function encode(o::EEG;
+        paradigm::Symbol = o.paradigm,
+        covtype = LShrLW,
         targetLabel::String = "",
         overlapping::Bool = false,
         weights = :a,
@@ -198,12 +199,12 @@ For details, see *Appendix I* in [Congedo2017Review](@cite).
 
 **Arguments**
 - `o`: an instance of the [`EEG`](@ref) data structure containing trials and metadata
-- `paradigm`: [BCI paradigm](@ref), either `:ERP`, `:P300`, or `:MI`:
+
+**Optional Keyword Arguments**
+- `paradigm`: [BCI paradigm](@ref), either `:ERP`, `:P300`, or `:MI`. By default it is used the paradigm stored in `o`.
     - for `:ERP`, prototypes for all classes are stacked and covariance is computed on super-trials
     - for `:P300`, only the target class prototype is stacked
     - for `:MI`, no prototype is used; covariance is computed on the trial as it is.
-
-**Optional Keyword Arguments**
 - `covtype`, `standardize`, `useBLAS`, `reg`, `tol`, `maxiter` and `verbose` — see [`Eegle.BCI.covmat`](@ref), to which they are passed.
 - `targetLabel`: mandatory label of the target class (P300 paradigm only, usually: "target")
 - `overlapping`: for prototype mean ERP estimations (ERP/P300 only). Default = false:
@@ -228,8 +229,9 @@ using Eegle # or using Eegle.BCI
 xxx
 ```
 """
-function encode(o::EEG, paradigm::Symbol;
-        covtype=SCM,
+function encode(o::EEG;
+        paradigm::Symbol = o.paradigm,
+        covtype = LShrLW,
         targetLabel::String = "",
         overlapping::Bool = false,
         weights = :a,
@@ -244,6 +246,8 @@ function encode(o::EEG, paradigm::Symbol;
         verbose::Bool = false)
 
     isnothing(o.trials) && throw(ArgumentError("Eegle.BCI, function `encode`: The `EEG` structure given as first argument does not holds the trials. Make sure argument `getTrials` is not set to false when you open the EEG data in NY format using the `readNY` function"))
+
+    paradigm ∉ (:ERP, :P300, :MI) && throw(ArgumentError("Eegle.BCI, function `encode`: The `paradigm` must be one of the following symbols: :ERP, :P300, :MI. If you did not pass this argument, it means the paradigm stored in the `o` EEG structure is not supported by `encode`"))
 
     args = (covtype=covtype, standardize=standardize, useBLAS=useBLAS, threaded=threaded, 
             reg=reg, tol=tol, maxiter=maxiter, verbose=verbose)
@@ -297,7 +301,6 @@ end
 """
 ```julia
     function crval( filename    :: AbstractString, 
-                    paradigm    :: Symbol, 
                     model       :: MLmodel = MDM(Fisher);
             # Arguments passed to both encode and crval
             verbose     :: Bool = true,
@@ -314,8 +317,8 @@ end
             stdClass    :: Bool = true, 
             msg         :: String="",
             # Arguments passed to encode
-            covtype = SCM,
-            targetLabel :: String = paradigm == :P300 ? "target" : nothing,
+            covtype = LShrLW,
+            targetLabel :: String = "target",
             overlapping :: Bool = false,
             weights = :a,
             pcadim      :: Int = 8,
@@ -342,13 +345,15 @@ Run in sequence the following three functions
 3. [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval)
 
 This allows to perform any supported types of cross-validations for a whatever BCI [session](@ref)
-in [NY format](@ref).
+in [NY format](@ref). 
 
 **Arguments**
 
 - `filename`: the complete path of either the *.npz* or the *.yml* file of the recording to be used
-- `paradigm`: any supported [BCI paradigm](@ref), either `:ERP`, `:P300`, or `:MI`
 - `model` : any classifier of type [MLmodel](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/MainModule/#MLmodel). Default: the default [MDM](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/mdm/#PosDefManifoldML.MDM) classifier.
+
+!!! note "BCI paradigm"
+    The [BCI paradigm](@ref) is assumed to be the one stored in the file `filename` (either `:ERP`, `:P300`, or `:MI`)
 
 **Optional Keyword Arguments**
 
@@ -398,16 +403,13 @@ with the results of the cross-validation, otherwise a 2-tuple holding this `CVre
 **Examples**
 ```julia
 # Using the example files provided by Eegle
-crval(EXAMPLE_P300_1, :P300)
 
+crval(EXAMPLE_P300_1; bandPass = (1, 24), upperLimit = 1, covtype = SCM)
 
-
-
+crval(EXAMPLE_MI_1; bandPass = (8, 32), upperLimit = 1, covtype = SCM)
 ```
-
 """    
 function crval( filename    :: AbstractString, 
-                paradigm    :: Symbol, 
                 model       :: MLmodel = MDM(Fisher);
         # Arguments passed to both encode and crval
         verbose     :: Bool = true,
@@ -424,8 +426,8 @@ function crval( filename    :: AbstractString,
         stdClass    :: Bool = true, 
         msg         :: String="",
 	    # Arguments passed to encode
-        covtype = SCM,
-        targetLabel :: String = paradigm == :P300 ? "target" : nothing,
+        covtype = LShrLW,
+        targetLabel :: String = "target",
         overlapping :: Bool = false,
         weights = :a,
         pcadim      :: Int = 8,
@@ -455,7 +457,8 @@ function crval( filename    :: AbstractString,
                 msg)
 
     # Encode trials: 
-    𝐂 = encode( o, paradigm;
+    𝐂 = encode( o;
+                # paradigm = o.paradigm,
                 covtype,
                 targetLabel,
                 overlapping,

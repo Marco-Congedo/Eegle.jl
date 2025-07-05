@@ -86,6 +86,7 @@ While conceived specifically for BCI sessions, the structure can be used also fo
 **Fields**
 
 - `db`: name of the [database](@ref) to which the recording belongs
+- `paradigm`: BCI paradigm
 - `subject`: serial number of the present [subject](@ref) in the above database
 - `session`: serial number of the present [session](@ref) for the above subject
 - `run`: serial number of the present [run](@ref) of the above session
@@ -157,7 +158,7 @@ struct EEG
 
     # the following fields are what is useful in practice
     db              :: String        # name of the database to which this file belongs
-    paradigm        :: String        # BCI paradigm
+    paradigm        :: Symbol        # BCI paradigm
     subject         :: Int           # serial number of the subject in database
     session         :: Int           # serial number of the session of this subject
     run             :: Int           # serial number of the run of this session
@@ -241,7 +242,7 @@ function _standardizeClasses(paradigm::Symbol,
     stim_standardized, clabels_standardized = copy(stim), copy(clabels)
 
     if already_standardized
-        println("✓ Classes are already standardized according to the convention.")
+        println("\n✓ Class labels in file follows Eegle's conventions.")
     else
         @inbounds for i in eachindex(stim_standardized)
             stim_standardized[i] != 0 && haskey(value_mapping, stim_standardized[i]) && (stim_standardized[i] = value_mapping[stim_standardized[i]])
@@ -250,7 +251,7 @@ function _standardizeClasses(paradigm::Symbol,
         sorted_indices = sortperm([standard_mapping[clabels_lower[i]] for i in eachindex(clabels_lower)])
         clabels_standardized = clabels[sorted_indices]
         mapping_display = ["$(clabels[findfirst(==(k), clabelsval)])($k->$v)" for (k,v) in value_mapping]
-        println("✓ Class standardization successful!\nMapping applied: $(join(mapping_display, ", "))")
+        println("\n✓ Class labels have been formatted according to Eegle's convention\nMapping applied: $(join(mapping_display, ", "))")
     end
     return stim_standardized, clabels_standardized
 end
@@ -825,30 +826,29 @@ function Base.show(io::IO, ::MIME{Symbol("text/plain")}, o::EEG)
     type=eltype(o.X)
     l=length(o.stim)
     println(io, titleFont, "∿ EEG Data type; $r x $c ")
-    println(io, separatorFont, "∼∽∿∽∽∽∿∼∿∽∿∽∿∿∿∼∼∽∿∼∽∽∿∼∽∽∼∿∼∿∿∽∿∽∼∽", greyFont)
-    println(io, "NY format info:")
-    println(io, "Dict: id, acquisition, documentation")
-    println(io, "formatversion   : $(o.formatversion)")
-    println(io, separatorFont, "∼∽∿∽∽∽∿∼∿∽∿∽∿∿∿∼∼∽∿∼∽∽∿∼∽∽∼∿∼∿∿∽∿∽∼∽", defaultFont)
-    println(io, "db (database)   : $(o.db)")
-    println(io, "paradigm        : $(":"*string(o.paradigm))")    
-    println(io, "subject         : $(o.subject)")
-    println(io, "session         : $(o.session)")
-    println(io, "run             : $(o.run)")
-    println(io, "sensors         : $(length(o.sensors))-Vector{String}")
-    println(io, "sr(samp. rate)  : $(o.sr)")
-    println(io, "ne(# electrodes): $(o.ne)")
-    println(io, "ns(# samples)   : $(o.ns)")
-    println(io, "wl(win. length) : $(o.wl)")
-    println(io, "offset          : $(o.offset)")
-    println(io, "nc(# classes)   : $(o.nc)")
-    println(io, "clabels(c=class): $(length(o.clabels))-Vector{String}")
-    println(io, "stim(ulations)  : $(length(o.stim))-Vector{Int}")
-    println(io, "mark(ers) : $([length(o.mark[i]) for i=1:length(o.mark)])-Vectors{Int}")
-    println(io, "y (all c labels): $(length(o.y))-Vector{Int}")
-    println(io, "X (EEG data)    : $(r)x$(c)-Matrix{$(type)}")
+    println(io, separatorFont, "∼∽∿∽∽∽∿∼∿∽∿∽∿∿∿∼∼∽∿∼∽∽∿∼∽∽∼∿∼∿∿∽∿∽∼∽∽∿∽∽", greyFont)
+    println(io, "NY format version (.formatversion): $(o.formatversion)")
+    println(io, separatorFont, "∼∽∿∽∽∽∿∼∿∽∿∽∿∿∿∼∼∽∿∼∽∽∿∼∽∽∼∿∼∿∿∽∿∽∼∽∽∿∽∽", defaultFont)
+    println(io, ".db (database)   : $(o.db)")
+    println(io, ".paradigm        : $(":"*String(o.paradigm))")    
+    println(io, ".subject         : $(o.subject)")
+    println(io, ".session         : $(o.session)")
+    println(io, ".run             : $(o.run)")
+    println(io, ".sensors         : $(length(o.sensors))-Vector{String}")
+    println(io, ".sr(samp. rate)  : $(o.sr)")
+    println(io, ".ne(# electrodes): $(o.ne)")
+    println(io, ".ns(# samples)   : $(o.ns)")
+    println(io, ".wl(win. length) : $(o.wl)")
+    println(io, ".offset          : $(o.offset)")
+    println(io, ".nc(# classes)   : $(o.nc)")
+    println(io, ".clabels(c=class): $(length(o.clabels))-Vector{String}")
+    println(io, ".stim(ulations)  : $(length(o.stim))-Vector{Int}")
+    println(io, ".mark(ers) : $([length(o.mark[i]) for i=1:length(o.mark)])-Vectors{Int}")
+    println(io, ".y (all c labels): $(length(o.y))-Vector{Int}")
+    println(io, ".X (EEG data)    : $(r)x$(c)-Matrix{$(type)}")
     isnothing(o.trials) ? println("                : nothing") :
-                        println(io, "trials          : $(length(o.trials))-Vector{Matrix{$(type)}}")
+                        println(io, ".trials          : $(length(o.trials))-Vector{Matrix{$(type)}}")
+    println(io, "Dict: .id, .acquisition, .documentation")
     r≠l && @warn "number of class labels in y does not match the data size in X" l r
 end
 
