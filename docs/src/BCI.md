@@ -27,11 +27,11 @@ Fourier cross-spectra and coherence matrices are special forms of covariance mat
 |:-----------------------|:----------------------------------|
 | [`Eegle.BCI.covmat`](@ref) | Many covariance matrix estimators (2 methods)|
 | [`Eegle.BCI.encode`](@ref) | Encode all trials in a given EEG recording using Riemannian geometry|
-| [`Eegle.BCI.crvar`](@ref) | Encode all trials in a given EEG recording using Riemannian geometry|
+| [`Eegle.BCI.crval`](@ref) | Encode all trials in a given EEG recording using Riemannian geometry|
 
 📖
 ```@docs
     Eegle.BCI.covmat
     Eegle.BCI.encode
-    Eegle.BCI.crvar
+    Eegle.BCI.crval
 ```
