@@ -51,29 +51,30 @@ export
 """
 ```julia
     struct EEG
-        id            :: Dict{Any,Any} 
-        acquisition   :: Dict{Any,Any} 
-        documentation :: Dict{Any,Any} 
-        formatversion :: String        
+        id              :: Dict{Any,Any} 
+        acquisition     :: Dict{Any,Any} 
+        documentation   :: Dict{Any,Any} 
+        formatversion   :: String        
 
         # the following fields are those most useful in practice
-        db            :: String        
-        subject       :: Int           
-        session       :: Int           
-        run           :: Int           
-        sensors       :: Vector{String}
-        sr            :: Int           
-        ne            :: Int           
-        ns            :: Int           
-        wl            :: Int           
-        offset        :: Int           
-        nc            :: Int           
-        clabels       :: Vector{String} 
-        stim          :: Vector{Int}    
-        mark          :: Vector{Vector{Int}}  
-        y             :: Vector{Int}          
-        X             :: Matrix{T} where T<:Real 
-        trials        :: Union{Vector{Matrix{T}}, Nothing} 
+        db              :: String  
+        paradigm        :: Symbol      
+        subject         :: Int           
+        session         :: Int           
+        run             :: Int           
+        sensors         :: Vector{String}
+        sr              :: Int           
+        ne              :: Int           
+        ns              :: Int           
+        wl              :: Int           
+        offset          :: Int           
+        nc              :: Int           
+        clabels         :: Vector{String} 
+        stim            :: Vector{Int}    
+        mark            :: Vector{Vector{Int}}  
+        y               :: Vector{Int}          
+        X               :: Matrix{T} where T<:Real 
+        trials          :: Union{Vector{Matrix{T}}, Nothing} 
     where T<:Real 
 ```
 Data structure for an EEG BCI (Brain-Computer Interface) [session](@ref), holding data and metadata.
@@ -85,6 +86,7 @@ While conceived specifically for BCI sessions, the structure can be used also fo
 **Fields**
 
 - `db`: name of the [database](@ref) to which the recording belongs
+- `paradigm`: BCI paradigm
 - `subject`: serial number of the present [subject](@ref) in the above database
 - `session`: serial number of the present [session](@ref) for the above subject
 - `run`: serial number of the present [run](@ref) of the above session
@@ -122,6 +124,7 @@ A simplified constructor is also available, as
             sr::Int, 
             sensors::Vector{String};
         db::String = "",
+        paradigm::Symbol = :NA,
         subject::Int = 0,
         session::Int = 1,
         run::Int = 1,
@@ -144,38 +147,40 @@ The dictionaries of the structure are left empty.
 
 """
 struct EEG
-    id            :: Dict{Any,Any} # `id` Dictionary of the .yml file
+    id              :: Dict{Any,Any} # `id` Dictionary of the .yml file
     # it includes keys:   "run", "other", "database", "subject", "session"
-    acquisition   :: Dict{Any,Any} # `acquisition` Dictionary of the .yml file
+    acquisition     :: Dict{Any,Any} # `acquisition` Dictionary of the .yml file
     # it includes keys:   "sensors", "software", "ground", "reference",
     #                      "filter", "sensortype", "samplingrate", "hardware"
-    documentation :: Dict{Any,Any} # `acquisition` Dictionary of the .yml file
+    documentation   :: Dict{Any,Any} # `acquisition` Dictionary of the .yml file
     # it includes keys:   "doi", "repository", "description"
-    formatversion :: String        # `formatversion` field of the .yml file
+    formatversion   :: String        # `formatversion` field of the .yml file
 
     # the following fields are what is useful in practice
-    db            :: String        # name of the database to which this file belongs
-    subject       :: Int           # serial number of the subject in database
-    session       :: Int           # serial number of the session of this subject
-    run           :: Int           # serial number of the run of this session
-    sensors       :: Vector{String}# electrode leads on the scalp in standard 10-10 notation
-    sr            :: Int           # sampling rate
-    ne            :: Int           # number of electrodes (excluding reference and ground)
-    ns            :: Int           # number of samples
-    wl            :: Int           # window length: typically, the duration of the trials
-    offset        :: Int           # each trial start at `stim` sample + offset
-    nc            :: Int           # number of classes
-    clabels       :: Vector{String} # class labels given as strings
-    stim          :: Vector{Int}    # stimulations for each sample (0, 1, 2...). 0 means no stimulation
-    mark          :: Vector{Vector{Int}}  # markers (in sample) for class 1, 2...
-    y             :: Vector{Int}          # the vectors in `mark` concatenated
-    X             :: Matrix{T} where T<:Real # whole recording EEG data (ns x ne)
-    trials        :: Union{Vector{Matrix{T}}, Nothing} where T<:Real # all trials in order of `stims` (optional)
+    db              :: String        # name of the database to which this file belongs
+    paradigm        :: Symbol        # BCI paradigm
+    subject         :: Int           # serial number of the subject in database
+    session         :: Int           # serial number of the session of this subject
+    run             :: Int           # serial number of the run of this session
+    sensors         :: Vector{String}# electrode leads on the scalp in standard 10-10 notation
+    sr              :: Int           # sampling rate
+    ne              :: Int           # number of electrodes (excluding reference and ground)
+    ns              :: Int           # number of samples
+    wl              :: Int           # window length: typically, the duration of the trials
+    offset          :: Int           # each trial start at `stim` sample + offset
+    nc              :: Int           # number of classes
+    clabels         :: Vector{String} # class labels given as strings
+    stim            :: Vector{Int}    # stimulations for each sample (0, 1, 2...). 0 means no stimulation
+    mark            :: Vector{Vector{Int}}  # markers (in sample) for class 1, 2...
+    y               :: Vector{Int}          # the vectors in `mark` concatenated
+    X               :: Matrix{T} where T<:Real # whole recording EEG data (ns x ne)
+    trials          :: Union{Vector{Matrix{T}}, Nothing} where T<:Real # all trials in order of `stims` (optional)
 end
 
 
 EEG(X::Matrix{T}, sr::Int, sensors::Vector{String};
     db::String = "",
+    paradigm::Symbol = :NA,
     subject::Int = 0,
     session::Int = 1,
     run::Int = 1,
@@ -186,7 +191,7 @@ EEG(X::Matrix{T}, sr::Int, sensors::Vector{String};
     stim::Vector{Int} = ["0"],
     mark::Vector{Vector{Int}} = [[""]],
     y::Vector{Int} = [0]) where T<:Real =
-    EEG(Dict(), Dict(), Dict(), "0.0.1", db, subject,
+    EEG(Dict(), Dict(), Dict(), "0.0.1", db, paradigm, subject,
         session, run, sensors, sr, size(X, 2), size(X, 1), wl, offset,
         nc, clabels, stim, mark, y, X, nothing)
 
@@ -237,7 +242,7 @@ function _standardizeClasses(paradigm::Symbol,
     stim_standardized, clabels_standardized = copy(stim), copy(clabels)
 
     if already_standardized
-        println("✓ Classes are already standardized according to the convention.")
+        println("\n✓ Class labels in file follows Eegle's conventions.")
     else
         @inbounds for i in eachindex(stim_standardized)
             stim_standardized[i] != 0 && haskey(value_mapping, stim_standardized[i]) && (stim_standardized[i] = value_mapping[stim_standardized[i]])
@@ -246,7 +251,7 @@ function _standardizeClasses(paradigm::Symbol,
         sorted_indices = sortperm([standard_mapping[clabels_lower[i]] for i in eachindex(clabels_lower)])
         clabels_standardized = clabels[sorted_indices]
         mapping_display = ["$(clabels[findfirst(==(k), clabelsval)])($k->$v)" for (k,v) in value_mapping]
-        println("✓ Class standardization successful!\nMapping applied: $(join(mapping_display, ", "))")
+        println("\n✓ Class labels have been formatted according to Eegle's convention\nMapping applied: $(join(mapping_display, ", "))")
     end
     return stim_standardized, clabels_standardized
 end
@@ -260,7 +265,7 @@ end
         bandPass    :: Tuple = (),
         bsDesign    :: DSP.ZeroPoleGain = Butterworth(8),
         bpDesign    :: DSP.ZeroPoleGain = Butterworth(4),
-        rate        :: Union{Rational, Int} = 1,
+        rate        :: Union{Real, Rational, Int} = 1,
         upperLimit  :: Union{Real, Int} = 0,
         getTrials   :: Union{Bool, Vector{String}} = true, 
         stdClass    :: Bool = true, 
@@ -315,7 +320,15 @@ If requested, the preprocessing operations are performed in the order of the [kw
 **See Also** [`readASCII`](@ref), [`readgTec`](@ref), [`Eegle.ERPs.mark2stim`](@ref), [`Eegle.ERPs.stim2mark`](@ref)
 
 **Examples**
+```julia
+# Using examples data provided by Eegle
+o = readNY(EXAMPLE_P300_1)
 
+# filter the data and do artifact-rejection
+# by adaptive amplitude thresholding
+o = readNY(EXAMPLE_P300_1; bandPass=(1, 24), upperLimit = 1)
+
+```
 xxx
 """
 function readNY(filename    :: AbstractString;
@@ -324,7 +337,7 @@ function readNY(filename    :: AbstractString;
                 bandPass    :: Tuple = (),
                 bsDesign    :: DSP.ZeroPoleGain = Butterworth(8),
                 bpDesign    :: DSP.ZeroPoleGain = Butterworth(4),
-                rate        :: Union{Rational, Int} = 1,
+                rate        :: Union{Real, Rational, Int} = 1,
                 upperLimit  :: Union{Real, Int} = 0,
                 getTrials   :: Union{Bool, Vector{String}} = true, 
                 stdClass    :: Bool = true, 
@@ -468,6 +481,7 @@ function readNY(filename    :: AbstractString;
      info["formatversion"],
 
      info["id"]["database"],
+     paradigm,
      info["id"]["subject"],
      info["id"]["session"],
      info["id"]["run"],
@@ -799,7 +813,7 @@ mean(o::EEG;
     offset      :: S = 0,
     weights     :: Union{Vector{Vector{R}}, Symbol} = :none,
     mark        :: Union{Vector{Vector{S}}, Nothing} = nothing) where {R<:Real, S<:Int} =
-        mean(o.X, o.wl, mark===nothing ? o.mark : mark;
+        mean(o.X, o.wl, isnothing(mark) ? o.mark : mark;
             overlapping = overlapping, offset = offset, weights = weights)
 
 
@@ -812,29 +826,29 @@ function Base.show(io::IO, ::MIME{Symbol("text/plain")}, o::EEG)
     type=eltype(o.X)
     l=length(o.stim)
     println(io, titleFont, "∿ EEG Data type; $r x $c ")
-    println(io, separatorFont, "∼∽∿∽∽∽∿∼∿∽∿∽∿∿∿∼∼∽∿∼∽∽∿∼∽∽∼∿∼∿∿∽∿∽∼∽", greyFont)
-    println(io, "NY format info:")
-    println(io, "Dict: id, acquisition, documentation")
-    println(io, "formatversion   : $(o.formatversion)")
-    println(io, separatorFont, "∼∽∿∽∽∽∿∼∿∽∿∽∿∿∿∼∼∽∿∼∽∽∿∼∽∽∼∿∼∿∿∽∿∽∼∽", defaultFont)
-    println(io, "db (database)   : $(o.db)")
-    println(io, "subject         : $(o.subject)")
-    println(io, "session         : $(o.session)")
-    println(io, "run             : $(o.run)")
-    println(io, "sensors         : $(length(o.sensors))-Vector{String}")
-    println(io, "sr(samp. rate)  : $(o.sr)")
-    println(io, "ne(# electrodes): $(o.ne)")
-    println(io, "ns(# samples)   : $(o.ns)")
-    println(io, "wl(win. length) : $(o.wl)")
-    println(io, "offset          : $(o.offset)")
-    println(io, "nc(# classes)   : $(o.nc)")
-    println(io, "clabels(c=class): $(length(o.clabels))-Vector{String}")
-    println(io, "stim(ulations)  : $(length(o.stim))-Vector{Int}")
-    println(io, "mark(ers) : $([length(o.mark[i]) for i=1:length(o.mark)])-Vectors{Int}")
-    println(io, "y (all c labels): $(length(o.y))-Vector{Int}")
-    println(io, "X (EEG data)    : $(r)x$(c)-Matrix{$(type)}")
-    o.trials==nothing ? println("                : nothing") :
-                        println(io, "trials          : $(length(o.trials))-Vector{Matrix{$(type)}}")
+    println(io, separatorFont, "∼∽∿∽∽∽∿∼∿∽∿∽∿∿∿∼∼∽∿∼∽∽∿∼∽∽∼∿∼∿∿∽∿∽∼∽∽∿∽∽", greyFont)
+    println(io, "NY format version (.formatversion): $(o.formatversion)")
+    println(io, separatorFont, "∼∽∿∽∽∽∿∼∿∽∿∽∿∿∿∼∼∽∿∼∽∽∿∼∽∽∼∿∼∿∿∽∿∽∼∽∽∿∽∽", defaultFont)
+    println(io, ".db (database)   : $(o.db)")
+    println(io, ".paradigm        : $(":"*String(o.paradigm))")    
+    println(io, ".subject         : $(o.subject)")
+    println(io, ".session         : $(o.session)")
+    println(io, ".run             : $(o.run)")
+    println(io, ".sensors         : $(length(o.sensors))-Vector{String}")
+    println(io, ".sr(samp. rate)  : $(o.sr)")
+    println(io, ".ne(# electrodes): $(o.ne)")
+    println(io, ".ns(# samples)   : $(o.ns)")
+    println(io, ".wl(win. length) : $(o.wl)")
+    println(io, ".offset          : $(o.offset)")
+    println(io, ".nc(# classes)   : $(o.nc)")
+    println(io, ".clabels(c=class): $(length(o.clabels))-Vector{String}")
+    println(io, ".stim(ulations)  : $(length(o.stim))-Vector{Int}")
+    println(io, ".mark(ers) : $([length(o.mark[i]) for i=1:length(o.mark)])-Vectors{Int}")
+    println(io, ".y (all c labels): $(length(o.y))-Vector{Int}")
+    println(io, ".X (EEG data)    : $(r)x$(c)-Matrix{$(type)}")
+    isnothing(o.trials) ? println("                : nothing") :
+                        println(io, ".trials          : $(length(o.trials))-Vector{Matrix{$(type)}}")
+    println(io, "Dict: .id, .acquisition, .documentation")
     r≠l && @warn "number of class labels in y does not match the data size in X" l r
 end
 

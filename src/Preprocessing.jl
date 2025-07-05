@@ -125,7 +125,9 @@ function resample(X::AbstractMatrix{T},
                 stim::Union{Vector{S}, Nothing} = nothing) where {T<:Real, S<:Int}
 
 
-    if rate≈1 return stim===nothing ? X : (X, stim) end
+    if rate≈1 
+        return isnothing(stim) ? X : (X, stim) 
+    end
     newsr = round(Int, sr*rate)
 
     # This may be necessary: must be tested with rate a real number
@@ -146,7 +148,7 @@ function resample(X::AbstractMatrix{T},
     end
 
     # resample stimulation channel
-    if stim≠nothing
+    if !isnothing(stim)
         newstim = zeros(Int, t) 
         for i = 1:length(stim)
             if stim[i]≠0
@@ -155,7 +157,7 @@ function resample(X::AbstractMatrix{T},
             end
         end
     end
-    return stim===nothing ? Y : (Y, newstim)
+    return isnothing(stim) ? Y : (Y, newstim)
 
 end
 

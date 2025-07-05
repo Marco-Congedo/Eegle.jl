@@ -27,7 +27,7 @@ const EXAMPLE_P300_1 = joinpath(@__DIR__, "..", "data_examples", "P300", "subjec
 const EXAMPLE_MI_1 = joinpath(@__DIR__, "..", "data_examples", "MI", "subject_01_session_01.npz")
 
 export  Eegle,
-        EXAMPLE_P300_1
+        EXAMPLE_P300_1,
         EXAMPLE_MI_1
 
 include("FileSystem.jl");       @reexport using .FileSystem
@@ -39,7 +39,7 @@ include("Processing.jl");       @reexport using .Processing
 # modules with internal dependencies
 include("ERPs.jl");             @reexport using .ERPs
 include("InOut.jl");            @reexport using .InOut
-include("CovarianceMatrix.jl"); @reexport using .CovarianceMatrix
+include("BCI.jl");              @reexport using .BCI
 include("Database.jl");         @reexport using .Database
 
 

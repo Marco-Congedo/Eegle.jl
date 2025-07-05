@@ -303,7 +303,7 @@ ranges = epoching(Xθ, sr;
 𝐂 = ℍVector(covmat([view(X, r, :) for r ∈ ranges]))
 𝐂θ = ℍVector(covmat([view(Xθ, r, :) for r ∈ ranges]))
 ```
-**See** [`Eegle.CovarianceMatrix.covmat`](@ref)
+**See** [`Eegle.BCI.covmat`](@ref)
 """
 function epoching(X::AbstractMatrix{T}, sr;
                 wl::Int=round(Int, sr*1.5),

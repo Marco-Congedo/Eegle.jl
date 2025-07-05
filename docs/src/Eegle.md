@@ -1,3 +1,7 @@
+```@meta
+CurrentModule = Eegle
+```
+
 # Eegle
 
 **Eegle** is organized as a collection of independent modules. They are all re-exported, along with fundamental external packages,
@@ -25,7 +29,7 @@ In this case, however, you must install DSP.jl as well.
 
 | Code Unit   | Description |
 |:------------|:------------|
-| [CovarianceMatrix.jl](@ref) | covariance matrix estimations and Riemannian geometry encoding |
+| [BCI.jl](@ref) | Brain-Computer Interface machine learning based on Riemannian geometry |
 | [Database.jl](@ref) | utilities for handling databases |
 | [ERPs.jl](@ref) | operations on Event-Related Potentials and BCI trials |
 | [FileSystem.jl](@ref) | manipulation of files and directories |
@@ -200,4 +204,6 @@ The following nomenclature is used consistently:
 - MDM: minimum distance to mean
 - MI: motor Imagery (a BCI paradigm)
 - P300: the P300 BCI paradigm
+- PCA: principal component analysis
+- SCM: sample covariance (maximum lakelihood) estimator
 - SVM: support-vector machine

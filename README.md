@@ -22,7 +22,7 @@ The package is self-contained, as it re-exports several packages and all its sub
 
 | Code Unit   | Description |
 |:------------|:------------|
-| [CovarianceMatrix.jl](@ref) | covariance matrix estimations and Riemannian geometry encoding |
+| [BCI.jl](@ref) | Machine Learning for Brain-Computer Interfce based on Riemannian geometry |
 | [Database.jl](@ref) | utilities for handling databases |
 | [ERPs.jl](@ref) | operations on Event-Related Potentials and BCI trials |
 | [FileSystem.jl](@ref) | manipulation of files and directories |
