@@ -1,7 +1,5 @@
 # Nota Bene: Run it while in the \docs environment
 
-#=
-
 push!(LOAD_PATH,"../src/")
 push!(LOAD_PATH,"docs/src/")
 using Documenter, DocumenterCitations, DocumenterInterLinks, DocumenterTools
@@ -78,4 +76,3 @@ deploydocs(
    # versions = ["stable" => "v^", "v#.#", devurl => devurl],
 )
 
-=#
