@@ -2,6 +2,11 @@
 
 push!(LOAD_PATH,"../src/")
 push!(LOAD_PATH,"docs/src/")
+
+#push!(LOAD_PATH, joinpath(@__DIR__, "..", "src"))
+#push!(LOAD_PATH, joinpath(@__DIR__, "docs", "src"))
+#push!(LOAD_PATH, joinpath(@__DIR__, "..", "."))
+
 using Documenter, DocumenterCitations, DocumenterInterLinks, DocumenterTools
 ## ADD HERE ALL MODULES!
 using   Eegle, 

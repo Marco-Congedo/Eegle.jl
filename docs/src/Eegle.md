@@ -204,4 +204,6 @@ The following nomenclature is used consistently:
 - MDM: minimum distance to mean
 - MI: motor Imagery (a BCI paradigm)
 - P300: the P300 BCI paradigm
+- PCA: principal component analysis
+- SCM: sample covariance (maximum lakelihood) estimator
 - SVM: support-vector machine

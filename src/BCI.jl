@@ -13,7 +13,10 @@ using LinearAlgebra: eigvecs, BLAS
 using PosDefManifold
 using CovarianceEstimation
 using Diagonalizations: SCM, LShrLW, NShrLW
-using PosDefManifoldML: PosDefManifoldML, transform!, Tikhonov
+using PosDefManifold: Fisher
+using PosDefManifoldML: PosDefManifoldML, transform!, Tikhonov, MLmodel, Pipeline, MDM
+using DSP: DSP, ZeroPoleGain, Butterworth
+
 
 using Eegle.Preprocessing, Eegle.InOut, Eegle.ERPs
 
@@ -21,6 +24,8 @@ include("tools/Tyler.jl")
 using .Tyler  # relative import with dot     
 
 import Eegle
+
+import PosDefManifoldML.crval
 
 # Module REPL text colors
 const titleFont     = "\x1b[95m"
@@ -30,7 +35,8 @@ const greyFont      = "\x1b[90m"
 
 
 export  covmat, 
-        encode
+        encode,
+        crval
 
 """
 ```julia
@@ -136,7 +142,7 @@ end
 
 
 function covmat(𝐗::AbstractVector{<:AbstractArray{T}}; 
-                covtype=SCM, 
+                covtype = SCM, 
                 prototype::Union{AbstractMatrix, Nothing}=nothing, 
                 standardize::Bool = false, 
                 useBLAS:: Bool = true,
@@ -177,11 +183,11 @@ end
         weights = :a,
         pcadim::Int = 8,
         standardize::Bool = false,
-        tikh = 0,
-        useBLAS = true,
+        tikh :: Union{Real, Int} = 0,
+        useBLAS :: Bool = true,
         threaded = true,
         reg::Symbol = :rmt,
-        tol::Real = real(T)(1e-6),
+        tol::Real = 1e-6,
         maxiter::Int = 200,
         verbose::Bool = false)
 ```
@@ -198,7 +204,7 @@ For details, see *Appendix I* in [Congedo2017Review](@cite).
     - for `:MI`, no prototype is used; covariance is computed on the trial as it is.
 
 **Optional Keyword Arguments**
-- `covtype`, `useBLAS`, `tol`, `maxiter` and `verbose` — see [`Eegle.BCI.covmat`](@ref), to which they are passed.
+- `covtype`, `standardize`, `useBLAS`, `reg`, `tol`, `maxiter` and `verbose` — see [`Eegle.BCI.covmat`](@ref), to which they are passed.
 - `targetLabel`: mandatory label of the target class (P300 paradigm only, usually: "target")
 - `overlapping`: for prototype mean ERP estimations (ERP/P300 only). Default = false:
     - if true, use multivariate regression
@@ -223,19 +229,24 @@ xxx
 ```
 """
 function encode(o::EEG, paradigm::Symbol;
-                covtype=SCM,
-                # for ERP modality only
-                targetLabel::String = "", 
-                overlapping::Bool = false,
-                weights =:a, 
-                pcadim::Int = 8, 
-                # for both ERP and MI modality
-                standardize::Bool = false,
-                tikh = 0, 
-                useBLAS = true,
-                threaded = true)
+        covtype=SCM,
+        targetLabel::String = "",
+        overlapping::Bool = false,
+        weights = :a,
+        pcadim::Int = 8,
+        standardize::Bool = false,
+        tikh :: Union{Real, Int} = 0,
+        useBLAS :: Bool = true,
+        threaded = true,
+        reg::Symbol = :rmt,
+        tol::Real = 1e-6,
+        maxiter::Int = 200,
+        verbose::Bool = false)
 
     isnothing(o.trials) && throw(ArgumentError("Eegle.BCI, function `encode`: The `EEG` structure given as first argument does not holds the trials. Make sure argument `getTrials` is not set to false when you open the EEG data in NY format using the `readNY` function"))
+
+    args = (covtype=covtype, standardize=standardize, useBLAS=useBLAS, threaded=threaded, 
+            reg=reg, tol=tol, maxiter=maxiter, verbose=verbose)
 
     if paradigm==:ERP
         # multivariate regression or arithmetic average ERP mean for ALL CLASSES with data-driven weights
@@ -252,13 +263,13 @@ function encode(o::EEG, paradigm::Symbol;
 
         Y=hcat(𝐘...) # stack all class ERP means
         
-        return tikh≈0 ? covmat(o.trials; covtype, prototype=Y, standardize, threaded) : 
-                PosDefManifoldML.transform!(covmat(o.trials; covtype, prototype=Y, standardize, threaded), Tikhonov(tikh; threaded))
+        return tikh≈0 ? covmat(o.trials; prototype=Y, args...) : 
+                PosDefManifoldML.transform!(covmat(o.trials; prototype=Y, args...), Tikhonov(tikh; threaded))
                 
     elseif paradigm==:P300
 
         # get indeces for target class labels"
-        TargetIndex = findfirst(isequal(lowercase(targetLabel)), lowercase(o.clabels)) 
+        TargetIndex = findfirst(isequal(lowercase(targetLabel)), lowercase.(o.clabels)) 
         isnothing(TargetIndex) && throw(ArgumentError("Eegle.BCI, function `encode`: target label $targetLabel not found in the class labels of the EEG structure o."))
 
         # multivariate regression or arithmetic average TARGET ERP mean with data-driven weights
@@ -269,17 +280,209 @@ function encode(o::EEG, paradigm::Symbol;
             Y=Y*eigvecs(CovarianceEstimation.cov(CovarianceEstimation.SimpleCovariance(), Y))[:, o.ne-pcadim+1:o.ne] # PCA to keep only certain components
         end
         
-        return tikh≈0 ? covmat(o.trials; covtype, prototype=Y, standardize, threaded) : 
-                PosDefManifoldML.transform!(covmat(o.trials; covtype, prototype=Y, standardize, threaded), Tikhonov(tikh; threaded))
+        return tikh≈0 ? covmat(o.trials; prototype=Y, args...) : 
+                PosDefManifoldML.transform!(covmat(o.trials; prototype=Y, args...), Tikhonov(tikh; threaded))
 
     elseif paradigm==:MI
 
-        return tikh≈0 ? covmat(o.trials; covtype, standardize, threaded) :
-                PosDefManifoldML.transform!(covmat(o.trials; covtype, standardize, threaded), Tikhonov(tikh; threaded))
+        return tikh≈0 ? covmat(o.trials; args...) :
+                PosDefManifoldML.transform!(covmat(o.trials; args...), Tikhonov(tikh; threaded))
 
     else
         throw(ArgumentError("Eegle.BCI, function `encode`: only the :ERP, :P300 and :MI BCI paradigm are supported"))
     end
+end
+
+"""
+```julia
+    function crval( filename    :: AbstractString, 
+                    paradigm    :: Symbol, 
+                    model       :: MLmodel = MDM(Fisher);
+            # Arguments passed to both encode and crval
+            verbose     :: Bool = true,
+            threaded    :: Bool = true,
+            # Arguments passed to readNY
+            toFloat64   :: Bool = true,
+            bandStop    :: Tuple = (),
+            bandPass    :: Tuple = (),
+            bsDesign    :: DSP.ZeroPoleGain = Butterworth(8),
+            bpDesign    :: DSP.ZeroPoleGain = Butterworth(4),
+            rate        :: Union{Real, Rational, Int} = 1,
+            upperLimit  :: Union{Real, Int} = 0,
+            getTrials   :: Union{Bool, Vector{String}} = true, 
+            stdClass    :: Bool = true, 
+            msg         :: String="",
+            # Arguments passed to encode
+            covtype = SCM,
+            targetLabel :: String = paradigm == :P300 ? "target" : nothing,
+            overlapping :: Bool = false,
+            weights = :a,
+            pcadim      :: Int = 8,
+            standardize :: Bool = false,
+            tikh        :: Union{Real, Int} = 0,
+            useBLAS     :: Bool = true,
+            reg         :: Symbol = :rmt,
+            tol         :: Real = 1e-6,
+            maxiter     :: Int = 200,
+            # Arguments passed to crval
+            pipeline    :: Union{Pipeline, Nothing} = nothing,
+            nFolds      :: Int     = 8,
+            shuffle     :: Bool    = false,
+            scoring     :: Symbol  = :b,
+            hypTest     :: Union{Symbol, Nothing} = :Bayle,
+            outModels   :: Bool    = false,
+            fitArgs...)
+```
+
+Run in sequence the following three functions
+
+1. [`Eegle.InOut.readNY`](@ref)
+2. [`encode`](@ref) (from this module)
+3. [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval)
+
+This allows to perform any supported types of cross-validations for a whatever BCI [session](@ref)
+in [NY format](@ref).
+
+**Arguments**
+
+- `filename`: the complete path of either the *.npz* or the *.yml* file of the recording to be used
+- `paradigm`: any supported [BCI paradigm](@ref), either `:ERP`, `:P300`, or `:MI`
+- `model` : any classifier of type [MLmodel](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/MainModule/#MLmodel). Default: the default [MDM](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/mdm/#PosDefManifoldML.MDM) classifier.
+
+**Optional Keyword Arguments**
+
+A reminder only is given here. For details, see the function each [kwarg](@ref "Acronyms") is passed to.
+
+- The following are passed to [`Eegle.InOut.readNY`](@ref) for reading and pre-processing the data: 
+    - `toFloat64`: conversion of data to Float64
+    - `bandStop`, `bandPass`, `bsDesign`, `bpDesign`: (filter settings)
+    - `rate`: resampling
+    - `upperLimit`: artifact rejection
+    - `getTrials`: classes to be read from the file
+    - `stdClass`: standardization of class labels according to **Eegle**'s conventions
+    - `msg`: meassage to be printed once the data has been read.
+- the following are passed to [`encode`](@ref) to encode the trials as covariance matrices: 
+    - `covtype`: type of covariance matrix estimation 
+    - `targetLabel`: label of the *target* class (for the P300 paradigm only). Default: `target` 
+    - `overlapping`: type of mean *target* ERP estimator used as a prototype (ERP and P300 only)
+    - `weights`: whether to use an adaptive weighted mean *target* ERP estimation (ERP and P300 only)
+    - `pcadim`: whether to reduce the dimension of the prototype by [PCA](@ref "Acronyms") (ERP and P300 only)
+    - `standardize`: whether to standardize the trials before estimating the covariance matrices
+    - `tikh`: whether to apply a Tikhonov regularization to the covariance matrices
+    - `useBLAS`: whether to use BLAS for computing the [SCM](@ref "Acronyms") covariance estimator
+    - `reg`: , `tol`, `maxiter`, `verbose`: options for covariance M-Estimators.
+- the following are passed to [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval): 
+    `pipeline`: pre-conditioners for hastening the computations
+    `nFolds`: number of cross-validation stratified folds (default: 8)
+    `shuffle`: how the folds are generated
+    `scoring`: performance index to be computed
+    `hypTest`: statistical test of the performance against the chance level
+    `outModels`: modulate the output
+    `fitArgs...`: additional arguments handed to the `fit` function of the `model`.
+- the following are passed to both `encode` and `crval`:
+        `verbose`: print informations about some computations
+        `threaded`: run the functions in multithreaded mode (in `crval` it is named with unice character ⏩).
+
+!!! note "`nFolds`" 
+    The default for all these kwargs are the same as in the functions they are passed to, except `nFolds` (the number of startified folds for the cross-validation), which default, differently from `crval` in *PosDefManifoldML.jl*, is 8.
+
+!!! tip "`fitArgs...`"
+    Function `crval` hands any additional kwargs to the `fit` function of the `model`. See [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval) for details.
+    If you pass an invalid arguments, an error will be raised.
+
+**Return**
+If `outModels` is false (default), a [CVres](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.CVres) structure 
+with the results of the cross-validation, otherwise a 2-tuple holding this `CVres` structure and a vector of the `nFolds` models fitted for each fold.
+
+**Examples**
+```julia
+# Using the example files provided by Eegle
+crval(EXAMPLE_P300_1, :P300)
+
+
+
+
+```
+
+"""    
+
+
+function crval( filename    :: AbstractString, 
+                paradigm    :: Symbol, 
+                model       :: MLmodel = MDM(Fisher);
+        # Arguments passed to both encode and crval
+        verbose     :: Bool = true,
+        threaded    :: Bool = true,
+	    # Arguments passed to readNY
+        toFloat64   :: Bool = true,
+        bandStop    :: Tuple = (),
+        bandPass    :: Tuple = (),
+        bsDesign    :: DSP.ZeroPoleGain = Butterworth(8),
+        bpDesign    :: DSP.ZeroPoleGain = Butterworth(4),
+        rate        :: Union{Real, Rational, Int} = 1,
+        upperLimit  :: Union{Real, Int} = 0,
+        getTrials   :: Union{Bool, Vector{String}} = true, 
+        stdClass    :: Bool = true, 
+        msg         :: String="",
+	    # Arguments passed to encode
+        covtype = SCM,
+        targetLabel :: String = paradigm == :P300 ? "target" : nothing,
+        overlapping :: Bool = false,
+        weights = :a,
+        pcadim      :: Int = 8,
+        standardize :: Bool = false,
+        tikh        :: Union{Real, Int} = 0,
+        useBLAS     :: Bool = true,
+        reg         :: Symbol = :rmt,
+        tol         :: Real = 1e-6,
+        maxiter     :: Int = 200,
+	    # Arguments passed to crval
+        pipeline    :: Union{Pipeline, Nothing} = nothing,
+        nFolds      :: Int     = 8,
+        shuffle     :: Bool    = false,
+        scoring     :: Symbol  = :b,
+        hypTest     :: Union{Symbol, Nothing} = :Bayle,
+        outModels   :: Bool    = false,
+        fitArgs...)
+
+    # Read session data: Eegle.InOut.readNY
+    o = readNY( filename; 
+                toFloat64, 
+                bandStop, bandPass, bsDesign, bpDesign,
+                rate,
+                upperLimit,
+                getTrials,
+                stdClass,
+                msg)
+
+    # Encode trials: 
+    𝐂 = encode( o, paradigm;
+                covtype,
+                targetLabel,
+                overlapping,
+                weights,
+                pcadim,
+                standardize,
+                tikh,
+                useBLAS,
+                reg,
+                tol,
+                maxiter,
+                verbose,
+                threaded)
+
+    # Cross-validation: PosDefManifoldML.crval                
+    return crval(model, 𝐂, o.y; 
+                pipeline,
+                nFolds,
+                shuffle,
+                scoring,
+                hypTest,
+                outModels,
+                verbose,
+                ⏩ = threaded,
+                fitArgs...)
+    
 end
 
 end # module
