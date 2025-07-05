@@ -18,7 +18,7 @@ Tutorials are organized by themes; start with those more closely ressambling to 
 
 |Theme| Uses|
 |:---|:---|
-| [Machine Learning](@ref) | typically used in the field of Brain-Computer Interface |
+| [Machine Learning](@ref) | typically used in the field of brain-Computer interface |
 
 
 ## Machine Learning

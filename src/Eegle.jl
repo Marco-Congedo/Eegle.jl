@@ -39,7 +39,7 @@ include("Processing.jl");       @reexport using .Processing
 # modules with internal dependencies
 include("ERPs.jl");             @reexport using .ERPs
 include("InOut.jl");            @reexport using .InOut
-include("CovarianceMatrix.jl"); @reexport using .CovarianceMatrix
+include("BCI.jl");              @reexport using .BCI
 include("Database.jl");         @reexport using .Database
 
 

@@ -1,9 +1,10 @@
 # Nota Bene: Run it while in the \docs environment
 
+#=
+
 push!(LOAD_PATH,"../src/")
 push!(LOAD_PATH,"docs/src/")
-using Documenter, DocumenterCitations, DocumenterInterLinks, DocumenterTools, Revise
-
+using Documenter, DocumenterCitations, DocumenterInterLinks, DocumenterTools
 ## ADD HERE ALL MODULES!
 using   Eegle, 
         Eegle.Preprocessing,
@@ -12,7 +13,7 @@ using   Eegle,
         Eegle.Miscellaneous, 
         Eegle.ERPs, 
         Eegle.InOut, 
-        Eegle.CovarianceMatrix,
+        Eegle.BCI,
         Eegle.Database
 
 bib = CitationBibliography(
@@ -31,7 +32,7 @@ makedocs(;
    #),
    modules = [Eegle, Eegle.Miscellaneous, Eegle.Processing, Eegle.FileSystem, 
                Eegle.Preprocessing, Eegle.ERPs, Eegle.InOut, 
-               Eegle.CovarianceMatrix, Eegle.Database],
+               Eegle.BCI, Eegle.Database],
    # remotes = nothing, # ELIMINATE for deploying
  pages = [
         "index.md",
@@ -41,7 +42,7 @@ makedocs(;
             "Preprocessing" => "Preprocessing.md",
             "Processing" => "Processing.md",
             "Event-Related Potentials" => "ERPs.md",
-            "Covariance Matrices" => "CovarianceMatrix.md",
+            "Brain-Computer Interface" => "BCI.md",
             "Database" => "Database.md",
         ],
         "Utilities" => [
@@ -76,3 +77,5 @@ deploydocs(
    devurl = "dev",
    # versions = ["stable" => "v^", "v#.#", devurl => devurl],
 )
+
+=#

@@ -799,7 +799,7 @@ mean(o::EEG;
     offset      :: S = 0,
     weights     :: Union{Vector{Vector{R}}, Symbol} = :none,
     mark        :: Union{Vector{Vector{S}}, Nothing} = nothing) where {R<:Real, S<:Int} =
-        mean(o.X, o.wl, mark===nothing ? o.mark : mark;
+        mean(o.X, o.wl, isnothing(mark) ? o.mark : mark;
             overlapping = overlapping, offset = offset, weights = weights)
 
 
@@ -833,7 +833,7 @@ function Base.show(io::IO, ::MIME{Symbol("text/plain")}, o::EEG)
     println(io, "mark(ers) : $([length(o.mark[i]) for i=1:length(o.mark)])-Vectors{Int}")
     println(io, "y (all c labels): $(length(o.y))-Vector{Int}")
     println(io, "X (EEG data)    : $(r)x$(c)-Matrix{$(type)}")
-    o.trials==nothing ? println("                : nothing") :
+    isnothing(o.trials) ? println("                : nothing") :
                         println(io, "trials          : $(length(o.trials))-Vector{Matrix{$(type)}}")
     r≠l && @warn "number of class labels in y does not match the data size in X" l r
 end

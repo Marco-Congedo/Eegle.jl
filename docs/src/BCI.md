@@ -3,11 +3,12 @@ CurrentModule = Eegle
 end
 ```
 
-## CovarianceMatrix.jl
+## BCI.jl
 
-This module implements **covariance matrix estimations** for EEG data and **encoding of BCI trials** in the form of covariance matrices.
+This module implements **machine learning** for EEG data and, particularly, brain-computer interface data, using Riemannian geometry. Data encoding is achieved
+by estimating a form of covariance matrix for the EEG epochs or BCI trials.
 
-Covariance matrices are essential objects in EEG data analysis and BCI data classification.
+For **tutorials**, see [Machine Learning](@ref). 
 
 ## Resources for Covariance Matrices
 
@@ -24,10 +25,10 @@ Fourier cross-spectra and coherence matrices are special forms of covariance mat
 
 |  Function      |           Description             |
 |:-----------------------|:----------------------------------|
-| [`Eegle.CovarianceMatrix.covmat`](@ref) | Many covariance matrix estimators (2 methods)|
-| [`Eegle.CovarianceMatrix.encode`](@ref) | Encode all trials in a given EEG recording |
+| [`Eegle.BCI.covmat`](@ref) | Many covariance matrix estimators (2 methods)|
+| [`Eegle.BCI.encode`](@ref) | Encode all trials in a given EEG recording |
 📖
 ```@docs
-    Eegle.CovarianceMatrix.covmat
-    Eegle.CovarianceMatrix.encode
+    Eegle.BCI.covmat
+    Eegle.BCI.encode
 ```

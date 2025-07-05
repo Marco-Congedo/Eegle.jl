@@ -6,7 +6,7 @@
 Estimation of covariance matrices for EEG trials, including regularized and prototype-based covariance estimation.
 =#
 
-module CovarianceMatrix
+module BCI
 
 using Base.Threads: @threads
 using LinearAlgebra: eigvecs, BLAS
@@ -81,7 +81,7 @@ Covariance matrix estimation(s) of a single data matrix (e.g., a trial) `X` (1) 
 
 **Examples**
 ```julia
-using Eegle # or using Eegle.CovarianceMatrix
+using Eegle # or using Eegle.BCI
 
 # Method (1)
 
@@ -113,12 +113,12 @@ function covmat(X::AbstractMatrix{T};
                 maxiter::Int = 200,
                 verbose::Bool = false) where T<:Union{Real, Complex}
 
-    T<:Complex && covtype≠SCM && throw(ArgumentError("Eegle.CovarianceMatrix, function `covmat`: for complex data only `covtype=SCM` is supported"))
+    T<:Complex && covtype≠SCM && throw(ArgumentError("Eegle.BCI, function `covmat`: for complex data only `covtype=SCM` is supported"))
 
     transform = standardize ? Eegle.Preprocessing.standardizeEEG : identity
 
     if (covtype==SCM && useBLAS) # fast computations of the sample covariance matrix
-        Y = prototype == nothing ? transform(X) : [transform(X) prototype]
+        Y = isnothing(prototype) ? transform(X) : [transform(X) prototype]
         den = 1.0/size(Y, 1)
         if BLAS.get_num_threads()==1
             return size(Y, 2) < 64 ? ℍ(BLAS.gemm('T', 'N', Y, Y)*den) : ℍ((Y'*Y)*den)
@@ -130,7 +130,7 @@ function covmat(X::AbstractMatrix{T};
     elseif covtype == :nrTyler
         return nrtme(X'; reg, tol, maxiter, verbose) # nrtme takes a wide matrix
     else # any other estimator
-        return ℍ(CovarianceEstimation.cov(covtype, prototype == nothing ? transform(X) : [transform(X) prototype]))
+        return ℍ(CovarianceEstimation.cov(covtype, isnothing(prototype) ? transform(X) : [transform(X) prototype]))
     end
 end
 
@@ -146,11 +146,11 @@ function covmat(𝐗::AbstractVector{<:AbstractArray{T}};
                 maxiter::Int = 200,
                 verbose::Bool = false) where T<:Union{Real, Complex}
 
-    T<:Complex && covtype≠SCM && throw(ArgumentError("Eegle.CovarianceMatrix, function `covmat`: for complex data only `covtype=SCM` is supported"))
+    T<:Complex && covtype≠SCM && throw(ArgumentError("Eegle.BCI, function `covmat`: for complex data only `covtype=SCM` is supported"))
 
     transform = standardize ? Eegle.Preprocessing.standardizeEEG : identity
     
-    defineTrial(i, prototype) = prototype == nothing ? transform(𝐗[i]) : [transform(𝐗[i]) prototype]
+    defineTrial(i, prototype) = isnothing(prototype) ? transform(𝐗[i]) : [transform(𝐗[i]) prototype]
 
     𝐂 = PosDefManifold.HermitianVector(undef, length(𝐗))
 
@@ -198,7 +198,7 @@ For details, see *Appendix I* in [Congedo2017Review](@cite).
     - for `:MI`, no prototype is used; covariance is computed on the trial as it is.
 
 **Optional Keyword Arguments**
-- `covtype`, `useBLAS`, `tol`, `maxiter` and `verbose` — see [`Eegle.CovarianceMatrix.covmat`](@ref), to which they are passed.
+- `covtype`, `useBLAS`, `tol`, `maxiter` and `verbose` — see [`Eegle.BCI.covmat`](@ref), to which they are passed.
 - `targetLabel`: mandatory label of the target class (P300 paradigm only, usually: "target")
 - `overlapping`: for prototype mean ERP estimations (ERP/P300 only). Default = false:
     - if true, use multivariate regression
@@ -218,7 +218,7 @@ A vector of ``k`` covariance matrix estimations as a [HermitianVector](https://m
 
 **Examples**
 ```julia
-using Eegle # or using Eegle.CovarianceMatrix
+using Eegle # or using Eegle.BCI
 xxx
 ```
 """
@@ -235,7 +235,7 @@ function encode(o::EEG, paradigm::Symbol;
                 useBLAS = true,
                 threaded = true)
 
-    o.trials===nothing && throw(ArgumentError("Eegle.CovarianceMatrix, function `encode`: The `EEG` structure given as first argument does not holds the trials. Make sure argument `getTrials` is not set to false when you open the EEG data in NY format using the `readNY` function"))
+    isnothing(o.trials) && throw(ArgumentError("Eegle.BCI, function `encode`: The `EEG` structure given as first argument does not holds the trials. Make sure argument `getTrials` is not set to false when you open the EEG data in NY format using the `readNY` function"))
 
     if paradigm==:ERP
         # multivariate regression or arithmetic average ERP mean for ALL CLASSES with data-driven weights
@@ -258,8 +258,8 @@ function encode(o::EEG, paradigm::Symbol;
     elseif paradigm==:P300
 
         # get indeces for target class labels"
-        TargetIndex = findfirst(isequal(targetLabel), o.clabels)
-        TargetIndex === nothing && throw(ArgumentError("Eegle.CovarianceMatrix, function `encode`: target label $targetLabel not found in the class labels of the EEG structure o."))
+        TargetIndex = findfirst(isequal(lowercase(targetLabel)), lowercase(o.clabels)) 
+        isnothing(TargetIndex) && throw(ArgumentError("Eegle.BCI, function `encode`: target label $targetLabel not found in the class labels of the EEG structure o."))
 
         # multivariate regression or arithmetic average TARGET ERP mean with data-driven weights
         # multiplied by the square root of the # of target trials to recover the amplitude
@@ -278,7 +278,7 @@ function encode(o::EEG, paradigm::Symbol;
                 PosDefManifoldML.transform!(covmat(o.trials; covtype, standardize, threaded), Tikhonov(tikh; threaded))
 
     else
-        throw(ArgumentError("Eegle.CovarianceMatrix, function `encode`: only the :ERP, :P300 and :MI BCI paradigm are supported"))
+        throw(ArgumentError("Eegle.BCI, function `encode`: only the :ERP, :P300 and :MI BCI paradigm are supported"))
     end
 end
 

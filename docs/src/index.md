@@ -66,7 +66,7 @@ Pages = [       "index.md",
                 "Processing.md",
                 "Miscellaneous.md",
                 "ERPs.md",
-                "CovarianceMatrix.md",
+                "BCI.md",
                 "Database.md",
 				"references.md",
 		]

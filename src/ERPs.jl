@@ -246,7 +246,7 @@ stim2 = mark2stim(mark, ns) # is identical to stim
 """
 function stim2mark(stim::Vector{S}, wl::S;
                 offset::S=0, code=nothing) where S <: Int
-    unic = code===nothing ? collect(1:maximum(unique(stim))) : sort(code)
+    unic = isnothing(code) ? collect(1:maximum(unique(stim))) : sort(code)
     return [[i+offset for i ∈ eachindex(stim) if stim[i]==j && i+offset+wl-1<=length(stim) && i+offset>1] for j∈unic] 
 end
 
@@ -270,7 +270,7 @@ If `code` is provided, it must not contain 0.
 function mark2stim(mark::Vector{Vector{S}}, ns::S;
                 offset::S=0, code=nothing) where S <: Int
     stim=zeros(S, ns)
-    unic = code===nothing ? collect(0:length(mark)) : vcat([0], sort(code))
+    unic = isnothing(code) ? collect(0:length(mark)) : vcat([0], sort(code))
     for z=1:length(mark), j ∈ mark[z] 
         stim[j+offset] = unic[z+1] end
     return stim
@@ -319,7 +319,7 @@ merge(mark::Vector{Vector{S}}, mergeClasses::Vector{Vector{S}}) where S <: Int =
 # is en integer or a linear combination given my vector `linComb` of the trials in `𝐓` if `linComb` is a vector of reals.
 # xxx TO DO: allow readNY to call this function
 function _linComb(𝐓, linComb::Union{Vector{R}, S, Nothing} = nothing) where {R<:Real, S<:Int}
-    if      linComb === nothing
+    if      isnothing(linComb)
             return 𝐓
     elseif  linComb isa Int
             if 𝐓 isa Vector 
@@ -403,7 +403,7 @@ trials( X::Matrix{R}, stim::Vector{S}, wl::S;
     if isempty(stim)
         return []
     else
-        if weights===nothing
+        if isnothing(weights)
             return _linComb([X[stim[j]+offset:stim[j]+offset+wl-1, :] for j∈eachindex(stim)], linComb)
         else
             return _linComb([X[stim[j]+offset:stim[j]+offset+wl-1, :]*weights[j] for j∈eachindex(stim)], linComb)
@@ -416,13 +416,13 @@ trials( X::Matrix{R}, mark::Vector{Vector{S}}, wl::S;
         offset::S=0,
         shape::Symbol=:cat) where {R<:Real, S<:Int} =
     if shape==:cat
-        if weights===nothing
+        if isnothing(weights)
             return _linComb([X[mark[i][j]+offset:mark[i][j]+offset+wl-1, :] for i∈eachindex(mark) for j∈eachindex(mark[i])], linComb)
         else
             return _linComb([X[mark[i][j]+offset:mark[i][j]+offset+wl-1, :]*weights[i][j] for i∈eachindex(mark) for j∈eachindex(mark[i])], linComb)
         end
     else
-        if weights===nothing
+        if isnothing(weights)
             return _linComb([trials(X, m, wl; offset=offset) for m ∈ mark], linComb)
         else
             return _linComb([trials(X, m, wl; weights=w, offset=offset) for (m, w) ∈ zip(mark, weights)], linComb)
@@ -473,7 +473,7 @@ function trialsWeights(X::Matrix{R}, stim::Vector{S}, wl::S;
     if isempty(stim)
         return []
     else
-        if M===nothing
+        if isnothing(M)
             w = [1/(norm(X[m+offset:m+offset+wl-1, :])^2) for m ∈ stim]
         else
             w = [1/(norm(X[m+offset:m+offset+wl-1, :]-M)^2) for m ∈ stim]
@@ -486,12 +486,9 @@ end
 function trialsWeights(X::Matrix{R}, mark::Vector{Vector{S}}, wl::S;
                         M::Union{Vector{Matrix{R}}, Nothing} = nothing,
                         offset::S = 0) where {R<:Real, S<:Int}
-    M===nothing || length(M)==length(mark) || throw(ArgumentError("The length of arguments `mark` and `𝐌` must be the same."))
-    if M===nothing
-        return [trialsWeights(X, m, wl; offset=offset) for m ∈ mark]
-    else
-        return [trialsWeights(X, m, wl; M=g, offset=offset) for (m, g) ∈ zip(mark, M)]
-    end
+    isnothing(M) || length(M)==length(mark) || throw(ArgumentError("The length of arguments `mark` and `𝐌` must be the same."))
+    return isnothing(M) ?   [trialsWeights(X, m, wl; offset=offset) for m ∈ mark] :
+                            [trialsWeights(X, m, wl; M=g, offset=offset) for (m, g) ∈ zip(mark, M)]
 end
 
 
@@ -654,10 +651,10 @@ function tfas(  𝐓::Vector{Vector{Vector{R}}},
                 smoothing::Bool = true) where {R<:Real, S<:Int}
       h = smoothing ? FourierAnalysis.hannSmoother : FourierAnalysis.noSmoother
       f, l = FourierAnalysis.TFanalyticsignal, length(𝐓[1][1])
-      𝐘=[smooth(h, noSmoother, f(T, sr, l, bandwidth;
-                fmax=fmax===nothing ? sr÷2 : fmax, tsmoothing=h)) for T ∈ 𝐓]
-      flabels=𝐘[1][1].flabels
-      tlabels=[(i-(l-wl)÷2-1)/sr*1000 for i ∈ 1:l]
+      𝐘 = [smooth(h, noSmoother, f(T, sr, l, bandwidth;
+                fmax = isnothing(fmax) ? sr÷2 : fmax, tsmoothing=h)) for T ∈ 𝐓]
+      flabels = 𝐘[1][1].flabels
+      tlabels = [(i-(l-wl)÷2-1)/sr*1000 for i ∈ 1:l]
       return flabels, tlabels, 𝐘
 end
 
@@ -668,10 +665,10 @@ function tfas(  𝑻::Vector{Vector{Vector{Vector{R}}}},
                 smoothing::Bool = true) where {R<:Real, S<:Int}
       h = smoothing ? FourierAnalysis.hannSmoother : FourierAnalysis.noSmoother
       f, l = FourierAnalysis.TFanalyticsignal, length(𝑻[1][1][1])
-      𝒀=[[smooth(h, noSmoother, f(T, sr, l, bandwidth;
-        fmax=fmax===nothing ? sr÷2 : fmax, tsmoothing=h)) for T ∈ 𝐓] for 𝐓 ∈ 𝑻]
-      flabels=𝒀[1][1][1].flabels
-      tlabels=[(i-(l-wl)÷2-1)/sr*1000 for i ∈ 1:l]
+      𝒀 = [[smooth(h, noSmoother, f(T, sr, l, bandwidth;
+        fmax = isnothing(fmax) ? sr÷2 : fmax, tsmoothing=h)) for T ∈ 𝐓] for 𝐓 ∈ 𝑻]
+      flabels = 𝒀[1][1][1].flabels
+      tlabels = [(i-(l-wl)÷2-1)/sr*1000 for i ∈ 1:l]
       return flabels, tlabels, 𝒀
 end
 
