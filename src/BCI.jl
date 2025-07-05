@@ -293,6 +293,7 @@ function encode(o::EEG, paradigm::Symbol;
     end
 end
 
+
 """
 ```julia
     function crval( filename    :: AbstractString, 
@@ -405,8 +406,6 @@ crval(EXAMPLE_P300_1, :P300)
 ```
 
 """    
-
-
 function crval( filename    :: AbstractString, 
                 paradigm    :: Symbol, 
                 model       :: MLmodel = MDM(Fisher);
