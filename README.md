@@ -20,20 +20,14 @@ Execute the following command in julia's REPL:
 
 The package is self-contained, as it re-exports several packages and all its submodules. The Eegle's sub-modules are:
 
-| Code Unit   | Description |
-|:------------|:------------|
-| [BCI.jl](@ref) | Machine Learning for Brain-Computer Interfce based on Riemannian geometry |
-| [Database.jl](@ref) | utilities for handling databases |
-| [ERPs.jl](@ref) | operations on Event-Related Potentials and BCI trials |
-| [FileSystem.jl](@ref) | manipulation of files and directories |
-| [InOut.jl](@ref) | reading and writing of data |
-| [Miscellaneous.jl](@ref) | miscellaneous functions |
-| [Preprocessing.jl](@ref) | EEG preprocessing |
-| [Processing.jl](@ref) | EEG Processing |
-
 ## Quick Start
 
 A large collection of tutorials (to come) will get you on track.
+
+---
+## Disclaimer
+
+This version is a **pre-release** for testing purpose.
 
 ---
 ## About the authors
@@ -41,11 +35,6 @@ A large collection of tutorials (to come) will get you on track.
 [Marco Congedo](https://sites.google.com/site/marcocongedo), corresponding author, is a Research Director of [CNRS](http://www.cnrs.fr/en) (Centre National de la Recherche Scientifique), working at [UGA](https://www.univ-grenoble-alpes.fr/english/) (University of Grenoble Alpes). **Contact**: first name dot last name at gmail dot com.
 
 [Fahim Doumi](https://www.linkedin.com/in/fahim-doumi-4888a9251/?locale=fr_FR) at the time of writing was a research ingeneer at the Department of Enginnering of the [University federico II of Naples](https://www.unina.it/en_GB/home).
-
----
-## Disclaimer
-
-This version is a **pre-release** for testing purpose.
 
 ---
 ## Contribute

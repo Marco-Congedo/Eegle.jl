@@ -315,7 +315,6 @@ end
             upperLimit  :: Union{Real, Int} = 0,
             getTrials   :: Union{Bool, Vector{String}} = true, 
             stdClass    :: Bool = true, 
-            msg         :: String="",
             # Arguments passed to encode
             covtype = LShrLW,
             targetLabel :: String = "target",
@@ -338,14 +337,13 @@ end
             fitArgs...)
 ```
 
-Run in sequence the following three functions
+Perform cross-validations of a BCI [session](@ref) stored in [NY format](@ref). 
+
+This function runs in sequence the following three functions
 
 1. [`Eegle.InOut.readNY`](@ref)
-2. [`encode`](@ref) (from this module)
-3. [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval)
-
-This allows to perform any supported types of cross-validations for a whatever BCI [session](@ref)
-in [NY format](@ref). 
+2. [`encode`](@ref) (in this module)
+3. [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval) (in *PosDefManifoldML.jl*)
 
 **Arguments**
 
@@ -353,41 +351,40 @@ in [NY format](@ref).
 - `model` : any classifier of type [MLmodel](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/MainModule/#MLmodel). Default: the default [MDM](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/mdm/#PosDefManifoldML.MDM) classifier.
 
 !!! note "BCI paradigm"
-    The [BCI paradigm](@ref) is assumed to be the one stored in the file `filename` (either `:ERP`, `:P300`, or `:MI`)
+    The [BCI paradigm](@ref) is assumed to be the one stored in the metadata of file `filename` (either `:ERP`, `:P300`, or `:MI`)
 
 **Optional Keyword Arguments**
 
 A reminder only is given here. For details, see the function each [kwarg](@ref "Acronyms") is passed to.
 
-- The following are passed to [`Eegle.InOut.readNY`](@ref) for reading and pre-processing the data: 
-    - `toFloat64`: conversion of data to Float64
-    - `bandStop`, `bandPass`, `bsDesign`, `bpDesign`: (filter settings)
+- The following kwargs are passed to [`Eegle.InOut.readNY`](@ref) for reading and pre-processing the data: 
+    - `toFloat64`: conversion of data to `Float64`
+    - `bandStop`, `bandPass`, `bsDesign`, `bpDesign`: filter settings
     - `rate`: resampling
     - `upperLimit`: artifact rejection
-    - `getTrials`: classes to be read from the file
+    - `getTrials`: classes of the trials to be read from the file
     - `stdClass`: standardization of class labels according to **Eegle**'s conventions
-    - `msg`: meassage to be printed once the data has been read.
-- the following are passed to [`encode`](@ref) to encode the trials as covariance matrices: 
+- the following kwargs are passed to [`encode`](@ref) to encode the trials as covariance matrices: 
     - `covtype`: type of covariance matrix estimation 
     - `targetLabel`: label of the *target* class (for the P300 paradigm only). Default: `target` 
     - `overlapping`: type of mean *target* ERP estimator used as a prototype (ERP and P300 only)
-    - `weights`: whether to use an adaptive weighted mean *target* ERP estimation (ERP and P300 only)
-    - `pcadim`: whether to reduce the dimension of the prototype by [PCA](@ref "Acronyms") (ERP and P300 only)
-    - `standardize`: whether to standardize the trials before estimating the covariance matrices
-    - `tikh`: whether to apply a Tikhonov regularization to the covariance matrices
-    - `useBLAS`: whether to use BLAS for computing the [SCM](@ref "Acronyms") covariance estimator
+    - `weights`: adaptive weighted mean *target* ERP estimation (ERP and P300 only)
+    - `pcadim`: dimensionality reduction of the prototype by [PCA](@ref "Acronyms") (ERP and P300 only)
+    - `standardize`: standardization the trials before estimating the covariance matrices
+    - `tikh`: Tikhonov regularization of the covariance matrices
+    - `useBLAS`: use BLAS for computing the [SCM](@ref "Acronyms") covariance estimator
     - `reg`: , `tol`, `maxiter`, `verbose`: options for covariance M-Estimators.
-- the following are passed to [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval): 
-    `pipeline`: pre-conditioners for hastening the computations
-    `nFolds`: number of cross-validation stratified folds (default: 8)
-    `shuffle`: how the folds are generated
-    `scoring`: performance index to be computed
-    `hypTest`: statistical test of the performance against the chance level
-    `outModels`: modulate the output
-    `fitArgs...`: additional arguments handed to the `fit` function of the `model`.
+- the following kwargs are passed to [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval): 
+    - `pipeline`: pre-conditioners for hastening the computations
+    - `nFolds`: number of cross-validation stratified folds (default: 8)
+    - `shuffle`: generation of the folds
+    - `scoring`: performance index to be computed
+    - `hypTest`: statistical test of the performance against the chance level
+    - `outModels`: modulation of the output
+    - `fitArgs...`: additional arguments handed to the `fit` function of the `model`.
 - the following are passed to both `encode` and `crval`:
-        `verbose`: print informations about some computations
-        `threaded`: run the functions in multithreaded mode (in `crval` it is named with unice character ⏩).
+    - `verbose`: print informations about some computations
+    - `threaded`: run the functions in multithreaded mode (in `crval` it is named with unicode character ⏩).
 
 !!! note "`nFolds`" 
     The default for all these kwargs are the same as in the functions they are passed to, except `nFolds` (the number of startified folds for the cross-validation), which default, differently from `crval` in *PosDefManifoldML.jl*, is 8.
@@ -397,8 +394,10 @@ A reminder only is given here. For details, see the function each [kwarg](@ref "
     If you pass an invalid arguments, an error will be raised.
 
 **Return**
+
 If `outModels` is false (default), a [CVres](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.CVres) structure 
-with the results of the cross-validation, otherwise a 2-tuple holding this `CVres` structure and a vector of the `nFolds` models fitted for each fold.
+with the results of the cross-validation, otherwise a 2-tuple holding this `CVres` structure and a vector of the `nFolds` models fitted for each fold
+(of type [MLmodel](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/MainModule/#MLmodel)).
 
 **Examples**
 ```julia
@@ -423,8 +422,7 @@ function crval( filename    :: AbstractString,
         rate        :: Union{Real, Rational, Int} = 1,
         upperLimit  :: Union{Real, Int} = 0,
         getTrials   :: Union{Bool, Vector{String}} = true, 
-        stdClass    :: Bool = true, 
-        msg         :: String="",
+        stdClass    :: Bool = true,
 	    # Arguments passed to encode
         covtype = LShrLW,
         targetLabel :: String = "target",
@@ -453,8 +451,7 @@ function crval( filename    :: AbstractString,
                 rate,
                 upperLimit,
                 getTrials,
-                stdClass,
-                msg)
+                stdClass)
 
     # Encode trials: 
     𝐂 = encode( o;
