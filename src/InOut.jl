@@ -242,7 +242,7 @@ function _standardizeClasses(paradigm::Symbol,
     stim_standardized, clabels_standardized = copy(stim), copy(clabels)
 
     if already_standardized
-        println("\n✓ Class labels in file follows Eegle's conventions.")
+        println("\n✓ Class labels in file follow Eegle's conventions.")
     else
         @inbounds for i in eachindex(stim_standardized)
             stim_standardized[i] != 0 && haskey(value_mapping, stim_standardized[i]) && (stim_standardized[i] = value_mapping[stim_standardized[i]])
