@@ -179,7 +179,7 @@ end
     function encode(o::EEG;
         paradigm::Symbol = o.paradigm,
         covtype = LShrLW,
-        targetLabel::String = "",
+        targetLabel::String = "target",
         overlapping::Bool = false,
         weights = :a,
         pcadim::Int = 8,
@@ -226,13 +226,18 @@ A vector of ``k`` covariance matrix estimations as a [HermitianVector](https://m
 **Examples**
 ```julia
 using Eegle # or using Eegle.BCI
-xxx
+
+# EXAMPLE_P300_1 is an example file provided by Eegle
+
+o = readNY(EXAMPLE_P300_1; bandPass=(1, 24), upperLimit=1.2)
+
+C = encode(o)
 ```
 """
 function encode(o::EEG;
         paradigm::Symbol = o.paradigm,
         covtype = LShrLW,
-        targetLabel::String = "",
+        targetLabel::String = "target",
         overlapping::Bool = false,
         weights = :a,
         pcadim::Int = 8,
@@ -274,7 +279,7 @@ function encode(o::EEG;
 
         # get indeces for target class labels"
         TargetIndex = findfirst(isequal(lowercase(targetLabel)), lowercase.(o.clabels)) 
-        isnothing(TargetIndex) && throw(ArgumentError("Eegle.BCI, function `encode`: target label $targetLabel not found in the class labels of the EEG structure o."))
+        isnothing(TargetIndex) && throw(ArgumentError("Eegle.BCI, function `encode`: target label '$targetLabel' for P300 encoding not found among the class labels of the EEG structure o."))
 
         # multivariate regression or arithmetic average TARGET ERP mean with data-driven weights
         # multiplied by the square root of the # of target trials to recover the amplitude
@@ -401,6 +406,8 @@ with the results of the cross-validation, otherwise a 2-tuple holding this `CVre
 
 **Examples**
 ```julia
+using Eegle
+
 # Using the example files provided by Eegle
 
 crval(EXAMPLE_P300_1; bandPass = (1, 24), upperLimit = 1, covtype = SCM)
