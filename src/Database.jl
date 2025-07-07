@@ -392,22 +392,23 @@ end
 
 """
 ```julia
-    function selectDB(rootDir       :: String, 
-                    paradigm      :: Symbol;
-                    classes       :: Union{Vector{String}, Nothing} = nothing,
-                    minTrials     :: Union{Int, Nothing} = nothing,
-                    summary       :: Bool = true)
+function selectDB(rootDir       :: String,
+                  paradigm      :: Symbol;
+                  classes       :: Union{Vector{String}, Nothing} = paradigm == :P300 ? ["target", "nontarget"] : nothing,
+                  minTrials     :: Union{Int, Nothing} = nothing,
+                  summarize     :: Bool = true)
 ```
-Return a list of [infoDB](@ref) structures for all databases found in directory `rootDir`.
+Select BCI databases according to specified criteria and return a list of [`infoDB`] structures meeting the requirements.
+
 Databases are selected according to the provided `paradigm`, which must be `:P300`, `:ERP` or `:MI`. 
 
-If `classes` is provided as a vector of class labels, return only the databases featuring those class labels.
-P300 databases always features only two classes ("target" and "nontarget"). 
-Typical MI class labels are: "left\\_hand", "right\\_hand", "feet", "rest", "both\\_hands", and "tongue".
+For P300 databases, the default `classes` are `["target", "nontarget"]`, according to the convention of the FII corpus.
+For MI and ERP databases, `classes` must be explicitly given. In the FII corpus, available MI class labels are: 
+"left_hand", "right_hand", "feet", "rest", "both_hands", and "tongue".
 
-If `minTrials` is provided as an integer, return for each database only the [sessions](@ref session) featuring at least this number of trials in each class.
+`minTrials` is a threshold that can be used to exclude those sessions not comprising at lest `minTrials` trials for each class in `classes`.
 
-If `summary` is true (default), print a summary table of the selected databases.
+If `summarize` is true (default), a summary table of the selected databases is printed in Julia's [REPL](https://docs.julialang.org/en/v1/stdlib/REPL/).
 
 **Examples**
 ```julia
@@ -422,9 +423,9 @@ selectedDB = selectDB(.../directory_to_start_searching/, :MI;
                       summarize=false)
 ```
 """
-function selectDB(rootDir       :: String, 
+function selectDB(rootDir       :: String,
                   paradigm      :: Symbol;
-                  classes       :: Union{Vector{String}, Nothing} = nothing,
+                  classes       :: Union{Vector{String}, Nothing} = paradigm == :P300 ? ["target", "nontarget"] : nothing,
                   minTrials     :: Union{Int, Nothing} = nothing,
                   summarize     :: Bool = true)
     
@@ -436,8 +437,6 @@ function selectDB(rootDir       :: String,
     # Check paradigm and classes requirements
     if (paradigm == :MI || paradigm == :ERP) && isnothing(classes)
         error("Eegle.Database, function `selectDB`: for $paradigm paradigm, you must specify class labels.")
-    elseif paradigm == :P300 && !isnothing(classes)
-        error("Eegle.Database, function `selectDB`: You cannot select specific classes for P300 paradigm.")
     end
 
     selectedDB = infoDB[]  # List of infoDB structures
@@ -447,33 +446,30 @@ function selectDB(rootDir       :: String,
     # Normalize classes to lowercase for comparison
     norm_classes = isnothing(classes) ? nothing : lowercase.(classes)
    
-    println("Searching for $(paradigm) databases" * (paradigm == :P300 ? " (all selected)" : " containing: $(join(classes, ", "))"))
-    
+    println("Searching for $(paradigm) databases containing: $(join(classes, ", "))")
+
     @inbounds for dbDir in dbDirs
         info = infoNYdb(dbDir)
         
         # Skip if paradigm doesn't match
         uppercase(info.paradigm) != string(paradigm) && continue
         
-        # Collect classes and check validity for MI/ERP
-        if paradigm == :MI || paradigm == :ERP
-            union!(all_cLabels, info.cLabels)
-            all(required_class ∈ lowercase.(info.cLabels) for required_class ∈ norm_classes) || continue
-        end
+        # Collect classes and check validity
+        union!(all_cLabels, info.cLabels)
+        all(required_class ∈ lowercase.(info.cLabels) for required_class ∈ norm_classes) || continue
 
         # Handle minTrials filtering
         if !isnothing(minTrials)
             excluded_files, valid_indices = String[], Int[]
-            classes_to_check = paradigm == :P300 ? info.cLabels : classes
-            
+        
             @inbounds for (file_idx, file_path) ∈ enumerate(info.files)
                 session_valid = true
-                @inbounds for class_name ∈ classes_to_check
-                    actual_class = paradigm == :P300 ? class_name : 
-                                findfirst(db_class -> lowercase(db_class) == lowercase(class_name), info.cLabels)
-                    actual_class = paradigm == :P300 ? class_name : info.cLabels[actual_class]
-                    
-                    if haskey(info.nTrials, actual_class) && 
+                @inbounds for class_name ∈ classes
+                    # Find the actual class name in the database (case-sensitive)
+                    actual_class_idx = findfirst(db_class -> lowercase(db_class) == lowercase(class_name), info.cLabels)
+                    actual_class = info.cLabels[actual_class_idx]
+                
+                    if haskey(info.nTrials, actual_class) &&
                     info.nTrials[actual_class][file_idx] < minTrials
                         session_valid = false
                         break
@@ -502,9 +498,9 @@ function selectDB(rootDir       :: String,
         push!(selectedDB, info)
     end
 
-    isempty(selectedDB) && error("Eegle.Database, function `selectDB`: No $(paradigm) database " * 
-        (paradigm == :MI || paradigm == :ERP ? "contains all selected classes: $(join(classes, ", "))" : "found") *
-        ((paradigm == :MI || paradigm == :ERP) && !isempty(all_cLabels) ? ".\nAll available classes: " * join(sort(collect(all_cLabels)), ", ") : ""))
+    isempty(selectedDB) && error("Eegle.Database, function `selectDB`: No $(paradigm) database " *
+        "contains all selected classes: $(join(classes, ", "))" *
+        (!isempty(all_cLabels) ? ".\nAll available classes: " * join(sort(collect(all_cLabels)), ", ") : ""))
 
     # Print excluded files information
     !isempty(excluded_files_info) && println("\n$(repeat("─", 65))\n⚠️  Files excluded due to insufficient trials per class (< $minTrials):", 
@@ -550,6 +546,7 @@ function selectDB(rootDir       :: String,
     end
     return selectedDB  # selectedDB is a list of infoDB struct respecting the conditions
 end
+
 
 
 function _weightsDB(subject, n)
