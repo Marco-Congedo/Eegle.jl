@@ -36,7 +36,7 @@ pr(f, res) = println("File ", f, ". mean(sd): ", round(res.avgAcc*100, digits=2)
 Perform the cross-validation on all available MI databases featuring the `left_hand` and `right_hand` class (see [selectDB](@ref)):
 
 ```julia
-MIDir = joinpath(homedir(), "BCI Databases", "NY","MI") # path to MI databases
+MIDir = joinpath(homedir(), "FII corpus", "NY","MI") # path to MI databases
 classes = ["feet", "right_hand"]
 DBs = selectDB(MIDir, :MI; classes);
 
@@ -50,11 +50,11 @@ for (db, DB) ∈ enumerate(DBs)
 end
 ```
 
-Perform the cross-validation on all available P300 databases featuring at least 20 trials for both the `target` and `non-target` (default) classes:
+Perform the cross-validation on all available P300 databases featuring at least 25 trials for both the `target` and `non-target` (default) classes:
 
 ```julia
-P300Dir = joinpath(homedir(), "BCI Databases","NY","P300") # path to P300 databases
-DBs = selectDB(P300Dir, :P300; minTrials = 20);
+P300Dir = joinpath(homedir(), "FII corpus","NY","P300") # path to P300 databases
+DBs = selectDB(P300Dir, :P300; minTrials = 25);
 
 for (db, DB) ∈ enumerate(DBs)
     println("Database: ", DB.dbName)
