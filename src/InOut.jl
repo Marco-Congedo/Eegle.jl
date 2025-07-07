@@ -267,7 +267,7 @@ end
         bpDesign    :: DSP.ZeroPoleGain = Butterworth(4),
         rate        :: Union{Real, Rational, Int} = 1,
         upperLimit  :: Union{Real, Int} = 0,
-        getTrials   :: Union{Bool, Vector{String}} = true, 
+        classes     :: Union{Bool, Vector{String}} = true, 
         stdClass    :: Bool = true, 
         msg         :: String="") 
 ```
@@ -286,10 +286,10 @@ If requested, the preprocessing operations are performed in the order of the [kw
 - `bpDesign`: the filter design method for the band-pass filter passed to [`filtfilt`](@ref) (default: Butterworth(4))
 - `rate`: argument passed to [`resample`](@ref) for resampling the data (default: 1, no resampling)
 - `upperLimit`: argument passed to [`Eegle.ERPs.reject`](@ref) for artifact rejection (default: 0, no artifact rejection)
-- `getTrials`: 
+- `classes`: 
     - if true (default), the `.trials` field of the [`EEG`](@ref) structure is filled with the trials for all classes
     - If it is a vector of class labels (strings), only the trials with those class labels will be stored 
-        For example, `getTrials=["left_hand", "right_hand"]` will store only the trials corresponding to "left\\_hand" class label
+        For example, `classes=["left_hand", "right_hand"]` will store only the trials corresponding to "left\\_hand" class label
         and "right\\_hand" class label. The tags corresponding to each class labels will be replaced by natural numbers (1, 2,...) 
         and written in the `.stim` field of the output — see [stimulation vector](@ref)
     - If false, the field `trials` of the returned EEG structure will be set to `nothing`.
@@ -302,7 +302,7 @@ If requested, the preprocessing operations are performed in the order of the [kw
         - **ERP paradigm**: not currently supported
     - if false, original class labels and their corresponding numerical values are preserved as found in the database
     The standardization is case-insensitive but requires correct spelling of class names.
-    When used with `getTrials` as a vector of class labels, standardization is applied after class selection.
+    When used with `classes` as a vector of class labels, standardization is applied after class selection.
     If class labels are already standardized, the original mapping is preserved.
     Ii is recommended to set `stdClass` to true when all relevant classes are available in your database configuration.
 - `msg`: print string `msg` on exit if it is not empty. By default it is empty.
@@ -328,8 +328,13 @@ o = readNY(EXAMPLE_P300_1)
 # by adaptive amplitude thresholding
 o = readNY(EXAMPLE_P300_1; bandPass=(1, 24), upperLimit = 1)
 
+# read the whole recording, but store in o.trials the trials 
+# only for classes "right_hand" and "feet" (exclude "rest")
+o = readNY(EXAMPLE_MI_1; 
+        bandPass=(1, 24), 
+        upperLimit = 1, 
+        classes=["right_hand", "feet"])
 ```
-xxx
 """
 function readNY(filename    :: AbstractString;
                 toFloat64   :: Bool = true,
@@ -339,7 +344,7 @@ function readNY(filename    :: AbstractString;
                 bpDesign    :: DSP.ZeroPoleGain = Butterworth(4),
                 rate        :: Union{Real, Rational, Int} = 1,
                 upperLimit  :: Union{Real, Int} = 0,
-                getTrials   :: Union{Bool, Vector{String}} = true, 
+                classes     :: Union{Bool, Vector{String}} = true, 
                 stdClass    :: Bool = true, 
                 msg         :: String="")
     # xxx: add a notch filter
@@ -398,34 +403,34 @@ function readNY(filename    :: AbstractString;
   clabels = [pair[1] for pair in labels_dict]
   clabelsval = [pair[2] for pair in labels_dict]
 
-  if getTrials isa Vector # June 2025: getTrials is now a Union :: Bool, Vector{String} (before Vector{Int}) in order to accept classes from Database.jl
-    missing_classes = setdiff(getTrials, clabels)
+  if classes isa Vector # June 2025: classes is now a Union :: Bool, Vector{String} (before Vector{Int}) in order to accept classes from Database.jl
+    missing_classes = setdiff(classes, clabels)
     if !isempty(missing_classes)
         error_msg = "Eegle.InOut, function `readNY`: classes not found: $(join(missing_classes, ", ")). Available classes: $(join(clabels, ", "))"
         throw(ArgumentError(error_msg))
     end
 
-    getTrials_val = Int64[] # memory efficient to declare typeof
-    getTrials_val = [clabelsval[findfirst(x -> x == c, clabels)] for c in getTrials] # get stim values corresponding to classes selected in getTrials from clabelsval/clabels
+    classes_val = Int64[] # memory efficient to declare typeof
+    classes_val = [clabelsval[findfirst(x -> x == c, clabels)] for c in classes] # get stim values corresponding to classes selected in classes from clabelsval/clabels
 
     un = sort(unique(stim))[2:end]
-    if isempty(intersect(un, getTrials_val))
-        throw(ArgumentError("Eegle.InOut, function `readNY`: the stimulations do not contain the classes requested in getTrials"))
+    if isempty(intersect(un, classes_val))
+        throw(ArgumentError("Eegle.InOut, function `readNY`: the stimulations do not contain the classes requested in classes"))
     end
-    elimina = setdiff(un, getTrials_val)
+    elimina = setdiff(un, classes_val)
     if !isempty(elimina)
         for c ∈ elimina, i ∈ eachindex(stim) stim[i] == c && (stim[i]=0) end
     end
 
-    nc = length(getTrials)
-    clabels = [c for c in clabels if c in getTrials]
-    clabelsval = [c for c in clabelsval if c in getTrials_val] # needed for stdClass
+    nc = length(classes)
+    clabels = [c for c in clabels if c in classes]
+    clabelsval = [c for c in clabelsval if c in classes_val] # needed for stdClass
 
-    if stdClass     # STANDARDIZE classes if stdClass is set to true and getTrials isa Vector
+    if stdClass     # STANDARDIZE classes if stdClass is set to true and classes isa Vector
         stim, clabels = _standardizeClasses(paradigm, clabels, clabelsval, stim)
     end
   else
-    if stdClass     # STANDARDIZE classes if stdClass is set to true and getTrials isa Bool
+    if stdClass     # STANDARDIZE classes if stdClass is set to true and classes isa Bool
         stim, clabels = _standardizeClasses(paradigm, clabels, clabelsval, stim)
     end
   end
@@ -469,7 +474,7 @@ function readNY(filename    :: AbstractString;
 
   length(mark) == nc || @error "Eegle.InOut, function `readNY`: the number of classes in .mark does not correspond to the number of markers found in .stim"
 
-  trials = !(getTrials===false) ? [X[mark[i][j]:mark[i][j]+wl-1, :] for i=1:nc for j=1:length(mark[i])] : nothing
+  trials = !(classes===false) ? [X[mark[i][j]:mark[i][j]+wl-1, :] for i=1:nc for j=1:length(mark[i])] : nothing
 
   if !isempty(msg) println(msg) end
   println("$(repeat("═", 65))") # (printing stdClass if true and offset if !=0)

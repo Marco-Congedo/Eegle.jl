@@ -255,7 +255,7 @@ function encode(o::EEG;
         maxiter::Int = 200,
         verbose::Bool = false)
 
-    isnothing(o.trials) && throw(ArgumentError("Eegle.BCI, function `encode`: The `EEG` structure given as first argument does not holds the trials. Make sure argument `getTrials` is not set to false when you open the EEG data in NY format using the `readNY` function"))
+    isnothing(o.trials) && throw(ArgumentError("Eegle.BCI, function `encode`: The `EEG` structure given as first argument does not holds the trials. Make sure argument `classes` is not set to false when you read the EEG data in NY format using the `readNY` function"))
 
     paradigm ∉ (:ERP, :P300, :MI) && throw(ArgumentError("Eegle.BCI, function `encode`: The `paradigm` must be one of the following symbols: :ERP, :P300, :MI. If you did not pass this argument, it means the paradigm stored in the `o` EEG structure is not supported by `encode`"))
 
@@ -323,7 +323,7 @@ end
             bpDesign    :: DSP.ZeroPoleGain = Butterworth(4),
             rate        :: Union{Real, Rational, Int} = 1,
             upperLimit  :: Union{Real, Int} = 0,
-            getTrials   :: Union{Bool, Vector{String}} = true, 
+            classes   :: Union{Bool, Vector{String}} = true, 
             stdClass    :: Bool = true, 
             # Arguments passed to encode
             covtype = LShrLW,
@@ -372,7 +372,7 @@ A reminder only is given here. For details, see the function each [kwarg](@ref "
     - `bandStop`, `bandPass`, `bsDesign`, `bpDesign`: filter settings
     - `rate`: resampling
     - `upperLimit`: artifact rejection
-    - `getTrials`: classes of the trials to be read from the file
+    - `classes`: classes of the trials to be read from the file
     - `stdClass`: standardization of class labels according to **Eegle**'s conventions
 - the following kwargs are passed to [`encode`](@ref) to encode the trials as covariance matrices: 
     - `covtype`: type of covariance matrix estimation 
@@ -430,7 +430,7 @@ function crval( filename    :: AbstractString,
         bpDesign    :: DSP.ZeroPoleGain = Butterworth(4),
         rate        :: Union{Real, Rational, Int} = 1,
         upperLimit  :: Union{Real, Int} = 0,
-        getTrials   :: Union{Bool, Vector{String}} = true, 
+        classes   :: Union{Bool, Vector{String}} = true, 
         stdClass    :: Bool = true,
 	    # Arguments passed to encode
         covtype = LShrLW,
@@ -459,7 +459,7 @@ function crval( filename    :: AbstractString,
                 bandStop, bandPass, bsDesign, bpDesign,
                 rate,
                 upperLimit,
-                getTrials,
+                classes,
                 stdClass)
 
     # Encode trials: 
