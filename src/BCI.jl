@@ -334,11 +334,11 @@ end
             maxiter     :: Int = 200,
             # Arguments passed to crval
             pipeline    :: Union{Pipeline, Nothing} = nothing,
-            nFolds      :: Int     = 8,
-            shuffle     :: Bool    = false,
-            scoring     :: Symbol  = :b,
+            nFolds      :: Int = 8,
+            seed        :: Int = 0,
+            scoring     :: Symbol = :b,
             hypTest     :: Union{Symbol, Nothing} = :Bayle,
-            outModels   :: Bool    = false,
+            outModels   :: Bool = false,
             fitArgs...)
 ```
 
@@ -381,18 +381,15 @@ A reminder only is given here. For details, see the function each [kwarg](@ref "
     - `reg`: , `tol`, `maxiter`, `verbose`: options for covariance M-Estimators.
 - the following kwargs are passed to [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval): 
     - `pipeline`: pre-conditioners for hastening the computations
-    - `nFolds`: number of cross-validation stratified folds (default: 8)
-    - `shuffle`: generation of the folds
+    - `nFolds`: number of cross-validation stratified folds
     - `scoring`: performance index to be computed
+    - `seed`: generation of the folds
     - `hypTest`: statistical test of the performance against the chance level
     - `outModels`: modulation of the output
     - `fitArgs...`: additional arguments handed to the `fit` function of the `model`.
 - the following are passed to both `encode` and `crval`:
     - `verbose`: print informations about some computations
     - `threaded`: run the functions in multithreaded mode (in `crval` it is named with unicode character ⏩).
-
-!!! note "`nFolds`" 
-    The default for all these kwargs are the same as in the functions they are passed to, except `nFolds` (the number of startified folds for the cross-validation), which default, differently from `crval` in *PosDefManifoldML.jl*, is 8.
 
 !!! tip "`fitArgs...`"
     Function `crval` hands any additional kwargs to the `fit` function of the `model`. See [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval) for details.
@@ -444,11 +441,11 @@ function crval( filename    :: AbstractString,
         maxiter     :: Int = 200,
 	    # Arguments passed to crval
         pipeline    :: Union{Pipeline, Nothing} = nothing,
-        nFolds      :: Int     = 8,
-        shuffle     :: Bool    = false,
-        scoring     :: Symbol  = :b,
+        nFolds      :: Int = 8,
+        seed        :: Int = 0,
+        scoring     :: Symbol = :b,
         hypTest     :: Union{Symbol, Nothing} = :Bayle,
-        outModels   :: Bool    = false,
+        outModels   :: Bool = false,
         fitArgs...)
 
     # Read session data: Eegle.InOut.readNY
@@ -481,8 +478,8 @@ function crval( filename    :: AbstractString,
     return crval(model, 𝐂, o.y; 
                 pipeline,
                 nFolds,
-                shuffle,
                 scoring,
+                seed,
                 hypTest,
                 outModels,
                 verbose,
