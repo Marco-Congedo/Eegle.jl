@@ -323,7 +323,7 @@ end
             bpDesign    :: DSP.ZeroPoleGain = Butterworth(4),
             rate        :: Union{Real, Rational, Int} = 1,
             upperLimit  :: Union{Real, Int} = 0,
-            classes   :: Union{Bool, Vector{String}} = true, 
+            classes     :: Union{Bool, Vector{String}} = true, 
             stdClass    :: Bool = true, 
             # Arguments passed to encode
             covtype = LShrLW,
@@ -372,7 +372,7 @@ A reminder only is given here. For details, see the function each [kwarg](@ref "
     - `bandStop`, `bandPass`, `bsDesign`, `bpDesign`: filter settings
     - `rate`: resampling
     - `upperLimit`: artifact rejection
-    - `classes`: classes of the trials to be read from the file
+    - `classes`: classes of the trials to be read from the file. Default: all available classes)
     - `stdClass`: standardization of class labels according to **Eegle**'s conventions
 - the following kwargs are passed to [`encode`](@ref) to encode the trials as covariance matrices: 
     - `covtype`: type of covariance matrix estimation 
@@ -400,6 +400,10 @@ A reminder only is given here. For details, see the function each [kwarg](@ref "
     Function `crval` hands any additional kwargs to the `fit` function of the `model`. See [crval](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.crval) for details.
     If you pass an invalid arguments, an error will be raised.
 
+!!! warning "`classes`"
+    It is good practice to inform the `classes` argument when comparing the performance obtained running this function across several different sessions.
+    Only this ensures that the performance estimated on the same classes is considered in all sessions.
+
 **Return**
 
 If `outModels` is false (default), a [CVres](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/cv/#PosDefManifoldML.CVres) structure 
@@ -410,11 +414,55 @@ with the results of the cross-validation, otherwise a 2-tuple holding this `CVre
 ```julia
 using Eegle
 
-# Using the example files provided by Eegle
+# Using the example files provided by Eegle.
+# Avarege accuracy is reported in square brackets
 
-crval(EXAMPLE_P300_1; bandPass = (1, 24), upperLimit = 1, covtype = SCM)
+# a) P300 data: standard pipeline (MDM classifier)
+crval(EXAMPLE_P300_1; bandPass = (1, 24)) # [0.711]
 
-crval(EXAMPLE_MI_1; bandPass = (8, 32), upperLimit = 1, covtype = SCM)
+# a) with a random shuffling to generate folds
+crval(EXAMPLE_P300_1; bandPass = (1, 24), seed = 1234) # [0.685]
+
+## b) with artifact rejection
+args = (bandPass = (1, 24), upperLimit = 1)
+crval(EXAMPLE_P300_1; args...) # [0.723]
+
+## b) using a 5-fold cross-validation
+crval(EXAMPLE_P300_1, MDM(); nFolds=5, args...) # [0.702]
+
+## b) using the Log-Euclidean metric for the MDM classifier
+crval(EXAMPLE_P300_1, MDM(logEuclidean); args...) # [0.663]
+
+## b) with artifact rejection and pre-conditioning
+pipeline = @→ Recenter(; eVar=0.999) → Compress → Shrink(Fisher)
+crval(EXAMPLE_P300_1; pipeline, args...) # [0.719]
+
+## b) using SVM model in the tangent space (TS)
+crval(EXAMPLE_P300_1, SVM(); args...) # [0.719]
+
+## b) using a Ridge logistic regression model in the tangent space (TS)
+crval(EXAMPLE_P300_1, ENLR(; alpha = 0); args...) # [non-deterministic]
+
+## b) using a LASSO logistic regression model in the TS
+crval(EXAMPLE_P300_1, ENLR(); args...) # [non-deterministic]
+
+## b) with Recentering and projecting the data onto the TS at the
+## identity matrix (this avoids the computation of the barycenter)
+crval(EXAMPLE_P300_1, ENLR(); meanISR=I, args...) # [non-deterministic]
+
+# ====================================
+
+# c) Motor Imagery data: standard pipeline (MDM classifier) with 
+# artifact rejection, using classes "feet" and "right_hand"
+args = (bandPass = (8, 32), upperLimit = 1, classes=["feet", "right_hand"])
+crval(EXAMPLE_MI_1; args...) # [0.833]
+
+## c) with a very fast pre-conditioning
+pipeline = @→ Recenter → Equalize
+crval(EXAMPLE_MI_1; pipeline, args...) # [0.865]
+
+...
+
 ```
 """    
 function crval( filename    :: AbstractString, 

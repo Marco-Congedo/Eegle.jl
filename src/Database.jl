@@ -403,7 +403,8 @@ Select BCI databases according to specified criteria and return a list of [`info
 Databases are selected according to the provided `paradigm`, which must be `:P300`, `:ERP` or `:MI`. 
 
 For P300 databases, the default `classes` are `["target", "nontarget"]`, according to the convention of the FII corpus.
-For MI and ERP databases, `classes` must be explicitly given. In the FII corpus, available MI class labels are: 
+For MI and ERP databases, `classes` must be explicitly given if a class selecion is sought. 
+In the FII corpus, available MI class labels are: 
 "left_hand", "right_hand", "feet", "rest", "both_hands", and "tongue".
 
 `minTrials` is a threshold that can be used to exclude those sessions not comprising at lest `minTrials` trials for each class in `classes`.
