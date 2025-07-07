@@ -44,7 +44,7 @@ for (db, DB) ∈ enumerate(DBs)
     println("Database: ", DB.dbName)
     println("mean and sd balanced accuracy, z and p-value against chance level:")
     for (f, file) ∈ enumerate(DB.files)
-        pr(f, crval(file; bandPass=(8, 32), getTrials=classes))
+        pr(f, crval(file; bandPass=(8, 32), classes))
     end
     println("")
 end
