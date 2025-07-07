@@ -344,7 +344,7 @@ end
 
 Perform cross-validations of a BCI [session](@ref) stored in [NY format](@ref). 
 
-This function runs in sequence the following three functions
+This function runs in sequence the following three functions:
 
 1. [`Eegle.InOut.readNY`](@ref)
 2. [`encode`](@ref) (in this module)
