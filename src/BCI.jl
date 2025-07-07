@@ -55,7 +55,9 @@ export  covmat,
 (2)  function covmat(𝐗::AbstractVector{<:AbstractArray{T}};
         < same arguments as method (1) > ...
 ```
-Covariance matrix estimation(s) of a single data matrix (e.g., a trial) `X` (1) or of a vector of ``K`` data matrices `𝐗` (2).
+Covariance matrix estimation(s) of: 
+- (1): a single data matrix (e.g., a trial) `X`
+- (2): a vector of ``K`` data matrices `𝐗`.
 
 **Arguments**
 - (1) `X`: ``N×T`` real data matrix, where ``N`` and ``T`` denotes the number of samples and channels, respectively
@@ -106,6 +108,9 @@ C = covmat(randn(128, 19); covtype=:Tyler)
 C = covmat(𝐗; covtype=SCM)
 
 C = covmat(𝐗; covtype=:Tyler)
+
+## using an example file provided with Eegle
+C = covmat(readNY(EXAMPLE_P300_1; bandPass=(1, 24), upperLimit=1.2).trials)
 ```    
 """
 function covmat(X::AbstractMatrix{T};
@@ -192,13 +197,13 @@ end
         maxiter::Int = 200,
         verbose::Bool = false)
 ```
-Encode all trials in an EEG recording as covariance matrices for a given BCI paradigm.
+Encode all trials in an [`EEG`](@ref) data structure as covariance matrices according to a given BCI paradigm.
 This is used in Riemannian geometry machine learning.
 The supported BCI paradigms are *Motor Imagery (MI)*, *Event-Related Potentials (ERP)* and *P300*.
 For details, see *Appendix I* in [Congedo2017Review](@cite).
 
 **Arguments**
-- `o`: an instance of the [`EEG`](@ref) data structure containing trials and metadata
+- `o`: an instance of the [`EEG`](@ref) data structure containing trials and metadata.
 
 **Optional Keyword Arguments**
 - `paradigm`: [BCI paradigm](@ref), either `:ERP`, `:P300`, or `:MI`. By default it is used the paradigm stored in `o`.
@@ -206,12 +211,12 @@ For details, see *Appendix I* in [Congedo2017Review](@cite).
     - for `:P300`, only the target class prototype is stacked
     - for `:MI`, no prototype is used; covariance is computed on the trial as it is.
 - `covtype`, `standardize`, `useBLAS`, `reg`, `tol`, `maxiter` and `verbose` — see [`Eegle.BCI.covmat`](@ref), to which they are passed.
-- `targetLabel`: mandatory label of the target class (P300 paradigm only, usually: "target")
+- `targetLabel`: label of the target class (for P300 paradigm only). By default is "target", following the conventions of the FII corpus.
 - `overlapping`: for prototype mean ERP estimations (ERP/P300 only). Default = false:
     - if true, use multivariate regression
     - if false, use the arithmetic average — see [`mean`](@ref).
 - `weights`: weights for prototype mean ERP estimations (ERP/P300 only). Default = `:a` — see [`mean`](@ref)
-- `pcadim`: number of PCA components of the prototype. They replace the prototype (ERP/P300 only, default = 0, which does not apply PCA)
+- `pcadim`: number of PCA components of the prototype. They replace the prototype (ERP/P300 paradigms only, default = 0, which does not apply PCA)
 - `standardize`: standardize trials and prototype (global mean 0 and sd 1) before covariance estimation (default: false)
 - `tikh`: Tikhonov regularization parameter (0, the default, does not apply regularization). It is applied after covariance estimation
 - `threaded`: enable multi-threaded covariance estimations across trials (default: true). 
