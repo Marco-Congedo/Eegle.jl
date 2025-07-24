@@ -592,8 +592,8 @@ end
 (1) function readASCII(fileName::AbstractString; 
         msg::String="")
 
-(2) readASCII(  fileNames::Vector{String}, 
-                skip::Vector{Int}=[])        
+(2) readASCII(  fileNames::Vector{String}; 
+        skip::Vector{Int}=Int[])        
 ```
 Read EEG data from one file (method 1) or several files (method 2) in [LORETA-Key](https://www.uzh.ch/keyinst/NewLORETA/Software/Software.htm) 
 format. The format is a space- or tab-delimited ASCII file, usually with extension *.txt*, holding a matrix of data with ``N`` columns and ``T`` rows, 
@@ -642,7 +642,7 @@ end
 # (a Vector of strings) and put them in a vector of matrices object.
 # `skip` is an optional vector of serial numbers of files in `filenames` to skip.
 # print: "read file "*[filenumber]*": "*[filename] after each file has been read.
-function readASCII(fileNames::Vector{String}, skip::Vector{Int}=[])
+function readASCII(fileNames::Vector{String}; skip::Vector{Int}=Int[])
         X = [readASCII(fileNames[f]; msg="read file $f: "*basename(fileNames[f])) for f in eachindex(fileNames) if f ∉ skip]
         !isempty(skip) && println("skypped files: ", skip)
         return X

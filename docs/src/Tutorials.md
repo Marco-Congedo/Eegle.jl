@@ -5,8 +5,8 @@ Running the tutorials is the fastest way to learn how to use **Eegle** and to ap
 Tutorials are organized by themes; start with those more closely ressambling to your research needs at hand.
 
 ### Things to know
-- We always fully-qualified the name of functions or give the fully-qualified name as a comment. This way you can easily spot the package where they can be found. In your code, you don't need to do that.
-- For producing figures in these tutorials we use CairoMakie or GLMakie. Install then first by executing in the REPL
+- We fully-qualify the name of functions or give the fully-qualified name as a comment. This way you can easily spot the package where they can be found. In your code, you don't need to do that.
+- For producing figures in these tutorials we use CairoMakie or GLMakie. Install them first by executing in the REPL
 
 ```julia
 ]add CairoMakie, GLMakie
