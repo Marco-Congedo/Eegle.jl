@@ -71,24 +71,24 @@ end
 ```
 Immutable structure holding the summary information and metadata of an EEG database (DB) in [NY format](@ref).
 
-It is created by the function [infoNYdb](@ref).
+It is created by functions [infoNYdb](@ref) and [`selectDB`](@ref).
 
 **Fields**
 
-- `.files` returns a list of `.npz` files, each corresponding to a session in the database. The length of `.files` equals the total number of sessions
+- `.files` returns a list of *.npz* files, each corresponding to a [session](@ref) in the database. The length of `.files` is equal to the total number of sessions
 - `.nSessions`: vector holding the number of sessions per subject
 - `.nTrials`: a dictionary mapping each class label to a vector containing the number of trials per session for that class. For example, `nTrials["left_hand"]` returns a vector with the number of trials for `"left_hand"` across all sessions.
 
-The following fields are assumed constant across all recordings of the database.
-This is checked by **Eegle** when you read a database.
+The following fields are assumed constant across all sessions of the database.
+This is checked by **Eegle** when a database is read.
 
 - `.dbName`: name or identifier of the [database](@ref)
 - `.condition`: experimental condition under which the DB has been recorded
 - `.paradigm`: for BCI data, this may be :P300, :ERP or :MI — see [BCI paradigm](@ref)
 - `.nSubjects`: total number of subjects composing the DB — see [subject](@ref)
-- `.nSensors`: number of sensors composing the recordings (e., g., EEG electrodes)
+- `.nSensors`: number of sensors composing the recordings (e.g., EEG electrodes)
 - `.sensors`: list of sensor labels (e.g., [Fz, Cz, ...,Oz])
-- `.sensorType`: type of sensors (wet, dry, Ag/cl, ...)
+- `.sensorType`: type of sensors (wet, dry, Ag/Cl, ...)
 - `.nClasses`: number of classes for which labels are available
 - `.cLabels`: list of class labels
 - `.sr`: sampling rate of the recordings (in samples)
@@ -142,7 +142,7 @@ end
     function loadNYdb(dbDir=AbstractString, isin::String="")
 ```
 Return a list of the complete paths of all *.npz* files found in a directory given as argument `dbDir`.
-For each NPZ file, there must be a corresponding YAML metadata file with the same name and extension *.yml*, otherwise
+For each *NPZ* file, there must be a corresponding *YAML* metadata file with the same name and extension *.yml*, otherwise
 the file is not included in the list.
 
 If a string is provided as kwarg `isin`, only the files whose name
@@ -394,34 +394,47 @@ end
 ```julia
 function selectDB(rootDir       :: String,
                   paradigm      :: Symbol;
-                  classes       :: Union{Vector{String}, Nothing} = paradigm == :P300 ? ["target", "nontarget"] : nothing,
-                  minTrials     :: Union{Int, Nothing} = nothing,
-                  summarize     :: Bool = true)
+        classes     :: Union{Vector{String}, Nothing} = 
+                        paradigm == :P300 ? ["target", "nontarget"] : nothing,
+        minTrials   :: Union{Int, Nothing} = nothing,
+        summarize   :: Bool = true)
 ```
-Select BCI databases according to specified criteria and return a list of [`infoDB`] structures meeting the requirements.
+Select BCI databases pertaining to the given BCI paradigm. Optionally, each [session](@ref) of the selected databases 
+is scrutinized to meet the provided inclusion criteria. 
 
-Databases are selected according to the provided `paradigm`, which must be `:P300`, `:ERP` or `:MI`. 
+Return the selected databases as a list of [`infoDB`](@ref) structures, wherein, if inclusion criteria are provided, 
+the `infoDB.files` field lists the included sessions only.
 
-For P300 databases, the default `classes` are `["target", "nontarget"]`, according to the convention of the FII corpus.
-For MI and ERP databases, `classes` must be explicitly given if a class selecion is sought. 
-In the FII corpus, available MI class labels are: 
-"left_hand", "right_hand", "feet", "rest", "both_hands", and "tongue".
+**Arguments**
+- `rootDir`: the directory on the local computer where to start the search. Any folder in this directory is a candidate [database](@ref) to be selected.
+- `paradigm`: the BCI paradigm to be used. Supported paradigms at this time are: `:P300`, `:ERP` or `:MI`.
 
-`minTrials` is a threshold that can be used to exclude those sessions not comprising at lest `minTrials` trials for each class in `classes`.
+!!! tip 
+    If a folder with the same name of the paradigm (for example: "MI") is found in `rootDir`, the search starts therein
+    and not in `rootDir`. 
 
-If `summarize` is true (default), a summary table of the selected databases is printed in Julia's [REPL](https://docs.julialang.org/en/v1/stdlib/REPL/).
+**Optional Keyword Arguments**
+- `classes`: the labels of the classes the databases must include:
+    - for the **P300** paradigm the default classes are `["target", "nontarget"]`, as in the FII corpus.
+    - for the **MI** and **ERP** paradigm there is no inclusion criterion based on class labels by default.
+
+!!! tip 
+    In the FII corpus, available **MI** class labels are: "left_hand", "right_hand", "feet", "rest", "both_hands", and "tongue".
+
+- `minTrials`: the minimum number of trials for all classes in the sessions to be included. 
+- `summarize`: if true (default) a summary table of the selected databases is printed in the REPL.
 
 **Examples**
 ```julia
 selectedDB = selectDB(.../directory_to_start_searching/, :P300)
 
 selectedDB = selectDB(.../directory_to_start_searching/, :MI;
-                      classes=["left_hand", "right_hand"])
+                      classes = ["left_hand", "right_hand"])
 
 selectedDB = selectDB(.../directory_to_start_searching/, :MI;
-                      classes=["rest", "both_hands", "feet"],
-                      minTrials=50,
-                      summarize=false)
+                      classes = ["rest", "both_hands", "feet"],
+                      minTrials = 50,
+                      summarize = false)
 ```
 """
 function selectDB(rootDir       :: String,
@@ -431,13 +444,18 @@ function selectDB(rootDir       :: String,
                   summarize     :: Bool = true)
     
     paradigm ∉ (:MI, :P300, :ERP) && error("Eegle.Database, function `selectDB`: Unsupported paradigm. Use :MI, :P300 or :ERP")
-   
-    dbDirs = getFoldersInDir(rootDir)
-    isempty(dbDirs) && error("Eegle.Database, function `selectDB`: no folder found in $rootDir")
+    
+    # Check if there's a paradigm subfolder and move to it if it exists
+    paradigmDir = joinpath(rootDir, string(paradigm))
+    isdir(paradigmDir) && (rootDir = paradigmDir)
 
-    # Check paradigm and classes requirements
+    dbDirs = getFoldersInDir(rootDir)
+    isempty(dbDirs) && error("Eegle.Database, function `selectDB`: No database found in the directory: $rootDir")
+
+    # Check paradigm and classes requirements - no error for MI/ERP without classes
     if (paradigm == :MI || paradigm == :ERP) && isnothing(classes)
-        error("Eegle.Database, function `selectDB`: for $paradigm paradigm, you must specify class labels.")
+        println("Eegle.Database, function `selectDB`: No class filter specified for $paradigm paradigm. All databases will be returned.")
+        @warn "If you plan to perform classification with these databases, it is strongly recommended to specify the 'classes' argument to ensure consistent class selection across databases."
     end
 
     selectedDB = infoDB[]  # List of infoDB structures
@@ -447,27 +465,33 @@ function selectDB(rootDir       :: String,
     # Normalize classes to lowercase for comparison
     norm_classes = isnothing(classes) ? nothing : lowercase.(classes)
    
-    println("Searching for $(paradigm) databases containing: $(join(classes, ", "))")
-
+    println("Searching for $(paradigm) databases" * 
+        (isnothing(classes) ? " (no class filter)" : " containing: $(join(classes, ", "))"))
+    
     @inbounds for dbDir in dbDirs
         info = infoNYdb(dbDir)
         
         # Skip if paradigm doesn't match
         uppercase(info.paradigm) != string(paradigm) && continue
         
-        # Collect classes and check validity
+        # Collect classes and check validity (only if classes are specified)
         union!(all_cLabels, info.cLabels)
-        all(required_class ∈ lowercase.(info.cLabels) for required_class ∈ norm_classes) || continue
+        if !isnothing(classes)
+            all(required_class ∈ lowercase.(info.cLabels) for required_class ∈ norm_classes) || continue
+        end
 
         # Handle minTrials filtering
         if !isnothing(minTrials)
             excluded_files, valid_indices = String[], Int[]
-        
+            classes_to_check = isnothing(classes) ? info.cLabels : classes
+            
             @inbounds for (file_idx, file_path) ∈ enumerate(info.files)
                 session_valid = true
-                @inbounds for class_name ∈ classes
+                @inbounds for class_name ∈ classes_to_check
                     # Find the actual class name in the database (case-sensitive)
-                    actual_class_idx = findfirst(db_class -> lowercase(db_class) == lowercase(class_name), info.cLabels)
+                    actual_class_idx = isnothing(classes) ? 
+                                    findfirst(==(class_name), info.cLabels) :
+                                    findfirst(db_class -> lowercase(db_class) == lowercase(class_name), info.cLabels)
                     actual_class = info.cLabels[actual_class_idx]
                 
                     if haskey(info.nTrials, actual_class) &&
@@ -534,7 +558,7 @@ function selectDB(rootDir       :: String,
                 nClasses = db.nClasses,
                 sr = db.sr,
                 wl = db.wl,
-                offset = db.offset
+                os = db.os
             ))
         end
         
@@ -547,7 +571,6 @@ function selectDB(rootDir       :: String,
     end
     return selectedDB  # selectedDB is a list of infoDB struct respecting the conditions
 end
-
 
 
 function _weightsDB(subject, n)

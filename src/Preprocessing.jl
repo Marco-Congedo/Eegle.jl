@@ -29,7 +29,7 @@ export
 """
 ```julia
     function standardize(X::AbstractArray{T}; 
-        robust = false,
+        robust::Bool = false,
         prop::Real = 0.2) 
     where T<:Real
 ```
@@ -44,14 +44,16 @@ thus, `prop` is used only if `robust` is true.
 ```julia
 using Eegle # or using Eegle.Preprocessing
 
-X = randn(1024, 19)
+X = randn(1024, 19) # 1024 samples, 19 sensors
 
 stX = standardize(X)
 
 stX = standardize(X; robust=true, prop=0.1)
 ```
 """
-function standardize(X::AbstractArray{T}; robust = false, prop::Real=0.20) where T<:Real
+function standardize(X::AbstractArray{T}; 
+            robust::Bool = false, 
+            prop::Real=0.20) where T<:Real
     vec=X[:]
     if robust
         μ = mean(winsor(vec; prop=prop))
@@ -84,16 +86,16 @@ as per the [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resa
 - `rate`: the resampled data will have sampling rate `sr` * `rate`.
 
 **Optional Keyword Arguments**
-- `Nϕ`, `rel_bw` and `attenuation`: see [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resample).
-- a [stimulation vector](@ref). If it is passed, it will be resampled so as to match the resampling of `X` as precisely as possible. `stim` must be a vector of ``T`` integers.
+- `Nϕ`, `rel_bw` and `attenuation`: see [resample](https://docs.juliadsp.org/stable/filters/#DSP.Filters.resample)
+- `stim`: a [stimulation vector](@ref). If it is passed, it will be resampled so as to match the resampling of `X` as precisely as possible. `stim` must be a vector of ``T`` integers.
 
-!!! tip "Resampling"
+!!! tip "Resampling of trials"
     If you need to work with individual trials (or epochs), do not resample trials individually; rather, resample the whole EEG recording and then
-    extract the trials — see [`Eegle.ERPs.trials`](@ref). Function [`Eegle.InOut.readNY`](@ref) allows you to do resampling and extract trials this way.
+    extract the trials — see [`Eegle.ERPs.trials`](@ref). Function [`Eegle.InOut.readNY`](@ref) allows to read data, do resampling and extract trials at once.
 
 !!! warning "Downsampling"
-    Downsampling must be always preceeded by low-pass filtering to ensure the suppression of all energies above the Nyquist frequency (``s/2``),
-    where ``s`` is the new sampling rate after downsampling. The cut_off frequencies is usually taken as ``s/3`` and a sharp filter is used (see examples). 
+    Downsampling must always be preceeded by low-pass filtering to ensure the suppression of energy above the Nyquist frequency (``s/2``),
+    where ``s`` is the new sampling rate after downsampling. The cut-off frequency for the filter is usually taken as ``s/3`` and a sharp filter is used (see examples). 
     This applies also if you wish to apply downsampling by decimation — see the examples for decimating in [`Eegle.Miscellaneous.remove`](@ref) and [`removeSamples`](@ref).
 
 **Return** the resampled data matrix.   
@@ -105,15 +107,17 @@ using Eegle # or using Eegle.Preprocessing
 sr = 512
 X = randn(sr*10, 19)
 
-# low-pass filter at s/3 = sr/(4*3) Hz and downsample by a factor 4
+# to downsample by a factor 4, low-pass filter at s/3 = sr/(4*3) Hz 
 Z = filtfilt(X, sr, Bandpass(1, sr/(4*3)); designMethod = Butterworth(8))
-Y = resample(Z, sr, 1//4) 
+Y = resample(Z, sr, 1//4) # 1//4 is Julia rational number 1/4
 
-Y = resample(X, sr, 2) # upsample by a factor 2, i.e., double the sampling rate
+# upsample by a factor 2, i.e., double the sampling rate
+Y = resample(X, sr, 2) 
 
+# upsample to 128 samples per second
 sr = 100
 X = randn(sr*10, 19)
-Y = resample(X, sr, 128/sr) # upsample to 128 samples per second
+Y = resample(X, sr, 128/sr) 
 ```
 """
 function resample(X::AbstractMatrix{T},
@@ -179,14 +183,12 @@ For the use of [kwarg](@ref "Acronyms") `what`, see method [`Eegle.Miscellaneous
 if you do not need to remove channels from a sensor labels vector.
 
 Return the 3-tuple (`newX`, `s`, `ne`), where `newX` is the new EEG recording, `s` is the new sensor labels vector and
-`ne` is the new number of channels (sensors) in `newX` (`s`).
+`ne` is the new number of channels (sensors) in `newX`.
 
 **See Also** [`Eegle.InOut.readSensors`](@ref)
 
 **Examples**
 ```julia
-using Eegle # or using Eegle.Preprocessing
-
 using Eegle # or using Eegle.Preprocessing
 
 X = randn(128, 7)
@@ -252,6 +254,9 @@ X_, stim_, ns = removeSamples(X, collect(1:128), stim)
 
 # remove every other sample (decimation by a factor of 2)
 X_, stim_, ns = removeSamples(X, collect(1:2:length(stim)), stim)
+
+# NB: before decimating the data must be low-pass filtered,
+# see the documentation of `resample`
 ```
 """
 function removeSamples(X::AbstractMatrix{T}, what::Union{Int, Vector{S}},
@@ -275,10 +280,16 @@ end
                         lags = 0) 
     where T<:Real 
 ```
-Lag-embedding is a technique to augment the data. Second-order statistics of the augmented data, that is, covariance or cross-spectral matrices,
+Lag embedding (or delay embedding) is a technique to augment the data. Second-order statistics of the augmented data, that is, covariance or cross-spectral matrices,
 hold information not only of volume condution and instantaneous connectivity, but also of lagged connectivity.
 These matrices can be used, for example, in blind source separation
-and Riemannian classification.
+and Riemannian classification. 
+
+Lag embedding is employed in chaos theory for studying 
+dynamical systems by means of 
+[recurrence analysis](https://github.com/JuliaDynamics/RecurrenceAnalysis.jl) — see package 
+[DelayEmbeddings.jl](https://github.com/JuliaDynamics/DelayEmbeddings.jl) for advanced
+delay embedding techniques.
 
 **Tutorials** xxx, xxx
 

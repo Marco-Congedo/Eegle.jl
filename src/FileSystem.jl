@@ -37,7 +37,7 @@ export
 Return `file`, including the complete path, without the extension.
 
 !!! tip "basename"
-    Julia `basename` returns the file with no path and with extension
+    Julia's `basename` function returns instead the file name with no path and with extension
 
 **Example**
 ```julia

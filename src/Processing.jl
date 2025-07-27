@@ -41,28 +41,29 @@ Apply a digital filter in a forward-backward manner to obtain a linear phase res
 
 By default, `designMethod` is `Butterworth(2)`, that is, a second-order Butterworth filter.
 
-For the analysis in the frequency domain — see the [FourierAnalysis](https://github.com/Marco-Congedo/FourierAnalysis.jl) package.
+For the analysis in the frequency domain, see the [FourierAnalysis](https://github.com/Marco-Congedo/FourierAnalysis.jl) package.
 
 **Examples**
 ```julia
 using Eegle
 
-X, sr = randn(1024, 19), 128
+sr = 128 # sampling rate
+X = randn(sr*8, 19)
 
 filteredX = filtfilt(X, sr, Bandpass(1, 24))
 
-filteredX = filtfilt(X, sr, Bandstop(1, 24))
+filteredX = filtfilt(X, sr, Bandstop(49, 51))
 
 filteredX = filtfilt(X, sr, Highpass(10))
 
 filteredX = filtfilt(X, sr, Lowpass(10))
 
-filteredX = filtfilt(X, sr, Bandstop(1, 24); 
+filteredX = filtfilt(X, sr, Bandstop(49, 51); 
                     designMethod = Chebyshev1(4, 0.5))
 
 # Apply a filter bank
 responses = [Bandpass(1, 4), Bandpass(4, 8), Bandpass(8, 12), Bandpass(12, 16)]
-filterBank = [filtfilt(X, 128, r) for r∈responses]
+filterBank = [filtfilt(X, 128, r; designMethod = Butterworth(8)) for r ∈ responses]
 ```
 """
 function filtfilt(  X::Matrix, sr::Int, responseType::DSP.FilterType; 
@@ -73,7 +74,7 @@ end
 
 """
 ```julia
-    function centeringMatrix(d::Int)
+    function centeringMatrix(N::Int)
 ```
 
 The common average reference (CAR) operator for referencing EEG data 
@@ -88,13 +89,13 @@ is the CAR (or *centered*) data.
 
 ``H_N`` is named the *common average reference operator*. It is given at p.67 by [Searle1982book](@cite), as
 
-``H_N = I_d - \\frac{1}{d} \\left( \\mathbf{1}_d \\mathbf{1}_d^\\top \\right)``
+``H_N = I_N - \\frac{1}{N} \\left( \\mathbf{1}_N \\mathbf{1}_N^\\top \\right)``
 
-where ``I_d`` is the d-dimensional identity matrix and ``\\mathbf{1}_d`` is the ``d``-dimensional vector of ones.
+where ``I_N`` is the N-dimensional identity matrix and ``\\mathbf{1}_N`` is the ``N``-dimensional vector of ones.
 
 **Alias** ℌ (U+0210C, with escape sequence "frakH")
 
-**Return** the ``d×d`` centering matrix.
+**Return** the ``N×N`` centering matrix.
 
 **Examples**
 ```julia
@@ -117,7 +118,7 @@ centeringMatrix(N::Int) = I-1/N*(ones(N)*ones(N)')
 """
 ```julia
     function globalFieldPower(X::AbstractMatrix{T}; 
-        func=identity) 
+        func::Function = identity) 
     where T<:Real 
 ```
 The global field power (GFP) is the sample-by-sample total EEG power.
@@ -128,6 +129,8 @@ and ``x_t`` be the vector of ``N`` potentials at sample ``t∈{1,...,T}``, then 
 ``x_t^Tx_t``.
 
 Function `func` can be applied element-wise to the output (none by default).
+[Anonymous functions](https://docs.julialang.org/en/v1/manual/functions/#man-anonymous-functions)
+can be used.
 
 Usually the GFP is computed on common average reference data — see [`centeringMatrix`](@ref).
 
@@ -140,12 +143,15 @@ Usually the GFP is computed on common average reference data — see [`centering
 using Eegle
 
 X=randn(128, 19)
-
-g = globalFieldPower(X * ℌ(size(X, 2)); func=log)
 # ℌ is an alias for centeringMatrix
+
+# using an anonymous function
+g = globalFieldPower(X * ℌ(size(X, 2)); func=x->sqrt(x/size(X, 2)))
+
 ```
 """
-function globalFieldPower(X::AbstractMatrix{T}; func=identity) where T<:Real 
+function globalFieldPower(X::AbstractMatrix{T}; 
+                func::Function = identity) where T<:Real 
     func.([x⋅x for x ∈ eachrow(X)]) # field root mean square
 end
 
@@ -164,6 +170,8 @@ and let ``x_t`` be the vector of ``N`` potentials at sample ``t∈{1,...T}``, th
 ``\\sqrt{\\frac{1}{N} (x_t^\\top x_t)}``.
 
 Function `func` can be applied element-wise to the output (none by default).
+[Anonymous functions](https://docs.julialang.org/en/v1/manual/functions/#man-anonymous-functions)
+can be used.
 
 Usually the GFRMS is computed on common average reference data — see [`centeringMatrix`](@ref).
 
@@ -177,8 +185,11 @@ using Eegle
 
 X=randn(128, 19)
 
-g = globalFieldRMS(X * ℌ(size(X, 2)); func=x->x^2)
+g = globalFieldRMS(X * ℌ(size(X, 2)))
 # ℌ is an alias for centeringMatrix
+
+# using an anonymous function
+g = globalFieldRMSX * ℌ(size(X, 2)); func=x->x^2)
 ```
 """
 function globalFieldRMS(X::AbstractMatrix{T}; func=identity) where T<:Real
@@ -252,7 +263,7 @@ local minima of the low-pass filtered [global field root mean square](@ref globa
     A positive value of `slide` (default=0) determines the number of overlapping 
     samples. By default there will be no overlapping. 
 - *Adaptive:* if `wl`=0 (default), the GFRMS is computed, low-pass filtered 
-    using `lowPass` (in Hz) as the cutoff (default = 14 Hz) and segmented ensuring that the minimum epoch size (in samples) is `minSize`, 
+    using `lowPass` (in Hz) as the cut-off (default = 14 Hz) and segmented ensuring that the minimum epoch size (in samples) is `minSize`, 
     which default is the nuber of samples covering 1.5s.
 
 **Return**
@@ -299,7 +310,7 @@ ranges = epoching(Xθ, sr;
 𝐂 = covmat(𝐗) # See CovarianceMatrices.jl
 
 # If only the covariance matrices are needed,
-# a more memory-efficient way skipping the extraction of 𝐗 is
+# a more memory-efficient way avoiding the extraction of 𝐗 is
 𝐂 = ℍVector(covmat([view(X, r, :) for r ∈ ranges]))
 𝐂θ = ℍVector(covmat([view(Xθ, r, :) for r ∈ ranges]))
 ```

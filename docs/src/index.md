@@ -23,15 +23,6 @@ Execute the following commands in Julia's REPL:
 ]add Eegle
 ```
 
-## Testing
-
-Hit the backspace key (🡐) on your keyboard to get back the Julia prompt, then
-
-```julia
-using Pkg
-Pkg.test("Eegle")
-```
-
 ## Quick Start
 Read the [next page](@ref "Eegle") of this documentation for general informations, then work out the tutorials.
 When you need a function, check its documentation and the examples given therein.
@@ -40,7 +31,7 @@ When you need a function, check its documentation and the examples given therein
 
 [Marco Congedo](https://sites.google.com/site/marcocongedo), corresponding author, is a Research Director of [CNRS](http://www.cnrs.fr/en) (Centre National de la Recherche Scientifique), working at [UGA](https://www.univ-grenoble-alpes.fr/english/) (University of Grenoble Alpes). **Contact**: first name dot last name at gmail dot com
 
-[Fahim Doumi](https://www.linkedin.com/in/fahim-doumi-4888a9251/?locale=fr_FR) at the time of writing was a research ingeneer at the Department of Enginnering of the [University federico II of Naples](https://www.unina.it/en_GB/home).
+[Fahim Doumi](https://www.linkedin.com/in/fahim-doumi-4888a9251/?locale=fr_FR) at the time of writing was a research ingeneer at the Department of Enginnering of the [University Federico II of Naples](https://www.unina.it/en_GB/home).
 
 ## Contributors: 
 
@@ -50,6 +41,13 @@ When you need a function, check its documentation and the examples given therein
 | Problem   | Solution |
 |:----------|:----------|
 | No problem encountered so far |  N.A.|
+
+## Package Test
+
+```julia
+using Pkg
+Pkg.test("Eegle")
+```
 
 ## Reviewers & Contributors
 

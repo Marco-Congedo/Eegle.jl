@@ -100,10 +100,10 @@ While conceived specifically for BCI sessions, the structure can be used also fo
 - `clabels`: labels of the classes
 - `stim`: the [stimulation vector](@ref)
 - `mark`: the [marker vectors](@ref) 
-- `y`: the markers in vectors `mark` concatenated in an unique vector
 - `X`: the ``T×N`` EEG data, with ``T`` and ``N`` the number of samples and channels (sensors), respectively
 - `trials`: a vector of trials, each of size ``N×wl``, extracted in the order of tags given in `stim` (optional)
-- the keys for dictionaries `id`, `acquisition`, and `documentation` are — see [NY Metadata (YAML)](@ref)):
+- `y`: the non-zero tags of `stim` as a vector. Each tag is the class label of the corresponding trial.
+- dictionaries `id`, `acquisition`, and `documentation` — see [NY Metadata (YAML)](@ref)). Their keys are:
 
 | id          | acquisition   |documentation  |
 |:------------|:--------------|:--------------|
@@ -115,6 +115,10 @@ While conceived specifically for BCI sessions, the structure can be used also fo
 | "condition" | "sensortype"  ||
 | "paradigm"  | "samplingrate"||
 |             | "hardware"    ||
+
+!!! note "tags"
+    regardless the class labels (tags) in the file, the `.stim` and `.y` fields are always populated using the first `o.nc`
+    natural numbers (1,2, ...) when the structure is created by the [`readNY`](@ref) function. 
 
 In Julia, a structure has a default constructor taking all fields as arguments.
 A simplified constructor is also available, as
@@ -143,7 +147,7 @@ The above creates an EEG structure providing, *ad minima*:
 - the sensor labels `sensors`.
 
 The [kwarg](@ref "Acronyms") of this constructor are useful fields that can be filled.
-The dictionaries of the structure are left empty.
+The remaining fields of the structure are left empty.
 
 """
 struct EEG
@@ -242,7 +246,7 @@ function _standardizeClasses(paradigm::Symbol,
     stim_standardized, clabels_standardized = copy(stim), copy(clabels)
 
     if already_standardized
-        println("\n✓ Class labels in file follow Eegle's conventions.")
+        # println("\n✓ Class labels in file follow Eegle's conventions.")
     else
         @inbounds for i in eachindex(stim_standardized)
             stim_standardized[i] != 0 && haskey(value_mapping, stim_standardized[i]) && (stim_standardized[i] = value_mapping[stim_standardized[i]])
@@ -273,7 +277,8 @@ end
 ```
 Read EEG/BCI data in [NY format](#NY-format), prepreprocess them if desired, and create an [`EEG`](@ref) structure.
 
-If requested, the preprocessing operations are performed in the order of the [kwargs](@ref Acronyms).
+If requested, the preprocessing operations are performed in the order of the [kwargs](@ref Acronyms)
+as listed here below.
 
 **Arguments**
 - `filename`: the complete path of either the *.npz* or the *.yml* file of the recording to be read.
@@ -288,24 +293,23 @@ If requested, the preprocessing operations are performed in the order of the [kw
 - `upperLimit`: argument passed to [`Eegle.ERPs.reject`](@ref) for artifact rejection (default: 0, no artifact rejection)
 - `classes`: 
     - if true (default), the `.trials` field of the [`EEG`](@ref) structure is filled with the trials for all classes
-    - If it is a vector of class labels (strings), only the trials with those class labels will be stored 
-        For example, `classes=["left_hand", "right_hand"]` will store only the trials corresponding to "left\\_hand" class label
-        and "right\\_hand" class label. The tags corresponding to each class labels will be replaced by natural numbers (1, 2,...) 
-        and written in the `.stim` field of the output — see [stimulation vector](@ref)
+    - If it is a vector of class labels (for example, `classes=["left_hand", "right_hand"]`), only the trials with those class labels will be stored. 
+        The tags corresponding to each class labels will be replaced by natural numbers (1, 2,...) 
+        and written in the `.stim` and `y` fields of the output — see [stimulation vector](@ref)
     - If false, the field `trials` of the returned EEG structure will be set to `nothing`.
 - `stdClass`: 
-    - if true (default), class labels are standardized according to predefined conventions to facilitate transfer learning
+    - if true (default), a standardization is applied to the class labels, according to predefined conventions to facilitate transfer learning
         and model training across heterogeneous databases.
         The standardization applies uniform numerical codes regardless of the original database encoding:
         - **MI paradigm**: "left\\_hand" → 1, "right\\_hand" → 2, "feet" → 3, "rest" → 4, "both\\_hands" → 5, "tongue" → 6
         - **P300 paradigm**: "nontarget" → 1, "target" → 2
         - **ERP paradigm**: not currently supported
     - if false, original class labels and their corresponding numerical values are preserved as found in the database
-    The standardization is case-insensitive but requires correct spelling of class names.
+    The standardization is case-insensitive, but requires correct spelling of class names.
     When used with `classes` as a vector of class labels, standardization is applied after class selection.
     If class labels are already standardized, the original mapping is preserved.
-    Ii is recommended to set `stdClass` to true when all relevant classes are available in your database configuration.
-- `msg`: print string `msg` on exit if it is not empty. By default it is empty.
+    Ii is recommended to leave the default setting for `stdClass` (true) when all relevant classes are available in your database configuration.
+- `msg`: print in the REPL string `msg` on exit if it is not empty. By default it is empty.
 
 !!! note "Resampling"
     If you use resampling, the new sampling rate will be rounded to the nearest integer.
@@ -313,7 +317,7 @@ If requested, the preprocessing operations are performed in the order of the [kw
 !!! warning "stim and mark" 
     If the field `offset` of the NY file is different from zero,
     the stimulations in `stim` and markers in `mark` will be shifted to account for the offset - see [stimulation vector](@ref).
-    Offset will then be reset to zero. 
+    The field `.offset` will then be reset to zero. 
 
 **Return** an [`EEG`](@ref) data structure.
 
@@ -477,7 +481,7 @@ function readNY(filename    :: AbstractString;
   trials = !(classes===false) ? [X[mark[i][j]:mark[i][j]+wl-1, :] for i=1:nc for j=1:length(mark[i])] : nothing
 
   if !isempty(msg) println(msg) end
-  println("$(repeat("═", 65))") # (printing stdClass if true and offset if !=0)
+  # println("$(repeat("═", 65))") # (printing stdClass if true and offset if !=0)
   # this creates the `EEG` structure
   EEG(
      info["id"],
@@ -601,7 +605,7 @@ denoting the number of channels and samples, respectively.
 
 (1) `fileName` is the full path to the ASCII file. 
 
-- If [kwarg](@ref "Acronyms") `msg` is not empty, print `msg` on exit.
+- If [kwarg](@ref "Acronyms") `msg` is not empty, print `msg` in the REPL on exit.
 
 (2) `fileNames` is a vector of the full paths to the ASCII files. 
 
@@ -654,15 +658,20 @@ end
         hasHeader::Bool=true)
 ```
 Read a list of EEG sensor labels from ASCII file `fileName`.
-The file has one label per line.
+The file has one sensor label per line.
 
-If `hasHeader` is true (default), the first line is the number of labels.
+If `hasHeader` is true (default), the first line is the number of labels; this is the
+format of sensors file used by the [LORETA-Key](https://www.uzh.ch/keyinst/NewLORETA/Software/Software.htm)
+software.
 
-An example file looks like the trasnpose of this:
+As an example, a sensors file looks like this:
 
 3
+
 Fz
+
 Pz
+
 Cz
 
 **Examples**
@@ -712,12 +721,12 @@ Write a data matrix `X` into an ASCII text file that can be read by [`readASCII`
 - `fileName`: the full path of the file to be saved, usually with extension *.txt*.
 
 **Optional Keyword Arguments**
-- `samplesRange`: the unit range of rows of `X` (samples for ASCII EEG data files) to be written. Default: `1:T`
+- `samplesRange`: the unit range of rows of `X` (samples for ASCII EEG data files) to be written (all samples by default)
 - `overwrite`: if false (default), return an error if `fileName` is an existing file
 - `digits`: the number of decimal digits written for each value. Default: 6
-- `msg`: print string `msg` on exit if it is not empty (empty by default).
+- `msg`: print string `msg` in the REPL on exit if it is not empty (empty by default).
 
-If you need to remove columns of `X` before writing, see [`Eegle.Miscellaneous.remove`](@ref) or [`removeChannels`](@ref).
+If you need to remove columns of `X` (channels) before writing, see [`Eegle.Miscellaneous.remove`](@ref) or [`removeChannels`](@ref).
 
 (2)
 
@@ -743,12 +752,12 @@ Write a vector of strings into an ASCII text file.
 - `samplesRange`: a unit range of elements of `v` to be written (all elements by default)
 - `overwrite` and `msg`: as in (1)
 - `oneline`: 
-    - if true, write all elements in the first line delimiting them by a space
+    - if true, write all elements in the first line, delimiting them by a space
     - if false (default), write one element per line.
 
 !!! tip "End of line"
     All methods include character "\\r\\n" (ASCII end of line and carriage return) at the end of each line.
-    Visualizing these files properly with a standard text editor may require some care on Linux.
+    Visualizing these files properly by means of a standard text editor may require some care on Linux.
 
 **Examples**
 
