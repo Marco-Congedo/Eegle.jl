@@ -12,7 +12,7 @@ The tutorial shows how to
 2. Run a cross-validation for all selected [sessions](@ref "session") in all selected [databases](@ref "database") and show a summary of the cross-validation results for each session.
 
 !!! info
-    As a MLM, the [MDM](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/mdm/) Riemannian classifier employing the affine-invariant (Fisher-Rao) metric is used [barachant2012multi](@cite), [Congedo2017Review](@cite). As a covariance matrix estimator, the linear shrinkage estimator of [LedoitWolf2004](@cite) is used. All these are default settings. 
+    As a MLM, the [MDM](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/mdm/) Riemannian classifier employing the affine-invariant (Fisher-Rao) metric is used [barachant2012multi](@cite), [Congedo2017Review](@cite). As a covariance matrix estimator, the linear shrinkage estimator of [LedoitWolf2004](@cite) is used. These are state-of-the art settings used as default in **Eegle**. 
 
     For each session, an 8-fold stratified cross-validation is run. The summary of results comprises the mean and standard deviation of the
     balanced accuracy obtained across the folds as well as the z-score and p-value of the cross-validation test-statistic.
@@ -41,29 +41,30 @@ classes = ["feet", "right_hand"]
 DBs = selectDB(MIDir, :MI; classes);
 
 for (db, DB) ∈ enumerate(DBs)
-    println("Database: ", DB.dbName)
-    println("mean and sd balanced accuracy, z and p-value against chance level:")
+    println("\nDatabase: ", DB.dbName)
+    println("\nmean and sd balanced accuracy, z and p-value against chance level:")
     for (f, file) ∈ enumerate(DB.files)
         pr(f, crval(file; bandPass=(8, 32), classes))
     end
-    println("")
 end
 ```
 
-Perform the cross-validation on all available P300 databases featuring at least 25 trials for both the `target` and `non-target` (default) classes:
+Perform the cross-validation on all available P300 databases featuring at least 25 trials for both the `target` and `non-target` classes. For P300 there is no need to specify these two classes as they are the default:
 
 ```julia
 P300Dir = joinpath(homedir(), "FII corpus","NY","P300") # path to P300 databases
 DBs = selectDB(P300Dir, :P300; minTrials = 25);
 
 for (db, DB) ∈ enumerate(DBs)
-    println("Database: ", DB.dbName)
-    println("mean and sd balanced accuracy, z and p-value against chance level:")
+    println("\nDatabase: ", DB.dbName)
+    println("\nmean and sd balanced accuracy, z and p-value against chance level:")
     for (f, file) ∈ enumerate(DB.files)
         pr(f, crval(file; bandPass=(1, 24)))
     end
-    println("")
 end
 ```
 
 For all possible options in running cross-validations, see [`crval`](@ref).
+
+!!! tip
+    Do not use Julia's `@threaded` macro in the internal loops above as function `crval` is already multi-threaded across folds.

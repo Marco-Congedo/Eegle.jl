@@ -6,12 +6,15 @@ module Miscellaneous
 
 using PosDefManifold: AnyMatrix
 
-# functions:
+# ? ¤ CONTENT ¤ ? 
 
 # waste     | free the memory for all objects passed as arguments
 # charlie   | exit a function printing a message in one line
 # remove    | remove one or several elements from arrays
 # isSquare  | check if a matrix is square
+# minima    | local minima of a sequence
+# maxima    | local maxima of a sequence
+
 
 import Eegle
 
@@ -25,9 +28,9 @@ export
     remove,
     isSquare,
     minima,
+    maxima,
     waste,
     charlie
-
 
 """
 ```julia
@@ -63,13 +66,16 @@ A=randn(5, 5)
 B=remove(A, collect(1:2:5)) # remove rows 1, 3 and 5
 C=remove(A, [1, 4]) # remove rows 1 and 4
 
+# remove columns 2, 3, 8, 9, 10
 A=randn(10, 10)
 B=remove(A, [collect(2:3); collect(8:10)]; dims=2)
-# remove columns 2, 3, 8, 9, 10
 
+# remove every other sample (decimation by a factor of 2)
 A=randn(10, 10)
 B=remove(A, collect(1:2:size(A, 1)); dims=1)
-# remove every other sample (decimation by a factor of 2)
+
+# NB: before decimating the data must be low-pass filtered,
+# see the documentation of `resample`
 ```
 """
 function remove(X::Union{Vector, Matrix}, what::Union{Int, Vector{Int}}; dims=1)
@@ -93,6 +99,7 @@ function isSquare(X)
   X isa PosDefManifold.AnyMatrix && (size(X, 1)==size(X, 2))
 end
 
+
 """
 ```julia
     function minima(v::AbstractVector{T}) 
@@ -113,7 +120,28 @@ function minima(v::AbstractVector{T}) where T<:Real
         end
     end
     return m, value
- end
+end
+
+"""
+```julia
+    function maxima(v::AbstractVector{T}) 
+    where T<:Real
+```
+Return the 2-tuple formed by the vector of local maxima of vector `v` and the
+vector of the indices of `v` corresponding to the maxima.
+
+"""
+function maxima(v::AbstractVector{T}) where T<:Real
+    m=Int[]
+    value=Float64[]
+    for i=2:length(v)-1
+        if v[i-1]<v[i]>v[i+1] 
+            push!(m, i)
+            push!(value, v[i])
+        end
+    end
+    return m, value
+end
 
 
 # xxx

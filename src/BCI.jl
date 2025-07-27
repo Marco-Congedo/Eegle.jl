@@ -109,7 +109,9 @@ C = covmat(𝐗; covtype=SCM)
 
 C = covmat(𝐗; covtype=:Tyler)
 
-## using an example file provided with Eegle
+## using an example file provided with Eegle:
+## read a P300 BCI session, extract the trials and
+## compute the covariance matrices using default settings
 C = covmat(readNY(EXAMPLE_P300_1; bandPass=(1, 24), upperLimit=1.2).trials)
 ```    
 """
@@ -220,10 +222,6 @@ For details, see *Appendix I* in [Congedo2017Review](@cite).
 - `standardize`: standardize trials and prototype (global mean 0 and sd 1) before covariance estimation (default: false)
 - `tikh`: Tikhonov regularization parameter (0, the default, does not apply regularization). It is applied after covariance estimation
 - `threaded`: enable multi-threaded covariance estimations across trials (default: true). 
-
-**Throw**
-- `ArgumentError` if class label `targetLabel` is not found in `o.clabels` (for P300 paradigm).
-- `ArgumentError` if paradigm is not one of `:ERP`, `:P300`, or `:MI`.
 
 **Return**
 A vector of ``k`` covariance matrix estimations as a [HermitianVector](https://marco-congedo.github.io/PosDefManifold.jl/stable/MainModule/#%E2%84%8DVector-type) type.
@@ -357,7 +355,7 @@ This function runs in sequence the following three functions:
 
 **Arguments**
 
-- `filename`: the complete path of either the *.npz* or the *.yml* file of the recording to be used
+- `filename`: the complete path of either the *.npz* or the *.yml* file of the [session](@ref) to be used
 - `model` : any classifier of type [MLmodel](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/MainModule/#MLmodel). Default: the default [MDM](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/mdm/#PosDefManifoldML.MDM) classifier.
 
 !!! note "BCI paradigm"
@@ -372,7 +370,7 @@ A reminder only is given here. For details, see the function each [kwarg](@ref "
     - `bandStop`, `bandPass`, `bsDesign`, `bpDesign`: filter settings
     - `rate`: resampling
     - `upperLimit`: artifact rejection
-    - `classes`: classes of the trials to be read from the file. Default: all available classes)
+    - `classes`: classes of the trials to be read from the file. Default: all available classes
     - `stdClass`: standardization of class labels according to **Eegle**'s conventions
 - the following kwargs are passed to [`encode`](@ref) to encode the trials as covariance matrices: 
     - `covtype`: type of covariance matrix estimation 

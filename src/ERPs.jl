@@ -78,7 +78,7 @@ xxx
 
 !!! warning "Empty markers vectors"
     If `mark` holds empty vectors, they will be ignored and the mean will
-    not be computed for those marks. The number of means therefore will
+    not be computed for those vectors. The number of means therefore will
     be equal to the number of non-empty mark vectors.
 
 **Optional Keyword Arguments**
@@ -88,11 +88,6 @@ xxx
     - a vector of vectors of non-negative real weights for the trials, with the same shape as `mark`, where the empty vectors of `mark` are ignored
     - `:a` : adaptive weights computed as the inverse of the squared Frobenius norm of the trials data, along the lines of [Congedo2016STCP](@cite).
        
-!!! warning "offset"
-    If `mark` has been created using an offset when reading the data using [`Eegle.InOut.readNY`](@ref), set offset to zero here.
-
-    Markers which value plus the offset exceeds ``t`` minus the window length will be ignored, as they cannot define a complete ERP (or trial).
-
 **Return**
 
 A vector of mean ERPs, one for each non-empty vectors in `mark`. Each mean is a matrix of size 
@@ -104,6 +99,11 @@ The same as method (1), but taking as input an [`Eegle.InOut.EEG`](@ref) structu
 which has fields providing the recording (`X`), the ERP duration in samples (`wl`) and the markers (`mark`).
 
 Different markers can be used instead by passing [marker vectors](@ref) with the `mark` kwarg.
+
+!!! warning "offset"
+    If `mark` has been created using an offset when reading the data using [`Eegle.InOut.readNY`](@ref), do not provide the offset here (it is zero by default), as `mark` has already applied the offest.
+
+    Markers which value plus the offset exceeds ``t`` minus the window length will be ignored, as they cannot define a complete ERP (or trial).
 
 **See** [Eegle.ERPs.`stim2mark`](@ref), [`Eegle.ERPs.trialsWeights`](@ref)
 
@@ -117,24 +117,35 @@ using Eegle # or using Eegle.ERPs
 N, sr, wl = 19, 128, 128
 
 # number of tags per class
-nm=[30, 45, 28]
+nm = [30, 45, 28]
 
-X=randn(sr*100, N)
-mark=[[rand(1:sr*100-wl) for i=1:m] for m∈nm]
+X = randn(sr*100, N)
+mark = [[rand(1:sr*100-wl) for i=1:m] for m∈nm]
 
 # compute the means for all classes with adaptive weighting
-𝐌=mean(X, wl, mark; overlapping=true, weights=:a)
+𝐌 = mean(X, wl, mark; overlapping=true, weights=:a)
 
 # compute the means for class 1 and 3
-𝐌=mean(X, wl, [mark[1], mark[3]]; overlapping=true)
+𝐌 = mean(X, wl, [mark[1], mark[3]]; overlapping=true)
 
 # compute the mean  with adaptive weighting only for the first class
 # and return it as a matrix (not as a vector of matrices)
-M=mean(X, wl, [mark[1]]; weights=:a)[1]
+M = mean(X, wl, [mark[1]]; weights=:a)[1]
 
 # Method (2)
-# xxx Load a NY file
-𝐌=mean(o; overlapping=true, weights=:a)
+
+# read the example file for the P300 BCI paradigm
+o = readNY(EXAMPLE_P300_1)
+
+# compute means (adaptive weights and multivariate regression)
+𝐌 = mean(o; overlapping=true, weights=:a)
+
+# target average ERP
+T_ERP = 𝐌[findfirst(isequal("target"), o.clabels)] 
+
+# nontarget average ERP
+NT_ERP = 𝐌[findfirst(isequal("nontarget"), o.clabels)] 
+
 ```
 """
 function mean(X::Matrix{T}, wl::S, mark::Vector{Vector{S}};
@@ -213,7 +224,7 @@ Convert a [stimulation vector](@ref) into [marker vectors](@ref).
     and the number of marker vectors will be equal to the number of
     unique integers in `code`. If `code` is provided, the marker vectors are arranged in the order given there,
     otherwise the first vector corresponds to the tag 1, the second to tag 2, etc.
-    In ant case, in each vector, the samples are sorted in ascending order.
+    In any case, in each vector, the samples are sorted in ascending order.
 
 !!! warning "offset"
     Markers which value plus the offset is non-positive or exceeds the length of `stim` minus ``wl`` will be ignored,
@@ -261,7 +272,7 @@ Reverse transformation of [`stim2mark`](@ref).
 
 !!! note
     If an `offset` has been used in `stim2mark`, -offset must be used here
-    in order to get back to the original [stimulation vector](@ref).
+    in order to get back the original [stimulation vector](@ref).
 
 If `code` is provided, it must not contain 0. 
 
@@ -325,18 +336,18 @@ function _linComb(𝐓, linComb::Union{Vector{R}, S, Nothing} = nothing) where {
             if 𝐓 isa Vector 
                 return [t[:, linComb] for t ∈ 𝐓]
             else # vector of vectors
-                return [isempty(r) ? [] : [t[:, linComb] for t ∈ r] for r ∈ 𝐑]
+                return [isempty(r) ? [] : [t[:, linComb] for t ∈ r] for r ∈ 𝐓]
             end
-    else
+    else    # linComb isa Vector
             e = "Eegle.ERPs, function `trials`: the length of `linComb` does not match the number of columns (electrodes) of the trials"
             if 𝐓 isa Vector 
-                length(linComb)==size(𝐓[1]) || error(e)
+                length(linComb)==size(𝐓[1], 2) || error(e)
                 return [t*linComb for t ∈ 𝐓]
             else # vector of vector
                 for i∈eachindex(𝐓)
-                    !isempty(𝐓[i][1]) && (length(linComb)≠size(𝐓[i][1])) && error(e)
+                    !isempty(𝐓[i][1]) && (length(linComb)≠size(𝐓[i][1], 2)) && error(e)
                 end
-                return [isempty(r) ? [] : [t*linComb for t ∈ r] for r ∈ 𝐑]
+                return [isempty(r) ? [] : [t*linComb for t ∈ r] for r ∈ 𝐓]
             end
     end
 end
@@ -361,12 +372,12 @@ Optionally, multiply them by `weights` and compute a linear combination across s
     for segmenting non-tagged data, see [`Eegle.Processing.epoching`](@ref).
 
 **Arguments**
-- `X`: the whole EEG recording, a matrix of size ``T×N``, where ``T`` is the number of samples and ``N`` the number of channels (sensors).
-- `stimOrMark`: either a [stimulation vector](@ref) or [marker vectors](@ref). 
+- `X`: the whole EEG recording, a matrix of size ``T×N``, where ``T`` is the number of samples and ``N`` the number of channels (sensors)
+- `stimOrMark`: either a [stimulation vector](@ref) or [marker vectors](@ref)
 - `wl`: the window (trial, e.g., ERP) length in samples.
 
 **Optional Keyword Arguments**
-- `shape`: see below.
+- `shape`: see below
 - `weights`: optional weights to be multiplied to the trials. It has the same size as `stimOrMark`. Adaptive weights can be obtained passing the [`Eegle.ERPs.trialsWeights`](@ref) function.
 
 !!! warning "Weights normalization"
@@ -379,21 +390,47 @@ Optionally, multiply them by `weights` and compute a linear combination across s
 
 **Return**
 
-- if `stimOrMark` is a [stimulation vector](@ref), return a vector of trials or of linear combinations thereof.
+- if `stimOrMark` is a [stimulation vector](@ref), return a vector of trials or of linear combinations thereof
 - if `stimOrMark` is [marker vectors](@ref), return:
-    - a vector of vectors of trials or of linear combinations threof if `shape` ≠ `:cat`,
-    - all trials or the linear combinations threof concatenated in a single vector if `shape` == `:cat`.
+    - a vector of vectors of trials or of linear combinations threof if `shape` ≠ `:cat`
+    - all trials or the linear combinations thereof concatenated in a single vector if `shape` == `:cat`.
 
 By default `shape` is equal to `:cat`. Empty marker vectors are ignored if `shape` is equal to `:cat`, otherwise
 an empty vector is returned in their corresponding positions.
 
 Each extracted trial is a ``wl×N`` matrix if `linComb` is `nothing` (default), 
-otherwise it a vector ``wl`` elements.
+otherwise it a vector ``wl`` elements holding the linear combination.
+
+!!! tip
+    You can easily switch from a stimulation vector to markers vectors and viceversa using functions
+    [`mark2stim`](@ref) and [`stim2mark`](@ref).
 
 **Examples**
 ```julia
 using Eegle # or using Eegle.ERPs
-xxx # 
+
+# Example P300 BCI session
+o = readNY(EXAMPLE_P300_1)
+
+# Extract 1-s trials starting at samples specified in `mark`
+mark = [ [245, 658, 987], [258, 758, 1987]  ]
+
+# since `shape=:cat` (default),
+# `𝐗` will hold the six trials concatenated 
+𝐗 = trials(o.X, mark, o.sr)
+
+# extract only the time-series at electrodes Cz
+𝐗 = trials(o.X, mark, o.sr; 
+            linComb = findfirst(isequal("Cz"), o.sensors))
+
+# `𝐗[1]`, `𝐗[2]`, ... are now vectors            
+
+# suppose `f` is a spatial filter
+f = randn(o.ne)
+
+# extract the filtered trials
+𝐗 = trials(o.X, mark, o.sr; linComb = f)
+ 
 ```
 """
 trials( X::Matrix{R}, stim::Vector{S}, wl::S;
@@ -404,14 +441,14 @@ trials( X::Matrix{R}, stim::Vector{S}, wl::S;
         return []
     else
         if isnothing(weights)
-            return _linComb([X[stim[j]+offset:stim[j]+offset+wl-1, :] for j∈eachindex(stim)], linComb)
+            return _linComb([X[stim[j]+offset:stim[j]+offset+wl-1, :] for j∈eachindex(stim) if stim[j]≠0], linComb)
         else
-            return _linComb([X[stim[j]+offset:stim[j]+offset+wl-1, :]*weights[j] for j∈eachindex(stim)], linComb)
+            return _linComb([X[stim[j]+offset:stim[j]+offset+wl-1, :]*weights[j] for j∈eachindex(stim) if stim[j]≠0], linComb)
         end
     end
 
 trials( X::Matrix{R}, mark::Vector{Vector{S}}, wl::S;
-        weights::Union{Vector{Vector{R}}, Nothing}=nothing,
+        weights::Union{Vector{Vector{R}}, Nothing} = nothing,
         linComb::Union{Vector{R}, S, Nothing} = nothing,
         offset::S=0,
         shape::Symbol=:cat) where {R<:Real, S<:Int} =

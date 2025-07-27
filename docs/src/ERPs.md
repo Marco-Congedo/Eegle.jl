@@ -5,7 +5,7 @@ CurrentModule = Eegle
 ## ERPs.jl
 
 This module implements basic tools fo the analysis of **Event-Related Potentials** (ERPs). 
-Many of these tolls are useful for working with tagged EEG data in general, for example, with BCI data.
+Many of these tools are useful for working with tagged EEG data in general, for example, with BCI data.
 
 ## Extract ERPs
 
@@ -35,7 +35,7 @@ of the samples belonging to each of the possible ``z`` classes.
 
 ```
 # Representation of the above stimulation vector as markers vector
-`[[13, 18], [6]]`
+[[13, 18], [6]]
 ```
 
 ### offset

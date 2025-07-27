@@ -14,9 +14,9 @@ To learn how to use BCI databases, see [Tutorial ML 1](@ref).
 |  Function            |           Description             |
 |:---------------------|:----------------------------------|
 |[`Eegle.Database.infoDB`](@ref)      | immutable structure holding the information summarizing an EEG database |
-|[`Eegle.Database.loadNYdb`](@ref)    | return a list of .npz files in a directory (this is considered a 'database') |
+|[`Eegle.Database.loadNYdb`](@ref)    | return a list of *.npz* files in a directory (this is considered a [database](@ref)) |
 |[`Eegle.Database.infoNYdb`](@ref)    | print, save and return metadata about a database |
-|[`Eegle.Database.selectDB`](@ref)    | select database folders based on paradigm and class requirements
+|[`Eegle.Database.selectDB`](@ref)    | select databases and sessions based on inclusion criteria
 |[`Eegle.Database.weightsDB`](@ref)   | get weights for each session of a database for statistical analysis |
 📖
 ```@docs
