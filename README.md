@@ -16,7 +16,7 @@ It is the fundamental brick allowing the integration of several packages dedicat
 
 Execute the following command in julia's REPL:
 
-    ]add Eegle
+    ]add https://github.com/Marco-Congedo/Eegle.jl
 
 ---
 
@@ -36,7 +36,7 @@ This version is a **pre-release** for testing purpose.
 
 [Marco Congedo](https://sites.google.com/site/marcocongedo), corresponding author, is a Research Director of [CNRS](http://www.cnrs.fr/en) (Centre National de la Recherche Scientifique), working at [UGA](https://www.univ-grenoble-alpes.fr/english/) (University of Grenoble Alpes). **Contact**: first name dot last name at gmail dot com.
 
-[Fahim Doumi](https://www.linkedin.com/in/fahim-doumi-4888a9251/?locale=fr_FR) at the time of writing was a research ingeneer at the Department of Enginnering of the [University federico II of Naples](https://www.unina.it/en_GB/home).
+[Fahim Doumi](https://www.linkedin.com/in/fahim-doumi-4888a9251/?locale=fr_FR) at the time of writing was a research ingeneer at the Department of Enginnering of the [University Federico II of Naples](https://www.unina.it/en_GB/home).
 
 ---
 ## Contribute
