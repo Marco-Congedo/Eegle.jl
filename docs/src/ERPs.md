@@ -21,7 +21,7 @@ the [`stim2mark`](@ref) and [`mark2stim`](@ref) functions.
 
 This is an accessory channel holding as many samples as there are in the EEG recording. The value
 is zero everywhere, except at samples corresponding to a stimulus presentation, where the value is
-a natural number (1, 2, ...), each one coding a stimulus class. We name these numbers the **tag** of each sample.
+a natural number (1, 2, ...), each one coding a stimulus **class**. We name these numbers the **tag** of a sample. Each class **label** is associated to a unique non-zero tag, for example, `left_hand` → 1.
 
 ```
 # Toy example of a stimulation vector for two classes

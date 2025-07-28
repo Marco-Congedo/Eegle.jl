@@ -4,7 +4,7 @@ This document describes the standard dictionary structure used in `.yml` metadat
 
 ## Overview
 
-The YAML format has been employed for easily sharing EEG data metadata in Python and Julia environments. Each `.yml` file provides comprehensive metadata for its corresponding `.npz` data file.
+The YAML format has been employed for easily sharing EEG metadata in Python and Julia environments. Each `.yml` file provides comprehensive metadata for its corresponding `.npz` data file.
 
 ## Dictionary Structure
 

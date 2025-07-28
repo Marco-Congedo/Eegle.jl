@@ -12,31 +12,31 @@ This document outlines the structure and content of the 'BCI Databases' reposito
 #### BCI paradigm  
 It is a kind of BCI exploiting a specific electrophysiological phenomenon in order to achieve decoding of EEG data. 
 
-The most widespread paradigms are MI, P300 and SSVEP. The experimental conditions under which a BCI may run within the same paradigm may be substantially different, contributing in promoting the variability of BCI data. For example, in MI trial duration and instructions given to the subject are diverse and so are in P300 the inter-stimulus interval, the flash duration, the number of flashing items, their meaning, etc. The number, position and type of electrodes, the EEG amplifier, the experimental procedure, environmental factors and subjects (e.g., healthy vs. unhealthy) are all confounding factors in BCI data.
+The most widespread paradigms are MI (Motor Imagery), P300 and SSVEP (steady-state visually evoked potentials). The experimental conditions under which a BCI may run within the same paradigm may be substantially different, contributing in promoting the variability of BCI data. For example in MI, trial duration and instructions given to the subject are diverse and so are in P300 the inter-stimulus interval, the flash duration, the number of flashing items, their meaning, etc. The number, position and type of electrodes, the EEG amplifier, the experimental procedure, environmental factors and subjects (e.g., healthy vs. unhealthy) are all confounding factors in BCI data.
 
 #### BCI trial 
-It is an EEG epoch (time interval) providing the elementary object of encoding and decoding approaches. These epochs are in general positioned in time relative to a stimulation or a cue, depending on the BCI paradigm, but may also be unrelated to any specific time position (e.g., in neurofeedback and self-paced MI). Typically, the duration of the trials is fixed in a given experiment and may last from a few hundred milliseconds to a few seconds.
+It is an EEG epoch (time interval) providing the elementary object of encoding and decoding approaches. These epochs are in general positioned in time relative to a stimulation or a cue, depending on the [BCI paradigm](@ref), but may also be unrelated to any specific time position (e.g., in neurofeedback and self-paced MI). Typically, the duration of the trials is fixed in a given experiment and may last from a few hundred milliseconds to a few seconds.
 
 #### run
-A collection of trials forms a **run**, which encompasses the time period during which an experimental subject is engaged in a task without interruption. Typically, a run lasts from a few minutes to a few tens of minutes.
+It is a collection of [trials](@ref "BCI trial") encompassing the time period during which an experimental [subject](@ref) is engaged in a task without interruption. Typically, a run lasts from a few minutes to a few tens of minutes.
 
 #### session
-It comprises all runs performed while EEG electrodes remain attached to a subject's head. A session may include one or more runs, with possible pauses in between them. EEG recording files typically enclose a session. In any case, in this documentation it is assumed so. A session typically lasts a few tens of minutes to a few hours.
-
-#### subject
-It is a unique individual performing an experiment. A subject may provide one or several sessions. When several sessions are recorded from the same subject, they are typically recorded on different days.
+It comprises all [runs](@ref "run") performed while EEG electrodes remain attached to a subject's head. A session may include one or more runs, with possible pauses in between them. EEG recording files (datasets) typically enclose a session. In any case, in this documentation it is assumed so. A session typically lasts a few tens of minutes to a few hours.
 
 #### dataset 
-It is an EEG recording, typically comprising a whole session. In this documentation the term dataset will not be used as it will always be synonymous with session.
+It is an EEG recording, typically comprising a whole [sessions](@ref "session"). In this documentation the term dataset will not be used as it will always be synonymous with session.
+
+#### subject
+It is a unique individual performing an experiment. A subject may provide one or several [sessions](@ref "session"). When several sessions are recorded from the same subject, they are typically recorded on different days.
 
 #### database
-It is a collection of datasets recorded under experimental conditions held as constant as possible on one or more subjects. 
+It is a collection of [sessions](@ref "session") recorded under experimental conditions held as constant as possible on one or more subjects. 
 
-Typically, the number of datasets corresponds to the number of sessions and this number does not need to match the number of unique subjects, that is, the number of sessions per subject may be different. We require that all sessions in a database have at least the following experimental parameters held constant: number of classes, trial duration, number of electrodes, type of electrodes, EEG amplifier. The interface should also be fixed as well as paradigm-specific experimental parameters, such as inter-stimulus interval and flash duration for P300, experimental instructions for MI, etc. Since in general experiments are run to manipulate experimental conditions, a single experiment will typically result in as many databases as experimental conditions. From a statistical point of view, these precautions make the sessions within the same database as homogeneous as possible, allowing to consider the accuracy achieved in those sessions as random samples drawn from the same population. This is important if any conclusions are to be drawn comparing the accuracy results between databases, e.g., between experimental conditions, and also if the databases are treated as observation units in comparing pipelines, as it is currently done in MOABB[^1].
+Typically, the number of sessions does not need to match the number of unique [subjects](@ref "subject"), that is, the number of sessions per subject may be different. We require that all sessions in a database have at least the following experimental parameters held constant: number of classes, trial duration, number of electrodes, type of electrodes, EEG amplifier. The interface should also be fixed as well as paradigm-specific experimental parameters, such as inter-stimulus interval and flash duration for P300, experimental instructions for MI, etc. Since in general experiments are carried out to manipulate experimental conditions, a single experiment will typically result in as many databases as experimental conditions. From a statistical point of view, these precautions make the sessions within the same database as homogeneous as possible, allowing to consider the accuracy achieved in those sessions as random samples drawn from the same population. This is important if any conclusions are to be drawn comparing the accuracy results between databases, e.g., between experimental conditions, and also if the databases are treated as observation units in comparing pipelines, as it is currently done in MOABB[^1].
 
 ## Databases Selection
 
-Based on the [terminology](@ref "Terminology") section, we have selected and separated multiple databases primarily acquired from MOABB[^1] and supplemented by databases from their original repositories. Currently, our collection includes only P300 and Motor Imagery (MI) databases. This work was originally conducted for heterogeneous transfer learning research with the goal of "universalizing" BCI Databases, which guided our selection criteria. However, all data can be used for any purpose. For all paradigms, we have only included databases with healthy subjects.
+Based on the [terminology](@ref "Terminology") section, we have selected and separated multiple databases primarily acquired from MOABB[^1] and supplemented by databases from their original repositories. Currently, our collection includes only P300 and Motor Imagery (MI) databases. For all paradigms, we have only included databases with healthy subjects.
 
 Motor Imagery databases contain various classes, sometimes including paradigm-specific movements (e.g., compound movements). We selected only databases that included at least two of these following standard classes: 
 
@@ -46,13 +46,13 @@ Other classes were excluded. Additionally, databases containing executed movemen
 
 P300 databases contain only two classes: 
 
-"nontarget" → 1, "target" → 2. 
+`nontarget` → 1, `target` → 2
 
 These classes must maintain a specific ratio for optimal P300 response elicitation: typically 5:1 (nontarget:target). This imbalanced ratio is essential for the oddball paradigm, as the infrequent target stimuli generate the characteristic P300 event-related potential. Databases where the ratio was lower or higher than 5:1 were excluded.
 
-Here is an exhaustive list of our selected databases:
+Here is the complete list of the selected databases:
 
-### Sixteen Motor Imagery databases
+### Motor Imagery databases
 
 - AlexMI[^2]
 - BNCI2014001[^3]
@@ -68,7 +68,7 @@ Here is an exhaustive list of our selected databases:
 - Weibo2014[^13]
 - Zhou2016[^14]
 
-### Twenty-Four P300 databases
+### P300 databases
 
 - bi2012[^15]: separated into 2 different databases (bi2012-Training and bi2012-Online) due to different experimental conditions
 - bi2013a[^16]: separated into 4 different databases (bi2013a-NAO, bi2013a-NAT, bi2013a-AO, and bi2013a-AT) due to different experimental conditions
@@ -81,7 +81,7 @@ Here is an exhaustive list of our selected databases:
 - EPFLP300[^23]: separated into 6 different databases (EPFLP300-1, EPFLP300-2, EPFLP300-3, EPFLP300-4, EPFLP300-5, and EPFLP300-6) due to different experimental conditions
 - Lee2019ERP[^9]: separated into 2 different databases (Lee2019ERP-Test and Lee2019ERP-Train) due to different experimental conditions
 
-You can find summary tables of databases for each paradigm in here : [P300](Databases Summary P300.md) / [MI](Databases Summary MI.md).
+For summary tables of databases for each paradigm, see [P300](Databases Summary P300.md) and [MI](Databases Summary MI.md).
 
 ## Repository Structure
 
@@ -91,7 +91,7 @@ The repository includes summary tables for each paradigm comprising all main cha
 
 ### CSV format
 
-The goal with the CSV format is to universalize the raw data of each database and establish a common structure format.
+The goal with the CSV format is to universalize the raw data of each database and establish a common structure format that can be easily read using any programming language.
 The CSV files are organized as follows:
 
 - First column: timestamps of the samples
@@ -103,44 +103,47 @@ Here are the common treatments applied to all databases:
 
 - Data is stored in Volts and Float64 format (to facilitate use with MNE Python[^24], which only supports data in Volt)
 - Classes were re-labeled to match the standardized numbering scheme described in the [Databases Selection](@ref) section
-- Data with sampling rates below 256 Hz was kept unchanged, while data above 256 Hz was downsampled using integer decimation factors to obtain integer sampling rates ≤ 256 Hz. For downsampling, we applied a zero-phase low-pass filter before decimation using MNE Python[^24], with cutoff frequency less than 1/3 of the desired sampling rate to prevent aliasing artifacts (e.g., original sampling rate 1000 Hz, desired sampling rate 200 Hz → low-pass filter cutoff <66 Hz before applying decimation factor of 5).
-- Irrelevant electrodes were removed (reference or ground electrodes, EMG and EOG electrodes)
-- Data from different runs within the same session with identical experimental conditions were concatenated into a single session file
-- Irrelevant classes were removed (their labels were changed to 0)
-- Samples where the sum of all EEG columns equaled 0 or that contained NaN values were removed (such artifacts never coincided with trigger events in the stimulation column and were found at the beginning or end of recordings)
+- Data with sampling rates below 256 Hz was kept unchanged, while data sampled above 256 Hz was downsampled using the smallest integer decimation factor allowing a sampling rates ≤ 256 Hz. Before decimation, we applied a zero-phase low-pass filter using MNE Python[^24], with larget integer cutoff frequency ≤ 1/3 of the desired sampling rate to prevent aliasing artifacts (e.g., original sampling rate 1000 Hz, desired sampling rate 200 Hz → low-pass filter cutoff 66 Hz before applying decimation factor of 5)
+- Non-EEG channels were removed (reference or ground electrodes, EMG and EOG electrodes)
+- Data from different runs within the same session with identical experimental conditions were concatenated into a single session — see [session](@ref)
+- Irrelevant classes were removed (their tag was set to 0, — see [stimulation vector](@ref))
+- Samples holding zero at all channels or NaN values at any channels were removed (They have been found sometimes at the beginning or end of recordings).
 
-Stimulation column labeling was specific to the BCI paradigm:
+Class labeling and tagging has been uniformized:
 
-- MI was labeled as "left\\_hand" → 1, "right\\_hand" → 2, "feet" → 3, "rest" → 4, "both\\_hands" → 5, "tongue" → 6
-- P300 was labeled as "nontarget" → 1, "target" → 2
-- Remaining samples were labeled as 0
+- **MI**: `left_hand` → 1, `right_hand` → 2, `feet` → 3, `rest` → 4, `both_hands` → 5, `tongue` → 6
+- **P300**: `nontarget` → 1, `target` → 2
 
-Once all databases were converted to the [CSV format](@ref), they were transcribed to NY format.
+Remaining samples were all tagged as 0.
+
+Form the recordings we obtained this way in *CSV* format, corresponding recordings were obtained in the NY format.
 
 ### NY format
 
-This format is tailor-made for BCI data, ensuring compatibility and ease of use in both Julia and Python environments.
+The NY (New York) format is specifically conceived for BCI data. It holds data and metadata and allow convenient handling of BCI data in both Julia and Python environments.
 
-When converted to NY format, the EEG signal is stored in microvolts (µV) as it is the standard in the EEG community.
+When converted to NY format, the EEG data is stored in microvolts (*µ*V), as it is the standard in the EEG community.
 
-The NY format consists of two essential files:
+The NY format consists of two files with same name and different extension:
 
-- **`.npz File`**: Contains the raw data and stimulation vector, crucial for BCI data analysis. This .npz file follows the standard NumPy[^25] compressed archive format, which stores multiple arrays in a single file using ZIP compression. The file contains two arrays:
-  - `X`: EEG data matrix of shape (n_samples, n_channels) in µV and Float32 format
-  - `stim`: Stimulation vector of shape (n_samples,) with integer labels
+- **`.npz file`**: contains the raw data and [stimulation vector](@ref). The *.npz* file is the standard NumPy[^25] compressed archive format, which can store multiple arrays in a single file using ZIP compression. The file contains two arrays:
+  - `X`: the``N×T`` EEG data matrix, where ``N`` and ``T`` denotes the number of samples and channels, respectively, in Float32 *µ*V format.
+  - `stim`: the stimulation vector holding the ``T`` tags for the samples.
 
   This format is natively supported in Python through NumPy and easily readable in Julia via the [NPZ.jl](https://github.com/fhs/NPZ.jl) package.
 
-- **`.yml File`**: Stores metadata offering a comprehensive overview of the dataset's characteristics. The dictionary structure can be viewed in detail here: [YAML Structure](yamlstruct.md)
+- **`.yml file`**: stores metadata offering a comprehensive description of the dataset's characteristics — see [YAML Structure](yamlstruct.md). 
+
+NY files in **Eegle** are read using function [`readNY`](@ref), which creates an [`EEG`](@ref) structure holding both the data and the metadata.
 
 ## Converters
 
-All scripts designed for data conversion between formats (Base repository/MOABB to CSV and CSV to NY) tailored to each dataset's requirements are available in the 'Converters' folder and in [GitHub repository](https://github.com/FhmDmi/BCI-Databases).
+All scripts for data conversion between formats (Base repository/MOABB to CSV and CSV to NY), tailored to each dataset's requirements, are available in the 'Converters' folder and in a [GitHub repository](https://github.com/FhmDmi/BCI-Databases).
 
-These scripts facilitate the data pre-processing workflow:
+The following scripts facilitate the data pre-processing workflow:
 
-- **MOABB/BASE to CSV**: Python scripts with comprehensive comments guide the users through the conversion process from downloaded raw data (MOABB or original repositories) to the defined [CSV format](@ref)
-- **CSV to NY**: Python scripts with comprehensive comments guide the users through the conversion process from CSV to NY format.
+- **MOABB/BASE to CSV**: Python scripts with extensive comments, which guide the user through the conversion process from the downloaded raw data (MOABB or original repositories) to the defined [CSV format](@ref)
+- **CSV to NY**: Python scripts with extensive comments, which guide the user through the conversion process from CSV to NY format.
 
 ## BCI DB References
 
