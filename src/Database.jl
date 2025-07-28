@@ -558,7 +558,7 @@ function selectDB(rootDir       :: String,
                 nClasses = db.nClasses,
                 sr = db.sr,
                 wl = db.wl,
-                os = db.os
+                os = db.offset
             ))
         end
         
