@@ -26,7 +26,7 @@ function _downloadDB()
 
         mintrials = DOM.div(
             numberinput,
-            DOM.span("Minimum Trials per class (enter an Integer):"; style= number_inuput_style);
+            DOM.span("Minimum Trials per class (enter an Integer)"; style= number_inuput_style);
         )
 
         # Create checkboxes for current paradigm
