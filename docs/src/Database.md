@@ -4,7 +4,7 @@ CurrentModule = Eegle
 
 ## Database.jl
 
-This module implements tools to facilitate the work with EEG databases, in particular, **BCI databases** in **NY format** — see the [BCI Databases Overview](@ref).
+This module implements tools to facilitate the work with EEG databases, in particular, **BCI databases** in **NY format** — see the [FII BCI Corpus Overview](@ref).
 
 To learn how to use BCI databases, see [Tutorial ML 2](@ref).
 

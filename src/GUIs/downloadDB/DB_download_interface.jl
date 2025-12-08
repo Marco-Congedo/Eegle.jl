@@ -13,7 +13,7 @@ include("db_catalog.jl")
 include("styles.jl")
 
 
-# Launches the interactive GUI to browse, filter and download databases from the FII-BCI corpus.
+# Launches the interactive GUI to browse, filter and download databases from the FII BCI corpus.
 function _downloadDB()
 
     app = App() do session
@@ -152,7 +152,7 @@ function _downloadDB()
 
         return DOM.div( D.FlexCol(
             DOM.br(),
-            D.Title(" 📥 Eegle GUI: download the FII-BCI corpus", style = title_style),
+            D.Title(" 📥 Eegle GUI: download the FII BCI Corpus", style = title_style),
             DOM.br(),
             D.FlexRow(
                 D.Card(D.FlexCol(D.Title("Database options"), dropdown, mintrials, (c.cb for c in checkbox_widgets)..., "Current location on PC: ", path_chosen_by_user, path_button, overwrite_checkbox, download_button)),
@@ -165,25 +165,25 @@ end
 function _downloadDB(url::String, dest::String = DEFAULT_DOWNLOAD_DIR)
 
     if !isurl(url)
-        error("downloadDB: Invalid URL format: $url")
+        error("Eegle.Database.jl, function `downloadDB`: Invalid URL format: $url")
     end
 
     ## Transform the Zenodo url to JSON format
     if occursin("https://zenodo.org", url)
         url = replace(url, "https://zenodo.org" => "https://zenodo.org/api")
     else
-        error("downloadDB: URL must be a Zenodo record")
+        error("Eegle.Database.jl, function `downloadDB`: URL must be a Zenodo record")
     end
 
     ## Check the directory
     if !isdir(dest)
-        error("downloadDB: invalid directory")
+        error("Eegle.Database.jl, function `downloadDB`: invalid directory")
     end
 
     ## Check if the url is reachable
     resp = HTTP.get(url)
     if resp.status != 200
-        error("downloadDB: URL not reachable (status $(resp.status))")
+        error("Eegle.Database.jl, function `downloadDB`: URL not reachable (status $(resp.status))")
     end
 
     meta = JSON.parse(String(resp.body))
@@ -226,7 +226,7 @@ function _downloadDB(urls::Vector{String}, dest::String = DEFAULT_DOWNLOAD_DIR)
         try
             downloadDB(url, dest)
         catch e
-            @warn "Download failed for $url — skipping. Error: $e"
+            @warn "Eegle.Database.jl, function `downloadDB`: download failed for $url — skipping. Error: $e"
         end
     end
 end

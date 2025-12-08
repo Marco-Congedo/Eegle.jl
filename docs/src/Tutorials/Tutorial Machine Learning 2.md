@@ -1,11 +1,13 @@
 # Tutorial ML 2
 
-A common task in [BCI](@ref "Acronyms") reasearch is to test a machine learning model (MLM) on a large amount of real data.
-This tutorial uses the FII-BCI corpus in [NY format](@ref) as an example.
+A common task in [BCI](@ref "Acronyms") research is to test a machine learning model (MLM) on a large amount of real data.
+This tutorial uses the [FII BCI corpus](@ref "FII BCI Corpus Overview") as an example.
+
+If you did not download the corpus yet, do so before running this tutorial using the [`downloadDB`](@ref) function.
 
 The tutorial shows how to
 
-1. Select databases and sessions from the FII-BCI corpus according to:
+1. Select databases and sessions from the FII BCI Corpus according to:
     - BCI Paradigm (Motor Imagery or P300)
     - availability of specific classes
     - minimum number of trials per class
@@ -18,20 +20,12 @@ The tutorial shows how to
 
 ---
 
-Tell julia you want to use the **Eegle** package and where to look for the databases on your computer.
-
-```julia
-using Eegle 
-
-DBdir = joinpath(homedir(), "Documents", "My Data", "EEG data", "BCI Databases", "NY");
-```
-
-Select all motor imagery databases in the FII-BCI corpus featuring the "feet" and "right_hand" class. 
+Select all motor imagery databases in the *FII BCI Corpus* featuring the "feet" and "right_hand" class. 
 Within these databases, select the sessions featuring at least 30 trials for each of these classes — see [selectDB](@ref).
 
 ```julia
 classes = ["feet", "right_hand"];
-DBs = selectDB(DBdir, :MI; classes, minTrials = 30);
+DBs = selectDB(:MI; classes, minTrials = 30);
 ```
 
 Create memory to store all accuracies.
@@ -69,7 +63,7 @@ Perform the cross-validation on all available P300 databases and on all sessions
 ```julia
 P300acc = [zeros(length(DB.files)) for DB ∈ DBs];
 
-DBs = selectDB(DBdir, :P300; minTrials = 25);
+DBs = selectDB(:P300; minTrials = 25);
 
 for (db, DB) ∈ enumerate(DBs), (f, file) ∈ enumerate(DB.files)
     # perform cross-validation (using Eegle)

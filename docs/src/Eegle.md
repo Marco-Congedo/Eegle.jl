@@ -60,28 +60,40 @@ In this case, however, you must install DSP.jl as well.
 
 |  Package | Scope |
 |:-----------------------|:-----------------------|
+| [Bonito](https://github.com/SimonDanisch/Bonito.jl)| build interactive web applications, dashboards, and visualizations |
 | [CSV](https://github.com/JuliaData/CSV.jl) | support for the *CSV* format |
 | [DataFrames](https://github.com/JuliaData/DataFrames.jl) | manipulation of tables|
 | [Dates](https://github.com/JuliaStdlibs/Dates.jl)| standard Julia support for dates and time manipulation |
 | [EzXML](https://github.com/JuliaIO/EzXML.jl)| support for the *XML*/*HTML* data formats |
 | [Folds](https://github.com/JuliaFolds/Folds.jl)| multi-threaded basic functions |
 | [HDF5](https://github.com/JuliaIO/HDF5.jl)| Support for the *HDF5* data format |
+| [HTTP](https://github.com/JuliaWeb/HTTP.jl)| Support for *HTTP* |
+| [IsURL](https://github.com/zlatanvasovic/IsURL.jl)| utilities to work with URLs |
+| [JSON](https://github.com/JuliaIO/JSON.jl)| Support for the *JSON* data format |
+| [NativeFileDialog](https://github.com/JuliaGraphics/NativeFileDialog.jl)| native OS dialogs, e.g., for selecting files |
 | [PrettyTables](https://github.com/ronisbr/PrettyTables.jl)| print data in tables and matrices in a human-readable format |
 | [Random](https://github.com/JuliaStdlibs/Random.jl) | Julia standard random generators |
 | [YAML](https://github.com/JuliaData/YAML.jl)| support for the *YAML* data format |
 | [Reexport](https://github.com/simonster/Reexport.jl)| for development: julia macro to re-export symbols |
 | [Revise](https://github.com/timholy/Revise.jl)| for development: automatically update function definitions in a running Julia session |
 | [ZipFile](https://github.com/fhs/ZipFile.jl)| support for reading and writing ZIP archives in Julia |
-| [Bonito](https://github.com/SimonDanisch/Bonito.jl)| build interactive web applications, dashboards, and visualizations entirely in Julia |
-| [NativeFileDialog](https://github.com/JuliaGraphics/NativeFileDialog.jl)| for opening native OS dialogues for selecting files |
 | [Test](https://github.com/JuliaLang/julia/tree/master/stdlib/Test)| for development: Julia standard library for integrating package testing |
 
-### Other resources
+## Other Resources
+
+### related to Eegle
+
+|  Resource | Scope |
+|:-----------------------|:-----------------------|
+| [Eegle-Tools](https://github.com/FhmDmi/Eegle-Tools) | a collection of useful scripts used to develop Eegle or using Eegle  |
+
+
+### similar packages
 
 There are many other Julia's packages that can be useful for EEG data analysis and classification.
-Here is a non-exhaustive list of links to find resources and useful packages:
+Here is a non-exhaustive list:
 
-|  Package | Scope |
+|  Resource | Scope |
 |:-----------------------|:-----------------------|
 | [Julia Neuro](https://julianeuro.github.io/packages) | a collection of packages gor Neuroscience data  |
 | [RecurrenceAnalysis.jl](https://github.com/JuliaDynamics/RecurrenceAnalysis.jl) | recurrence plots and recurrence quantification analysis |

@@ -215,7 +215,7 @@ For details, see *Appendix I* in [Congedo2017Review](@cite).
     - for `:P300`, only the target class prototype is stacked
     - for `:MI`, no prototype is used; covariance is computed on the trial as it is.
 - `covtype`, `standardize`, `lags`, `useBLAS`, `reg`, `tol`, `maxiter` and `verbose` — see [`Eegle.BCI.covmat`](@ref), to which they are passed.
-- `targetLabel`: label of the target class (for P300 paradigm only). By default is "target", following the conventions of the FII corpus.
+- `targetLabel`: label of the target class (for P300 paradigm only). By default is "target", following the conventions of the FII BCI corpus.
 - `overlapping`: for prototype mean ERP estimations (ERP/P300 only). Default = false:
     - if true, use multivariate regression
     - if false, use the arithmetic average — see [`mean`](@ref).

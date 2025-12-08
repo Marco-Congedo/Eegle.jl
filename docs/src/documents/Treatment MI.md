@@ -1,6 +1,6 @@
-# Data Treatment for Motor Imagery Databases
+# Treatment MI
 
-This document describes all the changes applied to downloaded Motor Imagery databases from MOABB to achieve standardization in the [CSV format](@ref).
+This document describes all the changes applied to downloaded Motor Imagery databases from MOABB or base repository.
 
 ## AlexMI
 
@@ -201,6 +201,22 @@ This document describes all the changes applied to downloaded Motor Imagery data
 
 - **Channel removal**: EOG channels removed
 - **Session handling**: 3 sessions with identical experimental conditions (no separation required)
+
+## SPSM2025
+
+**Class Labels:**
+
+- Original: 1-left_hand, 2-right_hand, 3-rest
+- Modified: 3-rest → 4-rest (standardization)
+
+**Sampling Rate:**
+
+- Original: 250Hz
+- Modified: No changes required
+
+**Specific Treatments:**
+
+- **Session concatenation**: 1 session of 2 runs each with identical conditions, runs concatenated into corresponding session
 
 ## Weibo2014
 

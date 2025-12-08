@@ -40,4 +40,4 @@ table_rows_style = Styles(
 
 table_style = Styles("gap"=>"2px","background-color"=>"#fff","padding"=>"4px","border-radius"=>"6px")
 
-title_style = "font-size: 28px; font-weight: bold; margin-bottom: 20px;"
+title_style = "font-size: 24px; font-weight: bold; margin-bottom: 20px;"

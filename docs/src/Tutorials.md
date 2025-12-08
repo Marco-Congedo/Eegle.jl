@@ -23,14 +23,14 @@ Tutorials are organized by theme; start with those that most closely resemble yo
 | [Spectral Analysis](@ref) | traditional spectral analysis of EEG based on FFT |
 | [Machine Learning](@ref) | typically used in the field of brain-Computer interface |
 
-## Spectral Analysis
+### Spectral Analysis
 |Tutorial  | Description|
 |:----|:----|
 |[Tutorial SA 1](@ref) | compute and plot power spectra on continuous EEG recording |
 |[Tutorial SA 2](@ref) | compute and plot power spectra on particular EEG epochs (e.g., experimental trials) |
 
 
-## Machine Learning
+### Machine Learning
 |Tutorial  | Description|
 |:----|:----|
 |[Tutorial ML 1](@ref) | run a cross-validation comparing two Riemannian classifiers |

@@ -619,7 +619,7 @@ function reject(X::Matrix{R}, stim::Vector{Int}, wl::S;
                 returnDetails::Bool = false) where {R<:Real, S<:Int}
 
     (ns, ne), nc = size(X), length(unique(stim))-1 # stimulaion zero does not count as a class
-    length(stim)≠ns && throw(ArgumentError("ERP.jl, function `reject`: the `stim` vector does not have the same number of elements as samples in `X`"))
+    length(stim)≠ns && throw(ArgumentError("Eegle.ERP.jl, function `reject`: the `stim` vector does not have the same number of elements as samples in `X`"))
     frms = Eegle.Processing.globalFieldRMS(X; func=log)
 
     cleanstim = copy(stim)

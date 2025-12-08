@@ -1,7 +1,7 @@
 name = "Eegle"
 uuid = "1260424e-cd79-4b74-a0ea-47c69c296663"
-authors = ["Marco-Congedo <marco.congedo@gmail.com>"]
-version = "0.0.30"
+authors = ["Marco Congedo, Fahim Doumi"]
+version = "0.0.35"
 
 [deps]
 Bonito = "824d6782-a2ef-11e9-3a09-e5662e0c26f8"

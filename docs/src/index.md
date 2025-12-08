@@ -20,7 +20,7 @@ It also provides some modules for advanced EEG analysis.
 Execute the following commands in Julia's REPL:
 
 ```julia
-]add Eegle
+]add https://github.com/Marco-Congedo/Eegle.jl
 ```
 
 ## Quick Start
@@ -35,14 +35,16 @@ When you need a function, check its documentation and the examples given therein
 
 ## Contributors: 
 
-[Alexandre Bleuzé](https://www.linkedin.com/in/alexandre-bleuz%C3%A9-069b37154/)
-Fahim Doumi
+| Contributor | Contribution |
+|:----------|:----------|
+| [Abdeljalil Anajjar](https://github.com/AbdeljalilAnajjar) | web interface for downloading databases |
+| [Alexandre Bleuzé](https://www.linkedin.com/in/alexandre-bleuz%C3%A9-069b37154/) | Toeplitz algebra for multivariate regression mean ERP estimations |
 
 
 ## TroubleShoothing
 | Problem   | Solution |
 |:----------|:----------|
-| No problem encountered so far |  N.A.|
+| No problem encountered so far | N.A.|
 
 ## Package Test
 
@@ -54,7 +56,7 @@ Pkg.test("Eegle")
 ## Reviewers & Contributors
 
 Independent reviewers for both the code and the documentation are welcome.
-To contribute, please check the secion [How to Contribute](@ref).
+To contribute, please check the section [How to Contribute](@ref).
 
 ## Contents
 

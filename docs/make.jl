@@ -55,13 +55,16 @@ makedocs(;
         ],
         "Data" => [
             "Example Data" => "documents/Example Data.md",
-            "BCI DBs Documentation" => [
-                "BCI DBs Overview" => "documents/BCI Databases Overview.md",
-                "databases Summary MI" => "documents/Databases Summary MI.md",
-                "TreatmentMI" => "documents/TreatmentMI.md",
-                "databases Summary P300" => "documents/Databases Summary P300.md",
-                "TreatmentP300" => "documents/TreatmentP300.md",
+            "FII BCI Corpus" => [
+                "FII BCI Corpus" => "documents/FII BCI Corpus Overview.md",
+                "Terminology" => "documents/Terminology.md",
+                "Summary of MI Databases" => "documents/Summary of MI Databases.md",
+                "Treatment MI" => "documents/Treatment MI.md",
+                "Summary of P300 Databases" => "documents/Summary of P300 Databases.md",
+                "Treatment P300" => "documents/Treatment P300.md",
+                "NY format"=> "documents/NY format.md",
                 "NY metadata (YAML)" => "documents/yamlstruct.md",
+                "Benchmark" => "documents/Benchmark.md",
             ]
         ],
         "References" => "references.md"

@@ -9,6 +9,7 @@ using NPZ, YAML, HDF5, EzXML, DataFrames
 
 using Eegle.FileSystem
 
+# code for the GUI to download the FII BCI Corpus (called by `DownloadDB`)
 include(joinpath("GUIs", "downloadDB", "DB_download_interface.jl"))
 
 #=
@@ -28,7 +29,6 @@ const titleFont     = "\x1b[95m"
 const separatorFont = "\x1b[35m"
 const defaultFont   = "\x1b[0m"
 const greyFont      = "\x1b[90m"
-
 
 import Eegle
 
@@ -394,7 +394,7 @@ end
 
 """
 ```julia
-function selectDB(rootDir       :: String,
+function selectDB(<corpusDir    :: String,> 
                   paradigm      :: Symbol;
         classes     :: Union{Vector{String}, Nothing} = 
                         paradigm == :P300 ? ["target", "nontarget"] : nothing,
@@ -409,20 +409,26 @@ Return the selected databases as a list of [`infoDB`](@ref) structures, wherein,
 the `infoDB.files` field lists the included sessions only.
 
 **Arguments**
-- `rootDir`: the directory on the local computer where to start the search. Any folder in this directory is a candidate [database](@ref) to be selected.
-- `paradigm`: the BCI paradigm to be used. Supported paradigms at this time are: `:P300`, `:ERP` or `:MI`.
+- `corpusDir`: the directory on the local computer where to start the search. Any folder in this directory is a candidate [database](@ref) to be selected.
 
-!!! tip 
-    If a folder with the same name of the paradigm (for example: "MI") is found in `rootDir`, the search starts therein
-    and not in `rootDir`. 
+!!! tip "Smart Search"
+    If a folder with the same name of the paradigm (for example: "MI") is found in `corpusDir`, the search starts therein
+    and not in `corpusDir`. This way you can use the same `corpusDir` for all paradigms.
+
+    !!! note "Point to the FII BCI Corpus"
+    If you have downloaded the FII BCI Corpus using the provided GUI — see [`downloadDB`](@ref) —, you can simply
+    omit this argument; **Eegle** will automatically search within the FII BCI Corpus directory.
+
+- `paradigm`: the BCI paradigm to be used. Supported paradigms at this time are: `:P300`, `:ERP` or `:MI`.
 
 **Optional Keyword Arguments**
 - `classes`: the labels of the classes the databases must include:
-    - for the **P300** paradigm the default classes are `["target", "nontarget"]`, as in the FII corpus.
+    - for the **P300** paradigm the default classes are `["target", "nontarget"]`, as in the FII BCI corpus.
     - for the **MI** and **ERP** paradigm there is no inclusion criterion based on class labels by default.
 
-!!! tip 
-    In the FII corpus, available **MI** class labels are: "left_hand", "right_hand", "feet", "rest", "both_hands", and "tongue".
+!!! note "Class labels for MI" 
+    In the FII BCI corpus, available **MI** class labels are: *left_hand*, *right_hand*, *feet*, *rest*, *both_hands*, and *tongue*.
+    Available **P300** class labels are always the same two: *target* and *nontarget*.
 
 - `minTrials`: the minimum number of trials for all classes in the sessions to be included. 
 - `summarize`: if true (default) a summary table of the selected databases is printed in the REPL.
@@ -430,6 +436,13 @@ the `infoDB.files` field lists the included sessions only.
 
 **Examples**
 ```julia
+
+# To point automatically to the FII BCI Corpus
+DB_P300 = selectDB(:P300)
+
+DB_MI = selectDB(:MI; classes = ["left_hand", "right_hand"])
+
+# To point to any corpus in any directory
 selectedDB = selectDB(.../directory_to_start_searching/, :P300)
 
 selectedDB = selectDB(.../directory_to_start_searching/, :MI;
@@ -442,7 +455,7 @@ selectedDB = selectDB(.../directory_to_start_searching/, :MI;
                       verbose = true)
 ```
 """
-function selectDB(rootDir       :: String,
+function selectDB(corpusDir     :: String,
                   paradigm      :: Symbol;
                   classes       :: Union{Vector{String}, Nothing} = paradigm == :P300 ? ["target", "nontarget"] : nothing,
                   minTrials     :: Union{Int, Nothing} = nothing,
@@ -452,16 +465,17 @@ function selectDB(rootDir       :: String,
     paradigm ∉ (:MI, :P300, :ERP) && error("Eegle.Database, function `selectDB`: Unsupported paradigm. Use :MI, :P300 or :ERP")
     
     # Check if there's a paradigm subfolder and move to it if it exists
-    paradigmDir = joinpath(rootDir, string(paradigm))
-    isdir(paradigmDir) && (rootDir = paradigmDir)
+    paradigmDir = joinpath(corpusDir, string(paradigm))
+    isdir(paradigmDir) && (corpusDir = paradigmDir)
+    !isdir(corpusDir) && error("Eegle.Database, function `selectDB`: the provided directory `corpusDir` is not valid. Please check: $corpusDir") 
 
-    dbDirs = getFoldersInDir(rootDir)
-    isempty(dbDirs) && error("Eegle.Database, function `selectDB`: No database found in the directory: $rootDir")
+    dbDirs = getFoldersInDir(corpusDir)
+    isempty(dbDirs) && error("Eegle.Database, function `selectDB`: No database found in the directory: $corpusDir")
 
     # Check paradigm and classes requirements - no error for MI/ERP without classes
     if (paradigm == :MI || paradigm == :ERP) && isnothing(classes)
         println("Eegle.Database, function `selectDB`: No class filter specified for $paradigm paradigm. All databases will be returned.")
-        @warn "If you plan to perform classification with these databases, it is strongly recommended to specify the 'classes' argument to ensure consistent class selection across databases."
+        @warn "If you plan to perform classification with these databases, it is recommended to specify the 'classes' argument to ensure consistent class selection across databases."
     end
 
     selectedDB = infoDB[]  # List of infoDB structures
@@ -582,6 +596,19 @@ function selectDB(rootDir       :: String,
     return selectedDB  # selectedDB is a list of infoDB struct respecting the conditions
 end
 
+function selectDB(paradigm      :: Symbol;
+                  classes       :: Union{Vector{String}, Nothing} = paradigm == :P300 ? ["target", "nontarget"] : nothing,
+                  minTrials     :: Union{Int, Nothing} = nothing,
+                  summarize     :: Bool = true,
+                  verbose       :: Bool = false)
+
+    corpusDir = _dirFII() # see GUIs\downloadDB\db_catalog.jl
+    if isnothing(corpusDir)
+        throw(ArgumentError("Eegle.Database.selectDB: the default directory of the FII BCI Corpus has not been found. Please install the corpus running `downloadDB()`"))
+    else
+        selectDB(corpusDir, paradigm; classes, minTrials, summarize, verbose)
+    end
+end
 
 function _weightsDB(subject, n)
     usub = unique(subject)
@@ -685,31 +712,34 @@ end
 """
 ```julia
 
-(1) function downloadDB()
+(1) 
+function downloadDB()
 
-(2) downloadDB(url::String, dest::String = DEFAULT_DOWNLOAD_DIR)
+(2) 
+function downloadDB(url::String, dest::String = homedir())
 
-(3) downloadDB(urls::Vector{String}, dest::String = DEFAULT_DOWNLOAD_DIR)
+(3) 
+function downloadDB(urls::Vector{String}, dest::String = homedir())
 ```
-(1) Interactive GUI mode
+(1) **Interactive GUI mode**
 
 Open an interactive GUI to select and download databases from the FII BCI Corpus.
 The GUI will open in the primary HTML display found in the Julia display stack, which typically
-is VS Code or the default web-browser.
+is VS Code if you use it or the default web-browser.
 
 ![Figure GUI_downloadDB](assets/GUI_downloadDB.png)
 
 Once a BCI paradigm is selected (MI or P300), the following inclusion criteria can be selected:
-- mintrials: minimum number of trials per class
-- motor imagery classes (for MI paradigm only) 
+- the minimum number of trials per class
+- the motor imagery classes (for MI paradigm only) 
 
 The table on the right lists the available databases given the current inclusion criteria.
 
-The "Choose path" button allows to select the folder where the selected databases are to be downloaded (default: homedir()).
+The **Choose path** button allows to select the folder where the selected databases are to be downloaded (default: homedir()).
 
-If the the "Overwrite existing data" check box is checked (default), existing files in the download directory are deleted (suggested, as a new version of the the FII BCI corpus may be available).
+If the **Overwrite existing data** check box is checked (default), existing files in the download directory are deleted (suggested, as a new version of the the FII BCI corpus may be available).
 
-The GUI automatically downloads the databases, extracts their contents, and removes the ZIP archives, as soon as the "Download Now" button is pressed.
+The GUI automatically downloads the databases, extracts their contents, and removes the ZIP archives, as soon as the **Download Now** button is pressed.
 
 A progress indicator is displayed in the REPL throughout the download and extraction process.
 
@@ -720,17 +750,17 @@ A progress indicator is displayed in the REPL throughout the download and extrac
     Once the corpus is downloaded, **Eegle** knows automatically where to find it. Therefore, omitting the argument `corpusDir` while using function [`Eegle.Database.selectDB`](@ref)
     will automatically point to the FII BCI corpus.
 
-(2) Direct download of a single Zenodo record.
+(2) **Direct download of a single [Zenodo](https://zenodo.org/) record**
 
-`url` must point to a Zenodo record page (e.g. "https://zenodo.org/records/17670014").
+Argument `url` must point to a Zenodo record page (e.g. "https://zenodo.org/records/17670014").
 
-All files associated with the record are downloaded into folder `dest`.
+All files associated with the record are downloaded into folder `dest` (the home dir by default).
 
 A progress indicator is displayed in the REPL throughout the download and extraction process.
 
-(3) Direct download of several Zenodo records
+(3) **Direct download of several Zenodo records**
 
-Same as (2), but for a vector of Zenodo record URLs.
+This is the same as (2), but for a vector of Zenodo record URLs.
 
 
 **Examples**
