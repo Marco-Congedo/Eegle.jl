@@ -37,14 +37,14 @@ In 1893 Hans Berger fell off his horse during his military training in Germany a
 
 Berger would have never imagined that, a century later, his creature would be the cornerstone of a new form of 'telepathy', known as Brain-Computer Interface (BCI). By means of an EEG-based BCI, a human can send a command to a machine relying entirely on the EEG readings. In fact, a BCI is defined as a system that enables the information transfer without using the muscles or the peripheral nerves [^1] at all [@WolpawWolpaw:2012]. The EEG has been instrumental for the inception of this research, due to the seminal work of Jacques Vidal [@Vidal1973]. Still today, EEG is by far the preferred neuroimaging modality for non-invasive BCIs thanks to its unique characteristics:
 
-- High temporal resolution (~1ms),
-- Instantaneous measure of brain electrical potentials (no delay in the measure),
-- High consistency (e.g., same EEG power spectra on the same individuals on two successive days at the same hour),
-- Sensitivity (for example, it is very useful for the detection of epilepsy and minimal consciousness states),
-- Solid research tradition (one century-long),
-- Total silentness and truly non-invasiveness (e.g., allowing daily use on anybody, including newborn children and patients with any condition),
-- Need of small, light, and inexpensive equipment (the size of EEG electronics can be reduced to the size of a common chip),
-- Use of wireless recording in natural (out-of-the-lab) environments.
+- high temporal resolution (~1ms),
+- instantaneous measure of brain electrical potentials (no delay in the measure),
+- high consistency (e.g., same EEG power spectra on the same individuals on two successive days at the same hour),
+- sensitivity (for example, it is very useful for the detection of epilepsy and minimal consciousness states),
+- solid research tradition (one century-long),
+- total silentness and truly non-invasiveness (e.g., allowing daily use on anybody, including newborn children and patients with any condition),
+- need of small, light, and inexpensive equipment (the size of EEG electronics can be reduced to the size of a common chip),
+- use of wireless recording in natural (out-of-the-lab) environments.
 
 While BCI research is relatively new, EEG has a long-standing tradition in clinical and cognitive brain research. All-in-all, a search on PubMed for the terms ("EEG" or "electroencephalography") yielded 217,075 results on Jan 17 2026, with a positive trend starting at the dawn of the third millennium, a phenomenon that we name the 'rebirth of EEG'.
 
@@ -72,11 +72,11 @@ Julia is a young open-source and cross-platform language specifically conceived 
 
 # Software design
 
-In this context, we have created for the Julia language *Eegle*, the *EEG General Library* [@Eegle:2026]. [Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl) is a general-purpose package for EEG data analysis and machine learning. It is the foundational building block that enables the integration of diverse state-of-the-art packages specifically conceived for EEG data, leveraging the powerful Julia scientific ecosystem.
+In this context, we have created for the Julia language *Eegle*, the *EEG General Library* [@Eegle:2026]. `Eegle.jl` is a general-purpose package for EEG data analysis and machine learning. It is the foundational building block that enables the integration of diverse state-of-the-art packages specifically conceived for EEG data, leveraging the powerful Julia scientific ecosystem.
 
 ![Julia package ecosystem currently integrated by **Eegle**.](figure1.png){ width=95% }
 
-[Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl) is organized as a collection of independent modules. They are all re-exported, along with fundamental external packages.
+`Eegle.jl` is organized as a collection of independent modules. They are all re-exported, along with fundamental external packages.
 
 ### Internal modules
 
@@ -109,15 +109,15 @@ In this context, we have created for the Julia language *Eegle*, the *EEG Genera
 | [Statistics.jl](https://bit.ly/2Oem3li) | Julia standard package for statistics |
 
 This organization follows the spirit of Julia: it allows the centralization of all the above resources under a single package, yet it allows each package to be fully independent (including the documentation) to enable independent development and maintenance of each package.  
-As a consequence of this organization, `Eegle.jl`.
+As a consequence of this organization, `Eegle.jl` is a mighty, yet small and agile package.
 
 # FII BCI Corpus
 
-[Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl) features a GUI for downloading the **FII BCI Corpus**[@FIIBCICorpusMI:2025; @FIIBCICorpusP300:2025]. The corpus comprises a selection of BCI databases annotated and curated for both the motor imagery and P300 BCI paradigms. Along with EEG data and class labels, the corpus provides comprehensive metadata that allow selecting the data for the study at hand and extracting relevant information. This makes it particularly easy and principled to carry out machine learning research on BCI data — see, for example, the [Tutorial ML 2](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/Tutorial%20Machine%20Learning%202/#Tutorial-ML-2) of `Eegle.jl`.
+`Eegle.jl` features a GUI for downloading the **FII BCI Corpus**[@FIIBCICorpusMI:2025; @FIIBCICorpusP300:2025]. The corpus comprises a selection of BCI databases annotated and curated for both the motor imagery and P300 BCI paradigms. Along with EEG data and class labels, the corpus provides comprehensive metadata that allow selecting the data for the study at hand and extracting relevant information. This makes it particularly easy and principled to carry out machine learning research on BCI data — see, for example, the [Tutorial ML 2](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/Tutorial%20Machine%20Learning%202/#Tutorial-ML-2) of `Eegle.jl`.
 
 # pyLittleEegle
 
-The capabilities of [Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl) related to database selection using the FII BCI Corpus have been cloned and translated into the Python language, yielding the **pyLittleEegle** package [@pyLittleEegle:2025]. This package is fully compatible with scikit-learn[@scikit-learn:2011], thus making the corpus easily accessible in Python as well. 
+The capabilities of `Eegle.jl` related to database selection using the FII BCI Corpus have been cloned and translated into the Python language, yielding the **pyLittleEegle** package [@pyLittleEegle:2025]. This package is fully compatible with scikit-learn[@scikit-learn:2011], thus making the corpus easily accessible in Python as well. 
 
 # License
 
