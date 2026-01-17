@@ -35,7 +35,7 @@ The recent explosion of research on EEG-based Brain-Computer Interfaces (BCIs) h
 
 In 1893 Hans Berger fell off his horse during his military training in Germany and was nearly trampled. On that same day, his sister had a bad feeling about Hans and wrote him a telegram asking if everything was all right. To the 19 y.o. man, the coincidence appeared stunning. He thought that he had somehow transmitted his feelings to his sister with some form of 'telepathy' [@Bouszaki:2006]. He then decided to become a psychiatrist and to apply science to study the phenomenon. Based upon previous research of Richard Caton on the electrical activity of the exposed cortex of monkeys [@Caton:1875], he obtained the first human electroencephalographic recording in the middle of the 1920s [@Berger:1929].
 
-Berger would have never imagined that a century later his creature would be the cornerstone of a different form of 'telepathy', known as Brain-Computer Interface (BCI). By means of an EEG-based BCI, a human can send a command to a machine relying entirely on the EEG readings. In fact, a BCI is defined as a system that enables the information transfer without using the muscles or the peripheral nerves at all (the latter, for instance, control the movements of the eyes, which can be used to send commands) [@WolpawWolpaw:2012]. The EEG has been instrumental for the inception of this research, due to the seminal work of Jacques Vidal [@Vidal1973]. Still today, EEG is by far the preferred neuroimaging modality for non-invasive BCIs thanks to its unique characteristics:
+Berger would have never imagined that, a century later, his creature would be the cornerstone of a new form of 'telepathy', known as Brain-Computer Interface (BCI). By means of an EEG-based BCI, a human can send a command to a machine relying entirely on the EEG readings. In fact, a BCI is defined as a system that enables the information transfer without using the muscles or the peripheral nerves at all (the latter, for instance, control the movements of the eyes, which can be used to send commands) [@WolpawWolpaw:2012]. The EEG has been instrumental for the inception of this research, due to the seminal work of Jacques Vidal [@Vidal1973]. Still today, EEG is by far the preferred neuroimaging modality for non-invasive BCIs thanks to its unique characteristics:
 
 - High temporal resolution (~1ms),
 - Instantaneous measure of brain electrical potentials (no delay in the measure),
@@ -43,7 +43,7 @@ Berger would have never imagined that a century later his creature would be the 
 - Sensitivity (for example, it is very useful for the detection of epilepsy and minimal consciousness states),
 - Solid research tradition (one century-long),
 - Total silentness and truly non-invasiveness (e.g., allowing daily use on anybody, including newborn children and patients with any condition),
-- Need for small, light, and inexpensive equipment (the size of EEG electronics can be reduced to the size of a common chip),
+- Need of small, light, and inexpensive equipment (the size of EEG electronics can be reduced to the size of a common chip),
 - Use of wireless recording in natural (out-of-the-lab) environments.
 
 While BCI research is relatively new, EEG has a long-standing tradition in clinical and cognitive brain research. All-in-all, a search on PubMed for the terms ("EEG" or "electroencephalography") yielded 217,075 results on Jan 17 2026, with a positive trend starting at the dawn of the third millennium, a phenomenon that we name the 're-birth of EEG'.
@@ -68,15 +68,15 @@ In the Julia language, instead, the ecosystem for EEG data is poor and scattered
 
 ## Julia
 
-Julia is a young open-source and cross-platform language specifically conceived for scientific computing [@julia2017]. It is rapidly gaining momentum in the scientific community thanks to its affinity with mathematics and compatibility with the best available computing protocols. Although it is a high-level language, like Python and Matlab, it is (just-in-time) compiled, thus it can be very efficient. Typically, Julia code runs at a speed within a factor of two relative to fully optimized C code, thus it can be an order of magnitude faster compared to Python or R and about four times faster compared to Matlab. Moreover, Julia syntax is elegant and permissive, allowing the programmer to adopt his/her preferred writing style. That is to say, the same routine in Julia can be written using a syntax closely resembling C, Python, or Matlab, to name a few. This makes the learning of the Julia language particularly pleasant.
+Julia is a young open-source and cross-platform language specifically conceived for scientific computing [@julia2017]. It is rapidly gaining momentum in the scientific community thanks to its conceptual affinity with mathematics and compatibility with the best available computing protocols. Although it is a high-level language, like Python and Matlab, it is (just-in-time) compiled, thus it can be very efficient. Typically, Julia code runs at a speed within a factor of two relative to fully optimized C code, thus it can be an order of magnitude faster compared to Python or R and about four times faster compared to Matlab. Moreover, Julia syntax is elegant and permissive, allowing the programmer to adopt his/her preferred writing style. That is to say, the same routine in Julia can be written using a syntax closely resembling C, Python, or Matlab, to name a few. This makes the learning of the Julia language particularly pleasant.
 
 # Software design
 
-In this context, we have created the EEG General Library (**Eegle**) for the Julia language. `Eegle.jl` is a general-purpose package for EEG data analysis and machine learning. It is the foundational building block that enables the integration of diverse state-of-the-art packages specifically conceived for EEG data, leveraging the powerful Julia scientific ecosystem.
+In this context, we have created the EEG General Library ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) for the Julia language. ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) is a general-purpose package for EEG data analysis and machine learning. It is the foundational building block that enables the integration of diverse state-of-the-art packages specifically conceived for EEG data, leveraging the powerful Julia scientific ecosystem.
 
-![Julia package ecosystem integrated by **Eegle**.](figure1.png){ width=85% }
+![Julia package ecosystem integrated by **Eegle**.](figure1.png){ width=95% }
 
-`Eegle.jl` is organized as a collection of independent modules. They are all re-exported, along with fundamental external packages.
+([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) is organized as a collection of independent modules. They are all re-exported, along with fundamental external packages.
 
 ### Internal modules
 
@@ -109,19 +109,19 @@ In this context, we have created the EEG General Library (**Eegle**) for the Jul
 | [Statistics.jl](https://bit.ly/2Oem3li) | Julia standard package for statistics |
 
 This organization follows the spirit of Julia: it allows the centralization of all the above resources under a single package, yet it allows each package to be fully independent (including the documentation) to enable independent development and maintenance of each package.  
-As a consequence of this organization, `Eegle.jl` is mighty, yet small and agile.
+As a consequence of this organization, ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) is mighty, yet small and agile.
 
 # FII BCI Corpus
 
-`Eegle.jl` features a GUI for downloading the **FII BCI Corpus**[@FIIBCICorpusMI:2025; @FIIBCICorpusP300:2025]. The corpus comprises a selection of BCI databases annotated and curated for both the motor imagery and P300 BCI paradigms. Along with EEG data and class labels, the corpus provides comprehensive metadata that allow selecting the data for the study at hand and extracting relevant information. This makes it particularly easy and principled to carry out machine learning research on BCI data — see, for example, the [Tutorial ML 2](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/Tutorial%20Machine%20Learning%202/#Tutorial-ML-2) of `Eegle.jl`.
+([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) features a GUI for downloading the **FII BCI Corpus**[@FIIBCICorpusMI:2025; @FIIBCICorpusP300:2025]. The corpus comprises a selection of BCI databases annotated and curated for both the motor imagery and P300 BCI paradigms. Along with EEG data and class labels, the corpus provides comprehensive metadata that allow selecting the data for the study at hand and extracting relevant information. This makes it particularly easy and principled to carry out machine learning research on BCI data — see, for example, the [Tutorial ML 2](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/Tutorial%20Machine%20Learning%202/#Tutorial-ML-2) of ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)).
 
 # pyLittleEegle
 
-The capabilities of `Eegle.jl` related to database selection using the **FII BCI Corpus** have been cloned and translated into the Python language, yielding the **pyLittleEegle** package [@pyLittleEegle:2025]. This package is fully compatible with scikit-learn[@scikit-learn:2011], thus making the corpus easily accessible in Python as well. 
+The capabilities of ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) related to database selection using the **FII BCI Corpus** have been cloned and translated into the Python language, yielding the **pyLittleEegle** package [@pyLittleEegle:2025]. This package is fully compatible with scikit-learn[@scikit-learn:2011], thus making the corpus easily accessible in Python as well. 
 
 # License
 
-`Eegle.jl` is released under the MIT license.
+([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) is released under the MIT license.
 
 # AI usage disclosure
 
@@ -131,6 +131,6 @@ For writing the manuscript, generative AI tools have been used only for spelling
 
 # Acknowledgements
 
-We acknowledge the contributions to `Eegle.jl` of Dr. Alexandre Bleuzé and of Abdeljalil Anajjar.
+We acknowledge the contributions to ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) of Dr. Alexandre Bleuzé and of Abdeljalil Anajjar.
 
 # References
