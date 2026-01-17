@@ -27,28 +27,28 @@ bibliography: paper.bib
 
 # Summary
 
-Existing since the 1920s, Electroencephalography (EEG) is the first non-invasive neuroimaging modality developed by mankind. Despite many more sophisticated modalities having been developed since, to date EEG is still by far the most widely used. This is due to a number of distinct advantages over other modalities, such as the low price and encombrement of equipment, its silent operation, which is possible virtually everywhere, and its truly non-invasive operation, which has no medical contraindications.
+Existing since the 1920s, Electroencephalography (EEG) is the first non-invasive neuroimaging modality developed by mankind. Despite many more sophisticated modalities having been developed since, to date EEG is still by far the most widely used. This is due to a number of distinct advantages over other modalities, such as the high temporal resolution, the low price and encombrement of equipment, the silent operation and the total non-invasiveness.
 
-The recent explosion of research on EEG-based Brain-Computer Interfaces (BCIs) has fostered the need for efficient tools for EEG analysis and machine learning. While such tools exist for older languages such as Python and Matlab, they are not available for the more recent Julia language, which has been specifically created with these needs in mind. *Eegle.jl* leverages the rich scientific Julia ecosystem and integrates it to offer a simple and unified framework for both EEG data analysis and machine learning. We also release *pyLittleEegle*, a Python clone of the BCI-related capabilities of *Eegle.jl*. Both packages work seamlessly with the *FII BCI Corpus*, the first large curated and annotated databases for the motor imagery and P300 BCI modalities.
+The recent explosion of research on EEG-based Brain-Computer Interfaces (BCIs) has fostered the need for efficient tools for EEG analysis and machine learning. While such tools exist for older languages such as Python and Matlab, they are not available for the more recent Julia language, which has been specifically created with these needs in mind. *Eegle.jl* leverages the rich and efficient scientific Julia ecosystem and integrates it to offer a simple and unified framework for both EEG data analysis and machine learning. In order to promote inter-operability of Julia and Python, we also release *pyLittleEegle*, a Python clone of the BCI-related capabilities found in *Eegle.jl*. Both packages work seamlessly with the *FII BCI Corpus*, the first large curated and annotated databases for the motor imagery and P300 BCI modalities.
 
 # Statement of need
 
-In 1893, Hans Berger fell off his horse during his training with the German military and was nearly trampled. On that same day, his sister had a bad feeling about Hans and wrote him a telegram asking if everything was all right. To the 19 y.o. man, the coincidence appeared stunning. He thought that he had somehow transmitted his feelings to his sister with some form of 'telepathy' [@Bouszaki:2006]. He then decided to become a psychiatrist and to study the phenomenon seriously. Based upon previous research of Richard Caton on the electrical activity of the exposed cortex of monkeys [@Caton:1875], he obtained the first human electroencephalographic recording in the middle of the 1920s [@Berger:1929].
+In 1893 Hans Berger fell off his horse during his military training in Germany and was nearly trampled. On that same day, his sister had a bad feeling about Hans and wrote him a telegram asking if everything was all right. To the 19 y.o. man, the coincidence appeared stunning. He thought that he had somehow transmitted his feelings to his sister with some form of 'telepathy' [@Bouszaki:2006]. He then decided to become a psychiatrist and to apply science to study the phenomenon. Based upon previous research of Richard Caton on the electrical activity of the exposed cortex of monkeys [@Caton:1875], he obtained the first human electroencephalographic recording in the middle of the 1920s [@Berger:1929].
 
-Berger would have never imagined that a century later his creature would be the cornerstone of a scientifically well-grounded form of 'telepathy', known as Brain-Computer Interface (BCI). By means of an EEG-based BCI, a human can send a command to a machine relying entirely on the EEG readings. A BCI is defined as a system that enables the information transfer without using the muscles or the peripheral nerves at all (the latter, for instance, control the movements of the eyes, which can be used to send commands) [@WolpawWolpaw:2012]. For the inception of this research, started with the seminal work of Jacques Vidal [@Vidal1973], EEG has been instrumental. Still today, EEG is by far the preferred neuroimaging modality for non-invasive BCIs thanks to its unique characteristics:
+Berger would have never imagined that a century later his creature would be the cornerstone of a different form of 'telepathy', known as Brain-Computer Interface (BCI). By means of an EEG-based BCI, a human can send a command to a machine relying entirely on the EEG readings. In fact, a BCI is defined as a system that enables the information transfer without using the muscles or the peripheral nerves at all (the latter, for instance, control the movements of the eyes, which can be used to send commands) [@WolpawWolpaw:2012]. The EEG has been instrumental for the inception of this research, due to the seminal work of Jacques Vidal [@Vidal1973]. Still today, EEG is by far the preferred neuroimaging modality for non-invasive BCIs thanks to its unique characteristics:
 
-- High temporal resolution (~1ms)
-- Instantaneous measure of brain electrical potentials (no delay in the measure)
-- High consistency (e.g., same EEG power spectra on the same individuals on two successive days at the same hour)
-- Sensitivity (for example, it is very useful for the detection of epilepsy and minimal consciousness states)
-- Solid research tradition (one century-long)
-- Total silentness and truly non-invasiveness (e.g., allowing daily use on anybody, including newborn children and patients with any condition)
-- Need for small, light, and inexpensive equipment (the size of EEG electronics can be reduced to the size of a common chip)
+- High temporal resolution (~1ms),
+- Instantaneous measure of brain electrical potentials (no delay in the measure),
+- High consistency (e.g., same EEG power spectra on the same individuals on two successive days at the same hour),
+- Sensitivity (for example, it is very useful for the detection of epilepsy and minimal consciousness states),
+- Solid research tradition (one century-long),
+- Total silentness and truly non-invasiveness (e.g., allowing daily use on anybody, including newborn children and patients with any condition),
+- Need for small, light, and inexpensive equipment (the size of EEG electronics can be reduced to the size of a common chip),
 - Use of wireless recording in natural (out-of-the-lab) environments.
 
 While BCI research is relatively new, EEG has a long-standing tradition in clinical and cognitive brain research. All-in-all, a search on PubMed for the terms ("EEG" or "electroencephalography") yielded 217,075 results on Jan 17 2026, with a positive trend starting at the dawn of the third millennium, a phenomenon that we name the 're-birth of EEG'.
 
-Older languages such as Python and Matlab have their ecosystem for EEG data analysis and machine learning. Here below are the most frequently adopted software:
+Older languages such as Python and Matlab have their established software ecosystems for EEG data analysis and machine learning. Here below are the most frequently adopted software:
 
 ## Python
 | Package   | Description |
@@ -68,9 +68,7 @@ In the Julia language, instead, the ecosystem for EEG data is poor and scattered
 
 ## Julia
 
-Julia is a young open-source and cross-platform language specifically conceived for scientific computing, which is rapidly gaining momentum in the data science community thanks to its efficiency and compatibility with the best available computing protocols [@julia2017].  
-It is a high-level language, like Python and Matlab; however, it is (just-in-time) compiled, thus it can be very efficient.  
-Typically, Julia code runs at a speed within a factor of two relative to fully optimized C code, thus it can be an order of magnitude faster compared to Python or R and about four times faster compared to Matlab. Moreover, Julia syntax is elegant and permissive, allowing the programmer to adopt his/her preferred writing style. That is to say, the same routine in Julia can be written using a syntax closely resembling C, Python, or Matlab, to name a few. This makes the learning of the Julia language particularly pleasant.
+Julia is a young open-source and cross-platform language specifically conceived for scientific computing [@julia2017]. It is rapidly gaining momentum in the scientific community thanks to its affinity with mathematics and compatibility with the best available computing protocols. Although it is a high-level language, like Python and Matlab, it is (just-in-time) compiled, thus it can be very efficient. Typically, Julia code runs at a speed within a factor of two relative to fully optimized C code, thus it can be an order of magnitude faster compared to Python or R and about four times faster compared to Matlab. Moreover, Julia syntax is elegant and permissive, allowing the programmer to adopt his/her preferred writing style. That is to say, the same routine in Julia can be written using a syntax closely resembling C, Python, or Matlab, to name a few. This makes the learning of the Julia language particularly pleasant.
 
 # Software design
 
@@ -110,8 +108,8 @@ In this context, we have created the EEG General Library (**Eegle**) for the Jul
 | [StatsBase.jl](https://github.com/JuliaStats/StatsBase.jl) | Julia standard package for basic statistics |
 | [Statistics.jl](https://bit.ly/2Oem3li) | Julia standard package for statistics |
 
-This organization follows the spirit of Julia: it allows centralization of all the above resources under a single package, yet it allows each package to be fully independent (including the documentation) to enable independent development and maintenance of each package.  
-As a consequence of this organization, `Eegle.jl` is a relatively small and agile package.
+This organization follows the spirit of Julia: it allows the centralization of all the above resources under a single package, yet it allows each package to be fully independent (including the documentation) to enable independent development and maintenance of each package.  
+As a consequence of this organization, `Eegle.jl` is mighty, yet small and agile.
 
 # FII BCI Corpus
 
@@ -119,7 +117,7 @@ As a consequence of this organization, `Eegle.jl` is a relatively small and agil
 
 # pyLittleEegle
 
-The capabilities of `Eegle.jl` related to database selection using the **FII BCI Corpus**, as well as all its machine learning capabilities, have been cloned and translated into the Python language, yielding the **pyLittleEegle** package [@pyLittleEegle:2025]. This package is fully compatible with scikit-learn[@scikit-learn:2011], thus making the corpus easily accessible in Python as well. 
+The capabilities of `Eegle.jl` related to database selection using the **FII BCI Corpus** have been cloned and translated into the Python language, yielding the **pyLittleEegle** package [@pyLittleEegle:2025]. This package is fully compatible with scikit-learn[@scikit-learn:2011], thus making the corpus easily accessible in Python as well. 
 
 # License
 
