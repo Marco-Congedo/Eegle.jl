@@ -35,7 +35,7 @@ The recent explosion of research on EEG-based Brain-Computer Interfaces (BCIs) h
 
 In 1893 Hans Berger fell off his horse during his military training in Germany and was nearly trampled. On that same day, his sister had a bad feeling about Hans and wrote him a telegram asking if everything was all right. To the 19 y.o. man, the coincidence appeared stunning. He thought that he had somehow transmitted his feelings to his sister with some form of 'telepathy' [@Bouszaki:2006]. He then decided to become a psychiatrist and to apply science to study the phenomenon. Based upon previous research of Richard Caton on the electrical activity of the exposed cortex of monkeys [@Caton:1875], he obtained the first human electroencephalographic recording in the middle of the 1920s [@Berger:1929].
 
-Berger would have never imagined that, a century later, his creature would be the cornerstone of a new form of 'telepathy', known as Brain-Computer Interface (BCI). By means of an EEG-based BCI, a human can send a command to a machine relying entirely on the EEG readings. In fact, a BCI is defined as a system that enables the information transfer without using the muscles or the peripheral nerves at all (the latter, for instance, control the movements of the eyes, which can be used to send commands) [@WolpawWolpaw:2012]. The EEG has been instrumental for the inception of this research, due to the seminal work of Jacques Vidal [@Vidal1973]. Still today, EEG is by far the preferred neuroimaging modality for non-invasive BCIs thanks to its unique characteristics:
+Berger would have never imagined that, a century later, his creature would be the cornerstone of a new form of 'telepathy', known as Brain-Computer Interface (BCI). By means of an EEG-based BCI, a human can send a command to a machine relying entirely on the EEG readings. In fact, a BCI is defined as a system that enables the information transfer without using the muscles or the peripheral nerves [^1] at all [@WolpawWolpaw:2012]. The EEG has been instrumental for the inception of this research, due to the seminal work of Jacques Vidal [@Vidal1973]. Still today, EEG is by far the preferred neuroimaging modality for non-invasive BCIs thanks to its unique characteristics:
 
 - High temporal resolution (~1ms),
 - Instantaneous measure of brain electrical potentials (no delay in the measure),
@@ -132,5 +132,7 @@ For writing the manuscript, generative AI tools have been used only for spelling
 # Acknowledgements
 
 We acknowledge the contributions to `Eegle.jl` of Dr. Alexandre Bleuzé and of Abdeljalil Anajjar.
+
+[^1]: it is a peripheral nerve, for instance, that controls the movements of the eyes, which can be used to send commands.
 
 # References
