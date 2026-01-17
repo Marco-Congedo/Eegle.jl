@@ -1,35 +1,25 @@
 ---
-title: 'Gala: A Python package for galactic dynamics'
+title: 'Eegle: A Julia integrative package for EEG data analysis and machine learning'
 tags:
-  - Python
-  - astronomy
-  - dynamics
-  - galactic dynamics
-  - milky way
+  - Julia
+  - EEG
+  - Electroencephalography
+  - Data Science
+  - Machine Learning
 authors:
-  - name: Adrian M. Price-Whelan
-    orcid: 0000-0000-0000-0000
+  - name: Marco Congedo
+    orcid: 0000-0003-2196-0409
     equal-contrib: true
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID
+    affiliation: 1 
+  - name: Fahim Doumi
     equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
-    affiliation: 2
-  - name: Author with no affiliation
-    corresponding: true # (This is how to denote the corresponding author)
-    affiliation: 3
-  - given-names: Ludwig
-    dropping-particle: van
-    surname: Beethoven
-    affiliation: 3
+    affiliation: "1, 2" # (Multiple affiliations must be quoted)
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University, United States
+ - name: University Grenoble Alpes, CNRS, Grenoble-INP, Grenoble, France
    index: 1
-   ror: 00hx57361
- - name: Institution Name, Country
+ - name: University Federico II, Naples, Italy. 
    index: 2
- - name: Independent Researcher, Country
-   index: 3
-date: 13 August 2017
+date: 18 January 2026
 bibliography: paper.bib
 
 # Optional fields if submitting to a AAS journal too, see this blog post:
