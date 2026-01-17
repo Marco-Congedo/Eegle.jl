@@ -72,11 +72,11 @@ Julia is a young open-source and cross-platform language specifically conceived 
 
 # Software design
 
-In this context, we have created the EEG General Library ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) for the Julia language. ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) is a general-purpose package for EEG data analysis and machine learning. It is the foundational building block that enables the integration of diverse state-of-the-art packages specifically conceived for EEG data, leveraging the powerful Julia scientific ecosystem.
+In this context, we have created the EEG General Library ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) for the Julia language. [Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl) is a general-purpose package for EEG data analysis and machine learning. It is the foundational building block that enables the integration of diverse state-of-the-art packages specifically conceived for EEG data, leveraging the powerful Julia scientific ecosystem.
 
-![Julia package ecosystem integrated by **Eegle**.](figure1.png){ width=95% }
+![Julia package ecosystem currently integrated by **Eegle**.](figure1.png){ width=95% }
 
-([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) is organized as a collection of independent modules. They are all re-exported, along with fundamental external packages.
+[Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl) is organized as a collection of independent modules. They are all re-exported, along with fundamental external packages.
 
 ### Internal modules
 
@@ -109,19 +109,19 @@ In this context, we have created the EEG General Library ([Eegle.jl](https://git
 | [Statistics.jl](https://bit.ly/2Oem3li) | Julia standard package for statistics |
 
 This organization follows the spirit of Julia: it allows the centralization of all the above resources under a single package, yet it allows each package to be fully independent (including the documentation) to enable independent development and maintenance of each package.  
-As a consequence of this organization, ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) is mighty, yet small and agile.
+As a consequence of this organization, `Eegle.jl`.
 
 # FII BCI Corpus
 
-([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) features a GUI for downloading the **FII BCI Corpus**[@FIIBCICorpusMI:2025; @FIIBCICorpusP300:2025]. The corpus comprises a selection of BCI databases annotated and curated for both the motor imagery and P300 BCI paradigms. Along with EEG data and class labels, the corpus provides comprehensive metadata that allow selecting the data for the study at hand and extracting relevant information. This makes it particularly easy and principled to carry out machine learning research on BCI data — see, for example, the [Tutorial ML 2](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/Tutorial%20Machine%20Learning%202/#Tutorial-ML-2) of ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)).
+[Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl) features a GUI for downloading the **FII BCI Corpus**[@FIIBCICorpusMI:2025; @FIIBCICorpusP300:2025]. The corpus comprises a selection of BCI databases annotated and curated for both the motor imagery and P300 BCI paradigms. Along with EEG data and class labels, the corpus provides comprehensive metadata that allow selecting the data for the study at hand and extracting relevant information. This makes it particularly easy and principled to carry out machine learning research on BCI data — see, for example, the [Tutorial ML 2](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/Tutorial%20Machine%20Learning%202/#Tutorial-ML-2) of `Eegle.jl`.
 
 # pyLittleEegle
 
-The capabilities of ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) related to database selection using the **FII BCI Corpus** have been cloned and translated into the Python language, yielding the **pyLittleEegle** package [@pyLittleEegle:2025]. This package is fully compatible with scikit-learn[@scikit-learn:2011], thus making the corpus easily accessible in Python as well. 
+The capabilities of [Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl) related to database selection using the FII BCI Corpus have been cloned and translated into the Python language, yielding the **pyLittleEegle** package [@pyLittleEegle:2025]. This package is fully compatible with scikit-learn[@scikit-learn:2011], thus making the corpus easily accessible in Python as well. 
 
 # License
 
-([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) is released under the MIT license.
+`Eegle.jl` is released under the MIT license.
 
 # AI usage disclosure
 
@@ -131,6 +131,6 @@ For writing the manuscript, generative AI tools have been used only for spelling
 
 # Acknowledgements
 
-We acknowledge the contributions to ([Eegle.jl](https://github.com/Marco-Congedo/Eegle.jl)) of Dr. Alexandre Bleuzé and of Abdeljalil Anajjar.
+We acknowledge the contributions to `Eegle.jl` of Dr. Alexandre Bleuzé and of Abdeljalil Anajjar.
 
 # References
