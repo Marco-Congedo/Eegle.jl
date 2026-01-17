@@ -74,7 +74,7 @@ Julia is a young open-source and cross-platform language specifically conceived 
 
 In this context, we have created for the Julia language *Eegle*, the *EEG General Library* [@Eegle:2026]. `Eegle.jl` is a general-purpose package for EEG data analysis and machine learning. It is the foundational building block that enables the integration of diverse state-of-the-art packages specifically conceived for EEG data, leveraging the powerful Julia scientific ecosystem.
 
-![Julia package ecosystem currently integrated by **Eegle**.](figure1.png){ width=95% }
+![Julia package ecosystem currently integrated by `Eegle.jl`.](figure1.png){ width=95% }
 
 `Eegle.jl` is organized as a collection of independent modules. They are all re-exported, along with fundamental external packages.
 
