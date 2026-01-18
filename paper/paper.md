@@ -65,17 +65,17 @@ Older languages such as Python and Matlab have their established software ecosys
 |:------------|:------------|
 | EEGLAB[@eeglab:2004] | An interactive Matlab toolbox for processing continuous and event-related EEG, MEG |
 | FieldTrip[@fieldtrip:2011] | Open-source software for advanced analysis of MEG, EEG, and invasive electrophysiological data |
-| Brainstorm[@brainstorm2011] | A user-friendly application for MEG/EEG analysis |
-
-In the Julia language, instead, the ecosystem for EEG data is poor and scattered. However, the use of Julia may greatly benefit the field.  
+| Brainstorm[@brainstorm:2011] | A user-friendly application for MEG/EEG analysis |
 
 ## Julia
 
-Julia is a young open-source and cross-platform language specifically conceived for scientific computing [@julia2017]. It is rapidly gaining momentum in the scientific community thanks to its conceptual affinity with mathematics and compatibility with the best available computing protocols. Although it is a high-level language, like Python and Matlab, it is (just-in-time) compiled, thus it can be very efficient. Typically, Julia code runs at a speed within a factor of two relative to fully optimized C code, thus it can be an order of magnitude faster compared to Python or R and about four times faster compared to Matlab. Moreover, Julia syntax is elegant and permissive, allowing the programmer to adopt his/her preferred writing style. That is to say, the same routine in Julia can be written using a syntax closely resembling C, Python, or Matlab, to name a few. This makes the learning of the Julia language particularly pleasant.
+Julia is a young open-source and cross-platform language specifically conceived for scientific computing [@julia:2017]. It is rapidly gaining momentum in the scientific community thanks to its conceptual affinity with mathematics and compatibility with the best available computing protocols. Although it is a high-level language, like Python and Matlab, it is (just-in-time) compiled, thus efficient. Moreover, Julia's syntax is elegant and permissive, allowing the programmer to adopt his/her preferred writing style. That is to say, the same routine in Julia can be written using a syntax closely resembling C, Python, or Matlab, to name a few. This accelerates the learning curve for people knowing other programming languages.
+
+For these reasons, the use of Julia may greatly benefit the field of EEG data analysis and machine learning. However, there are only a few active projects at the moment. The most active appear `NeuroAnalyzer.jl` [@Wysokinski:2024] and `unfold.jl` [@ehinger:2026]. The first focuses on sleep data and the second on event-related potentials. `Eegle.jl` is a generic package for EEG, thus its scope intersects only weakly with these specific packages.
 
 # Software design
 
-In this context, we have created for the Julia language *Eegle*, the *EEG General Library* [@Eegle:2026]. `Eegle.jl` is a general-purpose package for EEG data analysis and machine learning. It is the foundational building block that enables the integration of diverse state-of-the-art packages specifically conceived for EEG data, leveraging the powerful Julia scientific ecosystem.
+In this context, we have created for the Julia language `Eegle.jl`, which stands short for *EEG General Library* [@Eegle:2026]. The package acts as foundational building block enabling the integration of diverse state-of-the-art packages specifically conceived for EEG data and leveraging the powerful Julia scientific ecosystem.
 
 ![Julia package ecosystem currently integrated by `Eegle.jl`.](figure1.png){ width=95% }
 
