@@ -46,7 +46,7 @@ Berger would have never imagined that, a century later, his creature would be th
 - need of small, light, and inexpensive equipment (the size of EEG electronics can be reduced to the size of a common chip),
 - use of wireless recording in natural (out-of-the-lab) environments.
 
-While BCI research is relatively new, EEG has a long-standing tradition in clinical and cognitive brain research. All-in-all, a search on PubMed for the terms ("EEG" or "electroencephalography") yielded 217,075 results on Jan 17 2026, with a positive trend starting at the dawn of the third millennium, a phenomenon that we name the 'rebirth of EEG'.
+While BCI research is relatively new, EEG has a long-standing tradition in clinical and cognitive brain research. All-in-all, a search on PubMed for the terms ("EEG" or "electroencephalography") yielded 217,092 results on Jan 18 2026, with a positive trend starting at the dawn of the third millennium, a phenomenon that we name the 'rebirth of EEG'.
 
 Older languages such as Python and Matlab have their established software ecosystems for EEG data analysis and machine learning. Here below are the most frequently adopted software:
 
