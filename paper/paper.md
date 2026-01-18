@@ -117,19 +117,9 @@ As a consequence of this organization, `Eegle.jl` is a mighty, yet small and agi
 # Research Impact Statement
 Although still in its infancy, `Eegle.jl` has stimulated several developments to the benefit of the whole BCI community:
 
-### FII BCI  Corpus
-`Eegle.jl` has been instrumental to create the **FII BCI Corpus** [@FIIBCICorpusMI:2025; @FIIBCICorpusP300:2025]. The corpus comprises a selection of BCI databases annotated and curated for both the motor imagery and P300 BCI paradigms. Along with EEG data and class labels, the corpus provides comprehensive metadata that allow selecting the data for the study at hand and extracting relevant information. This is the first open-access corpus of the kind. The annotation makes it particularly easy and principled to carry out machine learning research on BCI data — see, for example, the [Tutorial ML 2](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/Tutorial%20Machine%20Learning%202/#Tutorial-ML-2) of `Eegle.jl`.
-The synergy between `Eegle.jl` and the corpus, has resulted in a comprehensive benchmark of accuracy on BCI data using state-of-the-art Riemannian geometry classifiers ([see here](https://marco-congedo.github.io/Eegle.jl/stable/documents/Benchmark/)).
-
-### pyLitteEegle
-The core capabilities of `Eegle.jl` have been cloned and translated into the Python language, yielding the **pyLittleEegle** package [@pyLittleEegle:2025]. This package replicates all functionalities related to database selection, EEG data reading and processing, as well as data structuring for analysis. Furthermore, it handles data encoding and preparation for classification tasks using scikit-learn [@scikit-learn:2011], thus making the corpus easily accessible in Python as well. This package promotes inter-operability between Julia anad Python for BCI research.
-
-# Research Impact Statement
-Although still in its infancy, `Eegle.jl` has stimulated several developments to the benefit of the whole BCI community:
-
 ### FII BCI Corpus
 `Eegle.jl` has been instrumental in creating the **FII BCI Corpus** [@FIIBCICorpusMI:2025; @FIIBCICorpusP300:2025]. The corpus comprises a selection of BCI databases annotated and curated for both the motor imagery and P300 BCI paradigms. Along with EEG data and class labels, the corpus provides comprehensive metadata that allows selecting the data for the study at hand and extracting relevant information. This is the first large open-access corpus of its kind. The annotation makes it particularly easy and principled to carry out machine learning research on BCI data — see, for example, the [Tutorial ML 2](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/Tutorial%20Machine%20Learning%202/#Tutorial-ML-2) of `Eegle.jl`.
-The synergy between `Eegle.jl` and the corpus has resulted in a comprehensive benchmark of accuracy on BCI data using state-of-the-art Riemannian geometry classifiers ([see here](https://marco-congedo.github.io/Eegle.jl/stable/documents/Benchmark/)).
+The synergy between `Eegle.jl` and the corpus has resulted in a comprehensive benchmark of accuracy on BCI data using state-of-the-art Riemannian geometry classifiers — [see here](https://marco-congedo.github.io/Eegle.jl/stable/documents/Benchmark/).
 
 ### pyLitteEegle
 The core capabilities of `Eegle.jl` have been cloned and translated into the Python language, yielding the **pyLittleEegle** package [@pyLittleEegle:2025]. This package replicates all functionalities related to database selection, EEG data reading and processing, as well as data structuring for analysis. Furthermore, it handles data encoding and preparation for classification tasks using scikit-learn [@scikit-learn:2011], thus making the corpus easily accessible in Python as well. Taken together, `Eegle.jl` and `pyLittleEegle` promote interoperability between Julia and Python for BCI research, which is also new in the community.
