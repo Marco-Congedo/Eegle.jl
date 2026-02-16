@@ -1,7 +1,7 @@
 name = "Eegle"
 uuid = "1260424e-cd79-4b74-a0ea-47c69c296663"
-authors = ["Marco Congedo, Fahim Doumi"]
 version = "0.2.3"
+authors = ["Marco Congedo, Fahim Doumi"]
 
 [deps]
 ArtifactUtils = "8b73e784-e7d8-4ea5-973d-377fed4e3bce"
@@ -36,6 +36,7 @@ ZipFile = "a5390f91-8eb1-5f08-bee0-b1d1ffed6cea"
 
 [compat]
 ArtifactUtils = "0.2.4"
+Artifacts = "1"
 Bonito = "4.1.11"
 CSV = "0.10"
 CovarianceEstimation = "0.2"
