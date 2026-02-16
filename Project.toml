@@ -1,7 +1,7 @@
 name = "Eegle"
 uuid = "1260424e-cd79-4b74-a0ea-47c69c296663"
-authors = ["Marco Congedo, Fahim Doumi"]
 version = "0.2.3"
+authors = ["Marco Congedo, Fahim Doumi"]
 
 [deps]
 ArtifactUtils = "8b73e784-e7d8-4ea5-973d-377fed4e3bce"
@@ -57,6 +57,7 @@ PosDefManifoldML = "0.5"
 PrecompileSignatures = "3.0.3"
 PrettyTables = "2.4, 3"
 Reexport = "1.2"
+Statistics = "1"
 StatsBase = "0.34"
 YAML = "0.4"
 ZipFile = "0.10.1"
