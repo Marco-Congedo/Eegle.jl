@@ -1,7 +1,7 @@
 name = "Eegle"
 uuid = "1260424e-cd79-4b74-a0ea-47c69c296663"
-authors = ["Marco Congedo, Fahim Doumi"]
 version = "0.2.8"
+authors = ["Marco Congedo, Fahim Doumi"]
 
 [deps]
 ArtifactUtils = "8b73e784-e7d8-4ea5-973d-377fed4e3bce"
@@ -35,16 +35,16 @@ YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"
 ZipFile = "a5390f91-8eb1-5f08-bee0-b1d1ffed6cea"
 
 [compat]
-Artifacts = "1"
 ArtifactUtils = "0.2.4"
-Bonito = "4.1.11"
+Artifacts = "1"
+Bonito = "4.1.11, 5"
 CSV = "0.10"
 CovarianceEstimation = "0.2"
 DSP = "0.7, 0.8"
 DataFrames = "1.7"
-Downloads = "1"
 Diagonalizations = "0.2"
 Distributions = "0.25"
+Downloads = "1"
 EzXML = "1.2"
 FourierAnalysis = "1.1, 1.2"
 HDF5 = "0.17"
