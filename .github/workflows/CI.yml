@@ -39,11 +39,13 @@ jobs:
           Pkg.test(coverage=true)'
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          files: lcov.info
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
+        run: julia -e '
+          using Pkg;
+          Pkg.add("Coverage");
+          using Coverage;
+          Coverage.Codecov.submit(Coverage.process_folder())'
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   docs:
     name: Documentation
