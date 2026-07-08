@@ -6,6 +6,11 @@
 |:-----:|:-----:|:-----:|:-----:|:-----:|
 | [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://Marco-Congedo.github.io/Eegle.jl) [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://marco-congedo.github.io/Eegle.jl/dev/) [![](https://img.shields.io/badge/tutorials-blue.svg)](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/) | [![](https://img.shields.io/badge/Motor_Imagery-blue.svg)](https://zenodo.org/records/17801878) [![](https://img.shields.io/badge/P300-blue.svg)](https://zenodo.org/records/18379398) | [![](https://img.shields.io/badge/pyLittleEegle-blue.svg)](https://github.com/FhmDmi/pyLittleEegle) | 🦅 `\:eagle:`| <img src="docs/src/assets/logo_verysmall.png" height="48"> |  
 
+
+| CI | Codecov | 
+|:-----:|:-----:|
+| [![CI](https://github.com/Marco-Congedo/Eegle.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/Marco-Congedo/Eegle.jl/actions/workflows/CI.yml) | [![codecov](https://codecov.io/gh/Marco-Congedo/Eegle.jl/graph/badge.svg)](https://codecov.io/gh/Marco-Congedo/Eegle.jl) |  
+
 # Eegle (EEG general library) 
 
 This is a pure-[**julia**](https://julialang.org/) 95%-human package for human EEG (Electroencephalography) data analysis and classification.
