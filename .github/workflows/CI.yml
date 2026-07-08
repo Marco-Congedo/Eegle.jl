@@ -28,7 +28,7 @@ jobs:
         with:
           version: '1.11'
 
-      - uses: julia-actions/cache@v2
+      - uses: julia-actions/cache@v3
 
       - name: Install package
         run: julia --project=. -e '
@@ -41,6 +41,8 @@ jobs:
           Pkg.test(coverage=true)'
 
       - name: Upload coverage to Codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: julia -e '
           using Pkg;
           Pkg.add("Coverage");
