@@ -6,7 +6,7 @@ println("\x1b[95m", "\nTesting module Eegle.BCI.jl...", "\x1b[0m")
     X = randn(t, ne)
     C_ = covmat(X; covtype=SCM)
     C = (1/t) * X'*X
-    @test norm(C_ - C) ≈ 0
+    @test isapprox(norm(C_ - C), 0; atol=1e-12)
 end;
 
 # encode: just executed
