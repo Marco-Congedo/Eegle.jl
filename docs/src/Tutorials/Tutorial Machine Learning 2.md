@@ -72,7 +72,7 @@ using the [`weightsDB`](@ref) function and compute the weighted average balanced
 
 ```julia
 MIw = [weightsDB(db.files)[1] for db ∈ DBs]; # get weights
-MIw = [v ./= mean(v) for v ∈ w]; # normalize to unit mean
+MIw = [w ./= mean(w) for w ∈ Miw]; # normalize to unit mean
 
 MIdbAcc = [mean(w.*acc) for (w, acc) ∈ zip(MIw, allMIacc)]
 ```

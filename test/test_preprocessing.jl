@@ -45,7 +45,6 @@ end;
 end;
 
 
-
 ## embedLags (executed only, check visually the example)
 @testset "removeChannels                 " begin
     X3 = randn(8, 2) # small example to see the effect
