@@ -21,6 +21,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - uses: julia-actions/setup-julia@v2
         with:
@@ -44,8 +46,6 @@ jobs:
           Pkg.add("Coverage");
           using Coverage;
           Codecov.submit(Codecov.process_folder())'
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   docs:
     name: Documentation
@@ -56,6 +56,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - uses: julia-actions/setup-julia@v2
         with:
