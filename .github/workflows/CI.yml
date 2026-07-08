@@ -43,7 +43,7 @@ jobs:
           using Pkg;
           Pkg.add("Coverage");
           using Coverage;
-          Coverage.Codecov.submit(Coverage.process_folder())'
+          Codecov.submit(Codecov.process_folder())'
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
