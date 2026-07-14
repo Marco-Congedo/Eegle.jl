@@ -50,13 +50,11 @@ jobs:
 
       - name: Generate coverage report
         run: |
-          julia -e '
-            using Pkg
-            Pkg.add("Coverage")
-            using Coverage
-            files = get(ENV, "GITHUB_WORKSPACE", pwd())
-            LCOV.writefile("lcov.info", process_folder(files))
+          julia --project=. -e '
+          using Coverage
+          LCOV.writefile("lcov.info", process_folder(pwd()))
           '
+          sed -i "s#\\\\#/#g" lcov.info
 
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
