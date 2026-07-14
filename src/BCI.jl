@@ -445,6 +445,7 @@ with the results of the cross-validation, otherwise a 2-tuple holding this `CVre
 (of type [MLmodel](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/MainModule/#MLmodel)).
 
 **Examples**
+
 ```julia
 using Eegle
 
