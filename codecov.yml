@@ -5,9 +5,9 @@ coverage:
         target: auto
 
 ignore:
-  - "**/docs/**"
-  - "**/test/**"
-  - "**/src/extras/**"
-  - "**/src/GUIs/**"
-  - "**/src/tools/**"
-  - "**/src/Database.jl"
+  - "docs/**"
+  - "test/**"
+  - "src/extras/**"
+  - "src/GUIs/**"
+  - "src/tools/**"
+  - "src/Database.jl"
