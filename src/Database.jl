@@ -17,7 +17,6 @@ const separatorFont = "\x1b[35m"
 const defaultFont   = "\x1b[0m"
 const greyFont      = "\x1b[90m"
 
-
 export
     InfoDB,
     loadDB, 
