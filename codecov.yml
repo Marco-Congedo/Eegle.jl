@@ -9,5 +9,5 @@ ignore:
   - "**/test/**"
   - "**/src/extras/**"
   - "**/src/GUIs/**"
-  - "**/src/tools/Tyler.jl"
+  - "**/src/tools/**"
   - "**/src/Database.jl"
