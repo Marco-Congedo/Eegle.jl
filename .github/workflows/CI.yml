@@ -57,6 +57,10 @@ jobs:
           sed -i.bak 's#\\#/#g' lcov.info
           rm lcov.info.bak
 
+      - name: Check LCOV paths
+        run: |
+          grep "SF:" lcov.info          
+
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
         uses: codecov/codecov-action@v5
