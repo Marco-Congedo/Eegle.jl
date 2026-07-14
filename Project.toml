@@ -66,7 +66,7 @@ Statistics = "1"
 StatsBase = "0.34"
 YAML = "0.4"
 ZipFile = "0.10.1"
-julia = "1.11"
+julia = "1.12"
 
 [extras]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"

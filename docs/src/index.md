@@ -9,7 +9,7 @@ It promotes standardization, use of conventions and a learning approach based on
 
 ## 🧩 Requirements 
 
-**Julia**: version ≥ 1.11
+**Julia**: version ≥ 1.12
 
 ---
 
