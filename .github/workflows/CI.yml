@@ -16,8 +16,14 @@ permissions:
 
 jobs:
   test:
-    name: Julia 1.11
-    runs-on: ubuntu-latest
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['1.11', '1.12']
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - uses: actions/checkout@v7
@@ -26,7 +32,7 @@ jobs:
 
       - uses: julia-actions/setup-julia@v2
         with:
-          version: '1.11'
+          version: ${{ matrix.version }}
 
       - uses: julia-actions/cache@v3
 
@@ -41,6 +47,7 @@ jobs:
           Pkg.test(coverage=true)'
 
       - name: Upload coverage to Codecov
+        if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: julia -e '
@@ -63,7 +70,7 @@ jobs:
 
       - uses: julia-actions/setup-julia@v2
         with:
-          version: '1.11'
+          version: '1.12'
 
       - uses: julia-actions/cache@v3
 

@@ -1,19 +1,36 @@
 println("\x1b[95m", "\nTesting module Eegle.ERPs.jl...", "\x1b[0m")
 
-## mean: just executed
-@testset "mean                           " begin
-    sr, wl, ne = 128, 128, 19 
-    ns = sr*20
-    X = randn(ns, ne)
-    stim = zeros(Int, ns)
-    # simulate stimulations for three classes
-    for i = 1:20
-        stim[rand(1:ns-wl)] = rand(1:3)
-    end
-    mark = stim2mark(stim, wl)
 
-    M = mean(X, wl, mark; overlapping=true, weights=:a)
-    M = mean(X, wl, mark; overlapping=false)
+## mean
+@testset "mean                           " begin
+    ## Method 2
+
+    # read the example file for the P300 BCI paradigm
+    o = readNY(EXAMPLE_P300_1)
+
+    # compute means (adaptive weights and multivariate regression)
+    M = mean(o; overlapping=true, weights=:a)
+
+    # target average ERP
+    T_ERP = M[findfirst(isequal("target"), o.clabels)] 
+
+    # nontarget average ERP
+    NT_ERP = M[findfirst(isequal("nontarget"), o.clabels)]
+
+    @test T_ERP[1, 1] ≈ 0.6818436918672789 atol=1e-9
+    @test T_ERP[end, end] ≈ -0.5171464616398405 atol=1e-9
+
+    ## Method 1
+    M = mean(o.X, o.wl, o.mark; overlapping=true, weights=:a)
+
+    # target average ERP
+    T_ERP = M[findfirst(isequal("target"), o.clabels)] 
+
+    # nontarget average ERP
+    NT_ERP = M[findfirst(isequal("nontarget"), o.clabels)]
+
+    @test T_ERP[1, 1] ≈ 0.6818436918672789 atol=1e-9
+    @test T_ERP[end, end] ≈ -0.5171464616398405 atol=1e-9
 end;
 
 ## stim2mark and mark2stim

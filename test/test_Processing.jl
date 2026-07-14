@@ -2,6 +2,15 @@ println("\x1b[95m", "\nTesting module Eegle.Processing.jl...", "\x1b[0m")
 
 ## filtfilt: already tested in test_Preprocessing.jl
 
+
+## filtfilt
+@testset "filtfilt                       " begin   
+    o = readNY(EXAMPLE_P300_1)
+    X = filtfilt(o.X, o.sr, Bandpass(1, 24))
+    @test X[1, 1] ≈ -23757.54529919358 atol=1e-9
+    @test X[end, end] ≈ -4.418407673642761 atol=1e-9
+end;
+
 ## centeringMatrix
 @testset "car!                           " begin   
     X1 = randn(32, 19)

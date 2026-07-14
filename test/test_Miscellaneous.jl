@@ -20,10 +20,11 @@ end;
 @testset "waste                          " begin       
     x = randn(10, 10)
     waste(x)
+    @test 0==0 # dummy test
 end;
 
 ## parseTutorial
 @testset "parseTutorial                  " begin    
    # skip as it is only needed for documentation 
-   x = 1
+   @test 0==0 # dummy test
 end;
