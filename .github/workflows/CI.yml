@@ -37,11 +37,21 @@ jobs:
       - uses: julia-actions/cache@v3
 
       - name: Install package
-        run: julia --project=. -e '
-          using Pkg;
-          Pkg.instantiate()'
+        run: |
+          julia --project=. -e '
+            using Pkg
+            Pkg.instantiate()
+          '
+
+      - name: Run tests
+        run: |
+          julia --project=. -e '
+            using Pkg
+            Pkg.test()
+          '
 
       - name: Run tests with coverage
+        if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
         run: |
           julia --project=. --code-coverage=user -e '
             using Pkg
@@ -49,17 +59,23 @@ jobs:
           '
 
       - name: Generate coverage report
+        if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
         run: |
           julia --project=. -e '
-          using Coverage
-          LCOV.writefile("lcov.info", process_folder(pwd()))
+            using Coverage
+            LCOV.writefile("lcov.info", process_folder(pwd()))
           '
-          sed -i.bak 's#\\#/#g' lcov.info
-          rm lcov.info.bak
+
+          python - <<'PY'
+          from pathlib import Path
+          p = Path("lcov.info")
+          p.write_text(p.read_text().replace("\\", "/"))
+          PY
 
       - name: Check LCOV paths
+        if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
         run: |
-          grep "SF:" lcov.info          
+          grep "SF:" lcov.info
 
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
@@ -88,13 +104,16 @@ jobs:
       - uses: julia-actions/cache@v3
 
       - name: Install documentation dependencies
-        run: julia --project=docs -e '
-          using Pkg;
-          Pkg.develop(PackageSpec(path=pwd()));
-          Pkg.instantiate()'
+        run: |
+          julia --project=docs -e '
+            using Pkg
+            Pkg.develop(PackageSpec(path=pwd()))
+            Pkg.instantiate()
+          '
 
       - name: Build and deploy documentation
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
-        run: julia --project=docs docs/make.jl
+        run: |
+          julia --project=docs docs/make.jl
