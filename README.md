@@ -23,7 +23,7 @@ It is the fundamental brick allowing the integration of several packages dedicat
 
 ## 🧩 Requirements
 
-**Julia**: version ≥ 1.10
+**Julia**: version ≥ 1.11
 
 ---
 ## 📦 Installation
