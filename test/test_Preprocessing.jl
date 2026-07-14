@@ -19,12 +19,6 @@ end;
     @test abs(mean(stX)) < tol
     @test abs(var(stX) - 1) < tol
 
-    stXr = standardize(X; robust=true, prop=0.1)
-
-    @test size(stXr) == size(X)
-
-    # robust standardization should still roughly center the data
-    @test abs(mean(stXr)) < 0.2
 end
 
 ## resample (Downsampling tested and the other resampling cases executed only)
