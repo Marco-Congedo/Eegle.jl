@@ -38,7 +38,7 @@ ZipFile = "a5390f91-8eb1-5f08-bee0-b1d1ffed6cea"
 [compat]
 ArtifactUtils = "0.2.4"
 Artifacts = "1"
-Bonito = "4.1.11"
+Bonito = "4.1.11, 5"
 CSV = "0.10"
 CovarianceEstimation = "0.2"
 Coverage = "1.7.0"
