@@ -48,13 +48,9 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: julia -e '
-          using Pkg;
-          Pkg.add("Coverage");
-          using Coverage;
-          Codecov.submit(Codecov.process_folder())'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   docs:
     name: Documentation
