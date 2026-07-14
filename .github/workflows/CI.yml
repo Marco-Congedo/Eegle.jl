@@ -63,7 +63,7 @@ jobs:
         run: |
           julia --project=. -e '
             using Coverage
-            LCOV.writefile("lcov.info", process_folder(pwd()))
+            LCOV.writefile("lcov.info", process_folder(joinpath(pwd(), "src")))
           '
 
           python - <<'PY'

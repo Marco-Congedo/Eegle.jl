@@ -5,6 +5,7 @@ coverage:
         target: auto
 
 ignore:
+  - "artifacts.jl"
   - "docs/**"
   - "test/**"
   - "src/extras/**"

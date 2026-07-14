@@ -261,7 +261,7 @@ X_, stim_, ns = removeSamples(X, collect(1:2:length(stim)), stim)
 function removeSamples(X::AbstractMatrix{T}, what::Union{Int, Vector{S}},
                        stim::Vector{S}) where {T<:Real, S<:Int}
     di = findfirst(length(stim).==(size(X)))
-    X = Eegle.Miscellaneous.remove(X, what; dims=di)
+    X = Eegle.PosDefManifold.remove(X, what; dims=di)
     if what isa Int
         stim[what]==0 || @warn "Eegle.Preprocessing, `removeSample` function: tag at position $(what) with value $(stim[what]) has been removed"
     else
@@ -269,7 +269,7 @@ function removeSamples(X::AbstractMatrix{T}, what::Union{Int, Vector{S}},
         tags = [stim[i] for i∈what if stim[i]≠0]
         isempty(positions) || @warn "Eegle.Preprocessing, `removeSample` function: tags have been removed" positions tags
     end
-    return X, Eegle.Miscellaneous.remove(stim, what), size(X, di)
+    return X, Eegle.PosDefManifold.remove(stim, what), size(X, di)
 end
 
 
