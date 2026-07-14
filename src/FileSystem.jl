@@ -13,8 +13,7 @@ export
     fileExt,
     changeFileExt,
     getFilesInDir,
-    getFoldersInDir,
-    writeVector
+    getFoldersInDir
 
 """
 ```julia
