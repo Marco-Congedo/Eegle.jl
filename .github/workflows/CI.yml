@@ -26,7 +26,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -42,15 +42,29 @@ jobs:
           Pkg.instantiate()'
 
       - name: Run tests with coverage
-        run: julia --project=. --code-coverage=user -e '
-          using Pkg;
-          Pkg.test(coverage=true)'
+        run: |
+          julia --project=. --code-coverage=user -e '
+            using Pkg
+            Pkg.test(; coverage=true)
+          '
+
+      - name: Generate coverage report
+        run: |
+          julia -e '
+            using Pkg
+            Pkg.add("Coverage")
+            using Coverage
+            files = get(ENV, "GITHUB_WORKSPACE", pwd())
+            LCOV.writefile("lcov.info", process_folder(files))
+          '
 
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov.info
+          verbose: true
 
   docs:
     name: Documentation
@@ -60,7 +74,7 @@ jobs:
     if: github.event_name != 'pull_request'
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
