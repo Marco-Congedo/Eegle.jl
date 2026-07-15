@@ -36,7 +36,10 @@ Within these databases, select the sessions featuring at least 30 trials for eac
 
 ```julia
 classes = ["feet", "right_hand"];
-DBs = selectDB(:MI; classes, minTrials = 30);
+DBs = selectDB(:MI; 
+                classes, 
+                inclusion = (("tpc", x -> minimum(values(x)) > 30),)
+                );
 ```
 
 Create memory to store all accuracies.
@@ -72,7 +75,7 @@ using the [`weightsDB`](@ref) function and compute the weighted average balanced
 
 ```julia
 MIw = [weightsDB(db.files)[1] for db ∈ DBs]; # get weights
-MIw = [w ./= mean(w) for w ∈ Miw]; # normalize to unit mean
+MIw = [w ./= mean(w) for w ∈ MIw]; # normalize to unit mean
 
 MIdbAcc = [mean(w.*acc) for (w, acc) ∈ zip(MIw, allMIacc)]
 ```
