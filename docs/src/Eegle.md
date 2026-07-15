@@ -29,7 +29,7 @@ you have access to all functions exported by all **Eegle** modules and by all re
 | [Database.jl](@ref) | utilities for handling databases and the [FII BCI Corpus](@ref "FII BCI Corpus Overview")|
 | [ERPs.jl](@ref) | operations on Event-Related Potentials and BCI trials |
 | [FileSystem.jl](@ref) | manipulation of files and directories |
-| [InOut.jl](@ref) | reading and writing of data |
+| [InOut.jl](@ref) | reading and writing of data (to be moved in a seperated package)|
 | [Miscellaneous.jl](@ref) | miscellaneous functions |
 | [Preprocessing.jl](@ref) | EEG preprocessing |
 | [Processing.jl](@ref) | EEG processing |
