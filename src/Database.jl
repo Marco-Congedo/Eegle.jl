@@ -211,7 +211,7 @@ function infoDB(dbDir)
     labels              = typeof(info["stim"]["labels"])[]
     offset              = typeof(info["stim"]["offset"])[]
     nClasses            = typeof(info["stim"]["nclasses"])[]
-    nTrials             = typeof(info["stim"]["trials_per_class"])[]
+    nTrials             = typeof(info["stim"]["trialsperclass"])[]
 
     timestamp           = typeof(info["id"]["timestamp"])[]
     run                 = typeof(info["id"]["run"])[]
@@ -249,7 +249,7 @@ function infoDB(dbDir)
         push!(labels, stim["labels"])
         push!(offset, stim["offset"])
         push!(nClasses, stim["nclasses"])
-        push!(nTrials, stim["trials_per_class"])
+        push!(nTrials, stim["trialsperclass"])
 
         id = info["id"]
         push!(timestamp, id["timestamp"])
@@ -391,7 +391,7 @@ Supports shortcuts for common paths and automatic nested search.
 **Shortcuts:**
 - `sr` → `acquisition.samplingrate`
 - `ref` → `acquisition.reference`
-- `tpc` → `stim.trials_per_class`
+- `tpc` → `stim.trialsperclass`
 - `perfLHRH` → `perf.left_hand-right_hand`
 - `perfRHF` → `perf.right_hand-feet`
 =#
@@ -400,7 +400,7 @@ function _getNestedValue(data::Dict, path::String)
     shortcuts = Dict(
         "sr"        => "acquisition.samplingrate",
         "ref"       => "acquisition.reference",
-        "tpc"       => "stim.trials_per_class",
+        "tpc"       => "stim.trialsperclass",
         "perfLHRH"  => "perf.left_hand-right_hand",
         "perfRHF"   => "perf.right_hand-feet"
     )
@@ -491,7 +491,7 @@ inclusion = (("perf.left_hand-right_hand.MDM", x -> x >= 0.7),)
 # Available Shortcuts:
 - `sr` → `acquisition.samplingrate`
 - `ref` → `acquisition.reference`
-- `tpc` → `stim.trials_per_class`
+- `tpc` → `stim.trialsperclass`
 - `perfLHRH` → `perf.left_hand-right_hand`
 - `perfRHF` → `perf.right_hand-feet`
 
@@ -535,14 +535,14 @@ inclusion = (("acquisition.sensors", x -> length(x) >= 16),)
 # Specific number of electrodes
 inclusion = (("acquisition.sensors", x -> length(x) == 64),)
 
-**Dictionary Filters (trials_per_class, labels, perf)**
+**Dictionary Filters (trialsperclass, labels, perf)**
 
 # Minimum trials across all classes > 30
-inclusion = (("trials_per_class", x -> minimum(values(x)) > 30),)
+inclusion = (("trialsperclass", x -> minimum(values(x)) > 30),)
 # Specific class has enough trials
-inclusion = (("trials_per_class", x -> haskey(x, "left_hand") && x["left_hand"] >= 50),)
+inclusion = (("trialsperclass", x -> haskey(x, "left_hand") && x["left_hand"] >= 50),)
 # Total trials across all classes >= 200
-inclusion = (("trials_per_class", x -> sum(values(x)) >= 200),)
+inclusion = (("trialsperclass", x -> sum(values(x)) >= 200),)
 # Performance metrics for specific task and classifier (using shortcuts)
 inclusion = (("perfLHRH.MDM", x -> x >= 0.7),)    # MI
 inclusion = (("perf.ENLR", x -> x >= 0.7),)       # P300
@@ -568,14 +568,14 @@ inclusion = (
 )
 # Sufficient trials + specific reference
 inclusion = (
-    ("trials_per_class", x -> minimum(values(x)) >= 40),
+    ("trialsperclass", x -> minimum(values(x)) >= 40),
     ("ref", !=("N/A"))
 )
 # Sampling rate + electrode count + trial count
 inclusion = (
     ("sr", x -> 128 <= x <= 512),
     ("acquisition.sensors", x -> length(x) >= 16),
-    ("trials_per_class", x -> sum(values(x)) >= 150)
+    ("trialsperclass", x -> sum(values(x)) >= 150)
 )
 =#
 function _filter(files::Vector{String}, 
@@ -707,7 +707,7 @@ Shortcuts are available for some fields:
 **Available Shortcuts:**
 - `sr` → `acquisition.samplingrate`
 - `ref` → `acquisition.reference`
-- `tpc` → `stim.trials_per_class`
+- `tpc` → `stim.trialsperclass`
 - `perfLHRH` → `perf.left_hand-right_hand`
 - `perfRHF` → `perf.right_hand-feet`
 
@@ -1252,7 +1252,7 @@ end
 # about the InfoDB structure in the REPL
 # ++++++++++++++++++++  Show override  +++++++++++++++++++ # (REPL output)
 function Base.show(io::IO, ::MIME{Symbol("text/plain")}, db::InfoDB)
-    # Format ntrials_per_class - show mean ± std + min,max 
+    # Format ntrialsperclass - show mean ± std + min,max 
     trials_parts = String[]
     for class_name in db.cLabels  # use clabels to maintain order
         trials_vec = db.nTrials[class_name]
