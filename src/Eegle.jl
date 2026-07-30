@@ -31,9 +31,8 @@ using Artifacts, ArtifactUtils
 const EXAMPLE_DATA_DIR = joinpath(Eegle.artifact"data_examples", "data_examples") # not exported
 
 # `example_data` Artifacts. These paths are all exported
-const EXAMPLE_P300_1 = joinpath(EXAMPLE_DATA_DIR, "P300", "subject_01_session_01.npz")
+const EXAMPLE_P300_1 = joinpath(EXAMPLE_DATA_DIR, "P300", "bi2012T_subject_01_session_01.npz")
 const EXAMPLE_MI_1 = joinpath(EXAMPLE_DATA_DIR, "MI", "AlexMI_subject_03_session_01.npz")
-const EXAMPLE_MI_1_metadata = joinpath(EXAMPLE_DATA_DIR, "MI", "AlexMI_subject_03_session_01.yml")
 const EXAMPLE_Normative_1 = joinpath(EXAMPLE_DATA_DIR, "Normative", "EC", "F_20_19e_128sr.txt")
 const EXAMPLE_Normative_1_sensors = joinpath(EXAMPLE_DATA_DIR, "Normative", "EC", "F_20_19e_128sr_sensors.txt")
 
@@ -46,7 +45,6 @@ export Eegle,
 # Example data, see constants here above
 EXAMPLE_P300_1,
 EXAMPLE_MI_1,
-EXAMPLE_MI_1_metadata,
 EXAMPLE_Normative_1,
 EXAMPLE_Normative_1_sensors
 
@@ -65,6 +63,7 @@ include("Database.jl");         @reexport using .Database
 @precompile_signatures(Eegle)
 
 # Welcome Message
+#=
 println()
 print("                      🦅")
 println("\x1b[0m","
@@ -73,5 +72,12 @@ println("\x1b[0m","
 ⠻⣿⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣿⠟","\x1b[90m", "
   https://github.com/Marco-Congedo/Eegle.jl
 ","\x1b[0m")
+=#
+
+println("\n", "\x1b[95m", """
+  █▀▀█  █▀▀█  █▀▀█  █     █▀▀█ 
+  █🦅   █ ▰   █     █     █ ▰  
+  ▀▀▀▀  ▀▀▀▀  ▀▀▀█  ▀▀▀▀  ▀▀▀▀ 
+""","\x1b[90m", "github.com/Marco-Congedo/Eegle.jl", "\x1b[35m", "\n")
 
 end # module

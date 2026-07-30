@@ -102,7 +102,7 @@ struct InfoDB
     paradigm            :: String                           # experimental paradigm (MI, P300, etc.)
     files               :: Vector{String}                   # database's files 
     nSessions           :: Vector{Int}                      # sessions per subject 
-    nTrials             :: Dict{String, Vector{Int}}        # trials per class per session (class_name => [trials_per_session])
+    nTrials             :: Dict{String, Vector{Int}}        # trials per class per session (class_name => [trialspersession])
     nSubjects           :: Int                              # total number of subjects
     nSensors            :: Int                              # number of electrodes
     sensors             :: Vector{String}                   # name of sensors (Fz, Cz, etc.)
