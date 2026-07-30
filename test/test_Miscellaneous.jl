@@ -1,8 +1,5 @@
 println("\x1b[95m", "\nTesting module Eegle.Miscellaneous.jl...", "\x1b[0m")
 
-using PosDefManifold
-
-
 @testset "minima" begin
     x = [2, 1, 2, 1, 2]
     idx, val = minima(x)
