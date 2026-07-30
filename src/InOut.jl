@@ -501,7 +501,7 @@ function readNY(filename    :: AbstractString;
      info["id"]["subject"],
      info["id"]["session"],
      info["id"]["run"],
-     info["stim"]["trials_per_class"],
+     info["stim"]["trialsperclass"],
      perf,
      info["acquisition"]["sensors"],
      sr,
