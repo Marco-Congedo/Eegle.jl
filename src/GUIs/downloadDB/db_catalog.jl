@@ -19,8 +19,8 @@ const CORPUS_DIR = "FII_BCI_Corpus"
 
 
 # Zenodo API URLs for MI and P300 files.
-const MIpath = "https://zenodo.org/api/records/17801878/files/" 
-const P300path = "https://zenodo.org/api/records/21024698/files/"
+const MIpath = "https://zenodo.org/api/records/21687278/files/" 
+const P300path = "https://zenodo.org/api/records/21688242/files/"
 
 
 # Available MI and P300 class labels in the corpus.

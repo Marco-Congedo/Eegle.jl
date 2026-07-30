@@ -186,6 +186,6 @@ stim:
 perf:
   right_hand-feet:
     MDM: 0.825
-    ENLR: 0.65
-    SVM: 0.675
+    TSL1LR: 0.65
+    TSSVM: 0.675
 ```
