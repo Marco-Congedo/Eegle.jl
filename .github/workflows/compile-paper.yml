@@ -1,0 +1,42 @@
+name: Compile JOSS Paper
+
+on:
+  push:
+    branches:
+      - joss_paper
+    paths:
+      - 'paper/**'
+  pull_request:
+    branches:
+      - joss_paper
+    paths:
+      - 'paper/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile-paper:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: joss_paper
+
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y pandoc texlive-xetex texlive-fonts-recommended texlive-latex-extra
+
+      - name: Compile paper to PDF
+        run: |
+          cd paper
+          pandoc paper.md --bibliography=paper.bib --citeproc -o paper.pdf
+
+      - name: Upload paper PDF as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-pdf
+          path: paper/paper.pdf
+          retention-days: 30
