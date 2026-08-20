@@ -34,16 +34,16 @@ The recent explosion of research on EEG-based Brain-Computer Interfaces (BCIs) h
 
 # Statement of need
 
-In 1893 Hans Berger fell off his horse during his military training in Germany and was nearly trampled. On that same day, his sister had a bad feeling about Hans and wrote him a telegram asking if everything was all right. To the 19 y.o. man, the coincidence appeared stunning. He thought that he had somehow transmitted his feelings to his sister with some form of 'telepathy' [@Bouszaki:2006]. He then decided to become a psychiatrist and to apply science to study the phenomenon. Based upon previous research of Richard Caton on the electrical activity of the exposed cortex of monkeys [@Caton:1875], he obtained the first human electroencephalographic recording in the middle of the 1920s [@Berger:1929].
+In 1893, Hans Berger fell off his horse during his military training in Germany and was nearly trampled. On that same day, his sister had a bad feeling about Hans and wrote him a telegram asking if everything was all right. To the 19 y.o. man, the coincidence appeared stunning. He thought that he had somehow transmitted his feelings to his sister with some form of 'telepathy' [@Bouszaki:2006]. He then decided to become a psychiatrist and to apply science to study the phenomenon. Based upon previous research of Richard Caton on the electrical activity of the exposed cortex of monkeys [@Caton:1875], he obtained the first human electroencephalographic recording in the middle of the 1920s [@Berger:1929].
 
-Berger would have never imagined that, a century later, his creature would be the cornerstone of a new form of 'telepathy', known as Brain-Computer Interface (BCI). By means of an EEG-based BCI, a human can send a command to a machine relying entirely on the EEG readings. In fact, a BCI is defined as a system that enables the information transfer without using the muscles or the peripheral nerves [^1] at all [@WolpawWolpaw:2012]. The EEG has been instrumental for the inception of this research, due to the seminal work of Jacques Vidal [@Vidal1973]. Still today, EEG is by far the preferred neuroimaging modality for non-invasive BCIs thanks to its unique characteristics:
+Berger would have never imagined that, a century later, his creature would be the cornerstone of a new form of 'telepathy', known as Brain-Computer Interface (BCI). By means of an EEG-based BCI, a human can send a command to a machine relying entirely on the EEG readings. In fact, a BCI is defined as a system that enables information transfer without using the muscles or the peripheral nerves [^1] at all [@WolpawWolpaw:2012]. The EEG has been instrumental for the inception of this research, due to the seminal work of Jacques Vidal [@Vidal1973]. Still today, EEG is by far the preferred neuroimaging modality for non-invasive BCIs thanks to its unique characteristics:
 
 - high temporal resolution (~1ms),
 - instantaneous measure of brain electrical potentials (no delay in the measure),
 - high consistency (e.g., same EEG power spectra on the same individuals on two successive days at the same hour),
 - sensitivity (for example, it is very useful for the detection of epilepsy and minimal consciousness states),
-- solid research tradition (one century-long),
-- total silentness and truly non-invasiveness (e.g., allowing daily use on anybody, including newborn children and patients with any condition),
+- solid research tradition (one century long),
+- total silence and truly non-invasiveness (e.g., allowing daily use on anybody, including newborn children and patients with any condition),
 - need of small, light, and inexpensive equipment (the size of EEG electronics can be reduced to the size of a common chip),
 - use of wireless recording in natural (out-of-the-lab) environments.
 
@@ -56,17 +56,17 @@ Older languages such as Python and Matlab have their established software ecosys
 ## Python
 | Package   | Description |
 |:------------|:------------|
-| MNE[@mne:2013] | Open-source Python package for exploring, visualizing, and analyzing human neurophysiological data: MEG, EEG, sEEG, ECoG, NIRS, and more |
-| scikit-learn[@scikit-learn:2011] | Machine learning in Python (generic, not specific to EEG) |
-| MOABB[moabb:2025] | Reproducible benchmarking for EEG-based BCIs |
-| Braindecode[@braindecode:2025] | Braindecode: toolbox for decoding raw electrophysiological brain data with deep learning models |
+|  MNE[@mne:2013] | Open-source Python package for exploring, visualizing, and analyzing human neurophysiological data: MEG, EEG, sEEG, ECoG, NIRS, and more |
+|  scikit-learn[@scikit-learn:2011] | Machine learning in Python (generic, not specific to EEG) |
+|  MOABB[moabb:2025] | Reproducible benchmarking for EEG-based BCIs |
+|  Braindecode[@braindecode:2025] | Braindecode: toolbox for decoding raw electrophysiological brain data with deep learning models |
 
 ## Matlab
 | Package   | Description |
 |:------------|:------------|
-| EEGLAB[@eeglab:2004] | An interactive Matlab toolbox for processing continuous and event-related EEG, MEG |
-| FieldTrip[@fieldtrip:2011] | Open-source software for advanced analysis of MEG, EEG, and invasive electrophysiological data |
-| Brainstorm[@brainstorm:2011] | A user-friendly application for MEG/EEG analysis |
+|  EEGLAB[@eeglab:2004] | An interactive Matlab toolbox for processing continuous and event-related EEG, MEG |
+|  FieldTrip[@fieldtrip:2011] | Open-source software for advanced analysis of MEG, EEG, and invasive electrophysiological data |
+|  Brainstorm[@brainstorm:2011] | A user-friendly application for MEG/EEG analysis |
 
 ## Julia
 
