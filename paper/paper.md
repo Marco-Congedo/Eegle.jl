@@ -58,7 +58,7 @@ Older languages such as Python and Matlab have their established software ecosys
 |:------------|:------------|
 |  MNE [@mne:2013] | Open-source Python package for exploring, visualizing, and analyzing human neurophysiological data: MEG, EEG, sEEG, ECoG, NIRS, and more |
 |  scikit-learn [@scikit-learn:2011] | Machine learning in Python (generic, not specific to EEG) |
-|  MOABB [moabb:2025] | Reproducible benchmarking for EEG-based BCIs |
+|  MOABB [@moabb:2025] | Reproducible benchmarking for EEG-based BCIs |
 |  Braindecode [@braindecode:2025] | Braindecode: toolbox for decoding raw electrophysiological brain data with deep learning models |
 
 ## Matlab
