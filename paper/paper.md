@@ -34,9 +34,9 @@ The recent explosion of research on EEG-based Brain-Computer Interfaces (BCIs) h
 
 # Statement of need
 
-In 1893, Hans Berger fell off his horse during his military training in Germany and was nearly trampled. On that same day, his sister had a bad feeling about Hans and wrote him a telegram asking if everything was all right. To the 19 y.o. man, the coincidence appeared stunning. He thought that he had somehow transmitted his feelings to his sister with some form of 'telepathy' [@Bouszaki:2006]. He then decided to become a psychiatrist and to apply science to study the phenomenon. Based upon previous research of Richard Caton on the electrical activity of the exposed cortex of monkeys [@Caton:1875], he obtained the first human electroencephalographic recording in the middle of the 1920s [@Berger:1929].
+In 1893, Hans Berger fell off his horse during his military training in Germany and was nearly trampled. On that same day, his sister had a bad feeling about Hans and wrote him a telegram asking if everything was all right. To the 19 y.o. man, the coincidence appeared stunning. He thought that he had somehow transmitted his feelings to his sister with some form of "telepathy" [@Bouszaki:2006]. He then decided to become a psychiatrist and to apply science to study the phenomenon. Based upon previous research of Richard Caton on the electrical activity of the exposed cortex of monkeys [@Caton:1875], he obtained the first human electroencephalographic recording in the middle of the 1920s [@Berger:1929].
 
-Berger would have never imagined that, a century later, his creature would be the cornerstone of a new form of 'telepathy', known as Brain-Computer Interface (BCI). By means of an EEG-based BCI, a human can send a command to a machine relying entirely on the EEG readings. In fact, a BCI is defined as a system that enables information transfer without using the muscles or the peripheral nerves [^1] at all [@WolpawWolpaw:2012]. The EEG has been instrumental for the inception of this research, due to the seminal work of Jacques Vidal [@Vidal1973]. Still today, EEG is by far the preferred neuroimaging modality for non-invasive BCIs thanks to its unique characteristics:
+Berger would have never imagined that, a century later, his creature would be the cornerstone of a new form of "telepathy", known as Brain-Computer Interface (BCI). By means of an EEG-based BCI, a human can send a command to a machine relying entirely on the EEG readings. In fact, a BCI is defined as a system that enables information transfer without using the muscles or the peripheral nerves [^1] at all [@WolpawWolpaw:2012]. The EEG has been instrumental for the inception of this research, due to the seminal work of Jacques Vidal [@Vidal1973]. Still today, EEG is by far the preferred neuroimaging modality for non-invasive BCIs thanks to its unique characteristics:
 
 - high temporal resolution (~1ms),
 - instantaneous measure of brain electrical potentials (no delay in the measure),
@@ -47,7 +47,7 @@ Berger would have never imagined that, a century later, his creature would be th
 - need of small, light, and inexpensive equipment (the size of EEG electronics can be reduced to the size of a common chip),
 - use of wireless recording in natural (out-of-the-lab) environments.
 
-While BCI research is relatively new, EEG has a long-standing tradition in clinical and cognitive brain research. All-in-all, a search on PubMed for the terms ("EEG" or "electroencephalography") yielded 217,092 results on Jan 18 2026, with a positive trend starting at the dawn of the third millennium, a phenomenon that we name the 'rebirth of EEG'.
+While BCI research is relatively new, EEG has a long-standing tradition in clinical and cognitive brain research. All-in-all, a search on PubMed for the terms ("EEG" or "electroencephalography") yielded 217,092 results on Jan 18 2026, with a positive trend starting at the dawn of the third millennium, a phenomenon that we name the "rebirth of EEG".
 
 # State of the field
 
@@ -56,27 +56,27 @@ Older languages such as Python and Matlab have their established software ecosys
 ## Python
 | Package   | Description |
 |:------------|:------------|
-|  MNE[@mne:2013] | Open-source Python package for exploring, visualizing, and analyzing human neurophysiological data: MEG, EEG, sEEG, ECoG, NIRS, and more |
-|  scikit-learn[@scikit-learn:2011] | Machine learning in Python (generic, not specific to EEG) |
-|  MOABB[moabb:2025] | Reproducible benchmarking for EEG-based BCIs |
-|  Braindecode[@braindecode:2025] | Braindecode: toolbox for decoding raw electrophysiological brain data with deep learning models |
+|  MNE [@mne:2013] | Open-source Python package for exploring, visualizing, and analyzing human neurophysiological data: MEG, EEG, sEEG, ECoG, NIRS, and more |
+|  scikit-learn [@scikit-learn:2011] | Machine learning in Python (generic, not specific to EEG) |
+|  MOABB [moabb:2025] | Reproducible benchmarking for EEG-based BCIs |
+|  Braindecode [@braindecode:2025] | Braindecode: toolbox for decoding raw electrophysiological brain data with deep learning models |
 
 ## Matlab
 | Package   | Description |
 |:------------|:------------|
-|  EEGLAB[@eeglab:2004] | An interactive Matlab toolbox for processing continuous and event-related EEG, MEG |
-|  FieldTrip[@fieldtrip:2011] | Open-source software for advanced analysis of MEG, EEG, and invasive electrophysiological data |
-|  Brainstorm[@brainstorm:2011] | A user-friendly application for MEG/EEG analysis |
+|  EEGLAB [@eeglab:2004] | An interactive Matlab toolbox for processing continuous and event-related EEG, MEG |
+|  FieldTrip [@fieldtrip:2011] | Open-source software for advanced analysis of MEG, EEG, and invasive electrophysiological data |
+|  Brainstorm [@brainstorm:2011] | A user-friendly application for MEG/EEG analysis |
 
 ## Julia
 
 Julia is a young open-source and cross-platform language specifically conceived for scientific computing [@julia:2017]. It is rapidly gaining momentum in the scientific community thanks to its conceptual affinity with mathematics and compatibility with the best available computing protocols. Although it is a high-level language, like Python and Matlab, it is (just-in-time) compiled, thus efficient. Moreover, Julia's syntax is elegant and permissive, allowing the programmer to adopt his/her preferred writing style. That is to say, the same routine in Julia can be written using a syntax closely resembling C, Python, or Matlab, to name a few. This accelerates the learning curve for people knowing other programming languages.
 
-For these reasons, the use of Julia may greatly benefit the field of EEG data analysis and machine learning. However, there are only a few active projects at the moment. The most active appear `NeuroAnalyzer.jl` [@Wysokinski:2024] and `unfold.jl` [@ehinger:2026]. The first is a general package for importing/processing/analyzing and visualization of EEG and other neurophysiological data. The second focuses on event-related potentials. `Eegle.jl` is a generic package for EEG, thus its scope intersects somehow only with `NeuroAnalyzer.jl`, from which, however it differs by design.
+For these reasons, the use of Julia may greatly benefit the field of EEG data analysis and machine learning. However, there are only a few active projects at the moment. The most active are `NeuroAnalyzer.jl` [@Wysokinski:2024] and `unfold.jl` [@ehinger:2026]. The first is a general package for importing/processing/analyzing and visualization of EEG and other neurophysiological data. The second focuses on event-related potentials. `Eegle.jl` is a generic package for EEG, thus its scope intersects only with `NeuroAnalyzer.jl`, from which, however, it differs by design.
 
 # Software design
 
-In this context, we have created for the Julia language `Eegle.jl`, which stands short for *EEG General Library* [@Eegle:2026]. The package acts as foundational building block enabling the integration of diverse state-of-the-art packages specifically conceived for EEG data and leveraging the powerful Julia scientific ecosystem.
+In this context, we have created for the Julia language `Eegle.jl`, which stands short for *EEG General Library* [@Eegle:2026]. The package acts as a foundational building block enabling the integration of diverse state-of-the-art packages specifically conceived for EEG data and leveraging the powerful Julia scientific ecosystem.
 
 ![Julia package ecosystem currently integrated by `Eegle.jl`.](figure1.png){ width=95% }
 
