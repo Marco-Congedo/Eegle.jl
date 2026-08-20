@@ -88,6 +88,7 @@ This document describes all the changes applied to downloaded P300 databases fro
     - **Channel removal**: MA1 and MA2 were removed after referencing
     - **Database separation**: 4 sessions with 6 runs per subject. Sessions were experimentally identical, but runs differed based on target image focus.
     - **Separated into 6 databases**: EPFLP300-1 to EPFLP300-6, corresponding to different target images (e.g., run 1 focused on television image)
+    - **Sequence Balancing**: To address the target/non-target ratio imbalance and insufficient signal length at the end of the recording, the goal was to indentify incomplete sequences using a modulo 12 calculation on the stimulation channel. The final fix involved excluding (by setting labels to 0) both these residual trials and the last 12 trials of the final block. This restored the strict 5:1 ratio while ensuring that every retained stimulus met the minimum window length requirement for epoch extraction.
 
 ## Lee2019ERP
 

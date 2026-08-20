@@ -14,7 +14,7 @@ This tutorial uses the [`EXAMPLE_Normative_1`](@ref) example normative EEG file 
     As an example of possible options for computing spectra, it is shown how to use the [Hann](https://en.wikipedia.org/wiki/Hann_function) tapering window or the [Slepian](https://en.wikipedia.org/wiki/Slepian_function) multi-taper window. For other options see the 
     [spectra](https://marco-congedo.github.io/FourierAnalysis.jl/dev/spectra/#FourierAnalysis.spectra) function. 
 
----
+![](../assets/banner_SA.png)
 
 Tell julia the package to be used
 
@@ -60,7 +60,10 @@ maxb = f2b(maxf, sr, sr*fr)
 S_ = S.y[minb:maxb, :]
 ```
 
-Plot the spectra using **GLMakie**. The figure will open in a new window. It is resizable and can be inspected, by zooming and panning (right mouse click). Use CTRL+click to reset the plot. Click on a legend element to toggle its visibility.
+Plot the spectra using **GLMakie**. 
+
+!!! note 
+    The figure will open in a new window. It is resizable and can be inspected, by zooming and panning (right mouse click). Use CTRL+click to reset the plot. Click on a legend element to toggle its visibility.
 
 ```julia
 begin  
@@ -132,4 +135,5 @@ using Eegle # hide
 parseTutorial("Tutorial Spectral Analysis 1") # hide
 ```
 
-[⬆️ Go to Top](@ref "Tutorial SA 1")
+[⬆️ Go to Top  ](@ref "Tutorial SA 1")
+[🥳 More Tutorials](@ref "Tutorials")

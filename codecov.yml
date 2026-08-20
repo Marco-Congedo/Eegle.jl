@@ -1,0 +1,14 @@
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+
+ignore:
+  - "artifacts.jl"
+  - "docs/**"
+  - "test/**"
+  - "src/extras/**"
+  - "src/GUIs/**"
+  - "src/tools/**"
+  - "src/Database.jl"

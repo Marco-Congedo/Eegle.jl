@@ -17,7 +17,7 @@ const greyFont      = "\x1b[90m"
 
 export
     filtfilt,
-    centeringMatrix, ℌ,
+    car!,
     globalFieldPower,
     globalFieldRMS,
     minima,
@@ -71,48 +71,59 @@ function filtfilt(  X::Matrix, sr::Int, responseType::DSP.FilterType;
 end
 
 
+
+
 """
 ```julia
-function centeringMatrix(N::Int)
+function car!(X::AbstractMatrix{T}; 
+    correction::Union{Int, Real} = 0) 
+where T<:Real 
 ```
 
-The common average reference (CAR) operator for referencing EEG data 
-potentials so that their mean across sensors (space) is zero at all samples.
+Re-reference ``X`` to the *common average reference* (CAR), that is, set the mean of the rows of ``X`` to zero.
 
-Let ``X`` be the ``T×N`` EEG recording, where ``T`` and ``N`` denotes the number of samples and channels (sensors), respectively,
-and let ``H_N`` be the ``N×N`` recentering matrix, then 
+**Arguments**
+- `X`: the ``T×N`` EEG recording, where ``T`` and ``N`` denotes the number of samples and channels (sensors), respectively
 
-``Y=XH`` 
+**Optional Keyword Arguments**
+- `correction`: zero by default. It can be a positive number, in which case, from the rows of ``X`` it is not subtracted their
+    sum divided by ``N``, but their sum divided by ``N``+`correction`.
 
-is the CAR (or *centered*) data.
+When ``correction`` is equal to zero (default) we obtain the usual car reference — see [centeringMatrix](https://github.com/Marco-Congedo/Xloreta.jl?tab=readme-ov-file#centeringmatrix). 
+When it is equal to 1, we obtain the reference method "B" of [Kim2023GhostICs](@cite).
 
-``H_N`` is named the *common average reference operator*. It is given at p.67 by [Searle1982book](@cite), as
+It should be noted that the usual CAR yields data with rank ``N-1`` and zero row means, while the method of [Kim2023GhostICs](@cite) yields
+full-rank data, but non-zero row mean. A value of ``correction`` between 0 and 1 yields intermediate situations. 
 
-``H_N = I_N - \\frac{1}{N} \\left( \\mathbf{1}_N \\mathbf{1}_N^\\top \\right)``
 
-where ``I_N`` is the N-dimensional identity matrix and ``\\mathbf{1}_N`` is the ``N``-dimensional vector of ones.
+**Return** the re-referenced ``X`` matrix. Note that this function change the content of ``X``, does not generate another matrix.
+If you want to keep the original data, use 
 
-**Alias** ℌ (U+0210C, with escape sequence "frakH")
-
-**Return** the ``N×N`` centering matrix.
+```julia
+car!(copy(X))
+```
 
 **Examples**
 ```julia
 using Eegle
 
-X = randn(128, 19)
+X=randn(128, 19)
 
-# CAR
-X_car = X * centeringMatrix(size(X, 2))
-# or
-X_car = X * ℌ(size(X, 2))
+car!(X) # this also returns X
 
-# double-centered data: zero mean across time and space
-X_dc = ℌ(size(X, 1)) * X * ℌ(size(X, 2))
+Y = car!(copy(X)) # does not change X
+
+car!(X; correction = 1)
 ```
 """
-centeringMatrix(N::Int) = I-1/N*(ones(N)*ones(N)')
-ℌ=centeringMatrix # alias for function centeringMatrix
+function car!(X::AbstractMatrix{T}; 
+    correction::Union{Int, Real} = 0) where T<:Real 
+
+    correction < 0 && throw(ArgumentError("Eegle.Processing module, function `!car`: the `correction` argument must be non-negative"))
+    avg = correction ≈ 0 ? (sum(X, dims=2) ./ size(X, 2)) : (sum(X, dims=2) ./ (size(X, 2) + correction))
+    return X .-= avg
+end
+
 
 """
 ```julia
@@ -131,7 +142,7 @@ Function `func` can be applied element-wise to the output (none by default).
 [Anonymous functions](https://docs.julialang.org/en/v1/manual/functions/#man-anonymous-functions)
 can be used.
 
-Usually the GFP is computed on common average reference data — see [`centeringMatrix`](@ref).
+Usually the GFP is computed on common average reference data — see [`car!`](@ref).
 
 **Return** the vector comprising the ``T`` GFP values.
 
@@ -139,12 +150,12 @@ Usually the GFP is computed on common average reference data — see [`centering
 
 **Examples**
 ```julia
-using Eegle
+using Eegle, Xloreta
 
 X=randn(128, 19)
 
 # using an anonymous function
-# ℌ is an alias for centeringMatrix
+# ℌ is an alias for centeringMatrix, exported from the Xloreta package
 g = globalFieldPower(X * ℌ(size(X, 2)); func=x->sqrt(x/size(X, 2)))
 
 ```
@@ -172,7 +183,7 @@ Function `func` can be applied element-wise to the output (none by default).
 [Anonymous functions](https://docs.julialang.org/en/v1/manual/functions/#man-anonymous-functions)
 can be used.
 
-Usually the GFRMS is computed on common average reference data — see [`centeringMatrix`](@ref).
+Usually the GFRMS is computed on common average reference data — see [`car!`](@ref).
 
 **Return** the vector comprising the ``T`` GFRMS values.
 
@@ -180,12 +191,13 @@ Usually the GFRMS is computed on common average reference data — see [`centeri
 
 **Examples**
 ```julia
-using Eegle
+using Eegle, Xloreta
 
 X=randn(128, 19)
 
+# ℌ is an alias for centeringMatrix, exported from Xloreta package
 g = globalFieldRMS(X * ℌ(size(X, 2)))
-# ℌ is an alias for centeringMatrix
+
 
 # return the natural log of the GFRMS
 g = globalFieldRMS(X * ℌ(size(X, 2)); func=log)
@@ -199,24 +211,21 @@ end
 
 
 
-# Given EEG data in `X` and its sampling rate `sr`, computes the global field root mean square (GFRMS), 
-# low-pass filter it using limit lowPass and find all local minima. 
+# Given EEG data in `X` and its sampling rate `sr`, computes the global field root mean square (GFRMS) 
+# on data X that is low-pass filtered it using limit lowPass. Then find all local minima of the GFRMS. 
 # Return a 3-tuple holding:
 # - the vector of unitrange in samples unit delimiting successive minima, 
 # where no two successive minima can comprise less than `minsamples` samples. These UnitRange delimits
 # the epochs and determine a 1-sample overlapping. For example: [1:128, 128:350, 350:461,...]
-# - the filtered GFRMS and 
+# - the GFRMS computed on the low-pass filtered data and 
 # - the vector of lengths of the intervals between all successive minima (to make an histogram, for example) 
 # see [global field root mean square](@ref globalFieldRMS)
 function _adaptiveEpochs(X::AbstractMatrix{T}, sr, minsamples::S, lowPass::Union{S, T}) where {T<:Real, S<:Int}
 
-    gfrms=globalFieldRMS(X)
-    # plot(gfrms[range])
     # if low-pass limit is the Nyquist frequency do not filter
-    gfrmsFilt = lowPass≥sr/2 ? gfrms : filtfilt(gfrms, sr, Lowpass(lowPass))
-    # plot!(gfrmsFilt[range])
+    gfrmsFilt = lowPass≥sr/2 ? globalFieldRMS(X) : globalFieldRMS(filtfilt(X, sr, Lowpass(lowPass)))
 
-    mina, value=Eegle.Miscellaneous.minima(gfrmsFilt)
+    mina, value = Eegle.Miscellaneous.minima(gfrmsFilt)
     #d=[(mina[i]-mina[i-1])/sr for i=2:length(mina)]
     #histogram(d)
 
@@ -256,14 +265,14 @@ This is used to extract epochs from spontaneous EEG recording. For tagged data (
 use [`Eegle.ERPs.trials`](@ref) instead.
 
 Two segmentation methods are possible, the *standard* fixed-length epoching and the *adaptive* epoching based on the
-local minima of the low-pass filtered [global field root mean square](@ref globalFieldRMS) (GFRMS).
+local minima of the [global field root mean square](@ref globalFieldRMS) (GFRMS) computed on low-pass filtered data.
 
 - *Standard (default):* `wl` is set to a positive integer (by default is `sr`*1.5), which determines the length in samples of the epochs.
     A positive value of `slide` (default=0) determines the number of overlapping 
     samples. By default there will be no overlapping. 
-- *Adaptive:* if `wl`= 0, the GFRMS is computed, low-pass filtered 
-    using `lowPass` (in Hz) as the cut-off (default = 14 Hz) and segmented ensuring that the minimum epoch size (in samples) is `minSize`, 
-    which default is the nuber of samples covering 1.5s. Set `LowPass` to `sr`/2 (Nyquist frequency) for no low-pass filtering of the GFRMS.
+- *Adaptive:* if `wl`= 0, the GFRMS is computed on data that is low-pass filtered 
+    using `lowPass` (in Hz) as the cut-off (default = 14 Hz), and segmented ensuring that the minimum epoch size (in samples) is `minSize`, 
+    which default is the number of samples covering 1.5s. Set `LowPass` to `sr`/2 (Nyquist frequency) for no low-pass filtering of the GFRMS.
 
 **Return**
 
@@ -271,7 +280,7 @@ local minima of the low-pass filtered [global field root mean square](@ref globa
 - *Adaptive:* if `richReturn=false` (default) ``r``, else the 3-tuple (``r``, ``m``, ``l``),
 
 where ``r`` is the computed vector of unit ranges (a `Vector{UnitRange{Int64}}` type), 
-``m`` the vector with the low-pass filtered GFMRS and ``l`` the vector of epoch lengths.
+``m`` the vector with the GFMRS of the low-pass filtered data and ``l`` the vector of epoch lengths.
 
 !!! note "Epochs definition"
     With the *adaptive* method, the last sample of an epoch coincides with the first sample of the successive epoch,
@@ -299,6 +308,7 @@ ranges = epoching(X, sr;
 # adaptive epoching of θ (Theta: 4Hz-7.5Hz) oscillations
 Xθ = filtfilt(X, sr, Bandpass(4, 7.5))
 rangesθ = epoching(Xθ, sr;
+        wl = 0, # do not forget this
         minSize = round(Int, sr ÷ 4), # at least one θ cycle
         lowPass = 7.5)  # ignore minima due to higher frequencies
 

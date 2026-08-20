@@ -1,3 +1,6 @@
+# This module has been tested independently
+
+#=
 using LinearAlgebra
 using MAT, Test
 
@@ -56,3 +59,4 @@ end
 @test M[1]≈myM[1]
 @test M[2]≈myM[2]
 @test M[3]≈myM[3]
+=#

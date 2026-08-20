@@ -1,21 +1,19 @@
 # Eegle Documentation
 
-> "Aquila non capit muscas"
+![Header 1](assets/header1.png)
 
-The **EEG General Library** (Eegle) is a general-purpose package for preprocessing and processing human Electroencephalography (EEG) data.
+The **EEG General Library** (Eegle) is a general-purpose package for
+preprocessing and processing human Electroencephalography (EEG) data.
 
-As a foundational building block, it enables the integration of diverse state-of-the-art packages specifically conceived for EEG data, 
-leveraging the powerful [Julia](https://julialang.org/) scientific eco-system.
+It promotes standardization, use of conventions and a learning approach based on simple examples and tutorials.
 
-**Eegle** promotes standardization, use of conventions and a learning approach based on simple examples and tutorials.
+## 🧩 Requirements 
 
-![Figure 1](assets/Fig1_index.png)
+**Julia**: version ≥ 1.12
 
-## Requirements 
+---
 
-**Julia**: version ≥ 1.10
-
-## Installation
+## ⚙️ Installation
 
 Execute the following commands in Julia's REPL:
 
@@ -24,60 +22,76 @@ Execute the following commands in Julia's REPL:
 ```
 then hit the 'back' keyboard key to exit the REPL package manager mode.
 
+---
 
-## Quick Start
-Read the [next page](@ref "Eegle") of this documentation for general informations, then work out the tutorials.
+## —͟͟͞͞★ Quick Start
+Read the [next page](@ref "Eegle") of this documentation for general informations, then work out the [tutorials](@ref "Tutorials").
 When you need a function, check its documentation and the examples given therein.
 
-## About the Authors
+---
+
+## ✍️ About the Authors
 
 [Marco Congedo](https://sites.google.com/site/marcocongedo), corresponding author, is a Research Director of [CNRS](http://www.cnrs.fr/en) (Centre National de la Recherche Scientifique), working at [UGA](https://www.univ-grenoble-alpes.fr/english/) (University of Grenoble Alpes). **Contact**: first name dot last name at gmail dot com
 
 [Fahim Doumi](https://www.linkedin.com/in/fahim-doumi-4888a9251/?locale=fr_FR) at the time of writing was a research ingeneer at the Department of Enginnering of the [University Federico II of Naples](https://www.unina.it/en_GB/home).
 
-## Contributors: 
+---
+
+## 🧑‍💻 Contributors
 
 | Contributor | Contribution |
 |:----------|:----------|
 | [Abdeljalil Anajjar](https://github.com/AbdeljalilAnajjar) | web GUI for downloading the [FII BCI Corpus](@ref "FII BCI Corpus Overview") and Julia artifacts for data example files |
 | [Alexandre Bleuzé](https://www.linkedin.com/in/alexandre-bleuz%C3%A9-069b37154/) | Toeplitz algebra for multivariate regression mean ERP estimations |
 
+---
 
-## TroubleShoothing
+## 🌱 Contribute
+
+To contribute, please check the section [How to Contribute](@ref).
+
+---
+
+## 🛠️ TroubleShoothing
+
 | Problem   | Solution |
 |:----------|:----------|
 | No problem encountered so far | N.A.|
 
-## Package Test
+---
+
+## 🧪 Package Test
 
 ```julia
 using Pkg
 Pkg.test("Eegle")
 ```
 
-## Reviewers & Contributors
+---
 
-Independent reviewers for both the code and the documentation are welcome.
-To contribute, please check the section [How to Contribute](@ref).
-
-## Contents
+## ➡️ Contents
 
 ```@contents
 Pages = [       "index.md",
                 "Eegle.md",
-                "FileSystem.md",
+                "Tutorials.md",
                 "Preprocessing.md",
                 "Processing.md",
-                "Miscellaneous.md",
                 "ERPs.md",
                 "BCI.md",
                 "Database.md",
+                "InOut.md",
+                "FileSystem.md",
+                "Miscellaneous.md",
 				"references.md",
 		]
 Depth = 1
 ```
 
-## Index
+---
+
+## 🧭 Index
 
 ```@index
 ```

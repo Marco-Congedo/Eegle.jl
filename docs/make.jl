@@ -1,11 +1,9 @@
 # Nota Bene: Run it while in the \docs environment
 
-push!(LOAD_PATH,"../src/")
-push!(LOAD_PATH,"docs/src/")
-
-#push!(LOAD_PATH, joinpath(@__DIR__, "..", "src"))
-#push!(LOAD_PATH, joinpath(@__DIR__, "docs", "src"))
-#push!(LOAD_PATH, joinpath(@__DIR__, "..", "."))
+using Pkg
+Pkg.activate(@__DIR__)
+Pkg.develop(path=joinpath(@__DIR__, ".."))  # local Eegle
+Pkg.instantiate() 
 
 using Documenter, DocumenterCitations, DocumenterInterLinks, DocumenterTools
 ## ADD HERE ALL MODULES!
@@ -19,6 +17,8 @@ using   Eegle,
         Eegle.BCI,
         Eegle.Database
 
+CI = get(ENV, "CI", "false") == "true"        
+
 bib = CitationBibliography(
     joinpath(@__DIR__, "src", "refs.bib");
     style=:authoryear #:numeric
@@ -28,7 +28,7 @@ makedocs(;
    plugins=[bib],
    sitename="Eegle",
    authors="Marco Congedo, Fahim Doumi and Contributors",
-   format = Documenter.HTML(),
+   format = Documenter.HTML(; prettyurls = CI,),
    #format = Documenter.HTML(repolink = "...")
                             #assets = ["assets/custom.css"],   
                             #theme = "mytheme",
@@ -39,21 +39,21 @@ makedocs(;
    # remotes = nothing, # ELIMINATE for deploying
  pages = [
         "index.md",
-        "Eegle Package" => "Eegle.md",
-        "Tutorials" => "Tutorials.md", 
-        "Eegle Modules" => [
+        "🦅 Eegle Package" => "Eegle.md",
+        "💡 Tutorials" => "Tutorials.md", 
+        "🧠 Eegle Modules" => [
             "Preprocessing" => "Preprocessing.md",
             "Processing" => "Processing.md",
             "Event-Related Potentials" => "ERPs.md",
             "Brain-Computer Interface" => "BCI.md",
             "Database" => "Database.md",
         ],
-        "Utilities" => [
+        "🔧 Utilities" => [
             "Input/Output" => "InOut.md",
             "File System" => "FileSystem.md",
             "Miscellaneous" => "Miscellaneous.md",
         ],
-        "Data" => [
+        "🗄️ Data" => [
             "Example Data" => "documents/Example Data.md",
             "FII BCI Corpus" => [
                 "FII BCI Corpus" => "documents/FII BCI Corpus Overview.md",
@@ -67,20 +67,23 @@ makedocs(;
                 "Benchmark" => "documents/Benchmark.md",
             ]
         ],
-        "References" => "references.md"
+        "🎓 References" => "references.md"
     ]
 )
 
-deploydocs(
-   # root
-   # target = "build", # add this folder to .gitignore!
-   repo = "github.com/Marco-Congedo/Eegle.jl.git",
-   branch = "gh-pages",
-   push_preview = true,
-   # osname = "linux",
-   # deps = Deps.pip("pygments", "mkdocs"),
-   # devbranch = "master", # RESTORE
-   # devurl = "dev", # RESTORE
-   # versions = ["stable" => "v^", "v#.#", devurl => devurl],
-)
-
+if CI
+    deploydocs(
+    # root
+    # target = "build", # add this folder to .gitignore!
+    repo = "github.com/Marco-Congedo/Eegle.jl.git",
+    branch = "gh-pages",
+    push_preview = false,
+    # osname = "linux",
+    # deps = Deps.pip("pygments", "mkdocs"),
+    # devbranch = "master", # RESTORE
+    # devurl = "dev", # RESTORE
+    # versions = ["stable" => "v^", "v#.#", devurl => devurl],
+    )
+else
+    include("local_run.jl")  # optional local run
+end

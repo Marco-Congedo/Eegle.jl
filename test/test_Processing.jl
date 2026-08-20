@@ -2,25 +2,34 @@ println("\x1b[95m", "\nTesting module Eegle.Processing.jl...", "\x1b[0m")
 
 ## filtfilt: already tested in test_Preprocessing.jl
 
+
+## filtfilt
+@testset "filtfilt                       " begin   
+    o = readNY(EXAMPLE_P300_1)
+    X = filtfilt(o.X, o.sr, Bandpass(1, 24))
+    @test X[1, 1] ≈ -23757.54529919358 atol=1e-9
+    @test X[end, end] ≈ -4.418407673642761 atol=1e-9
+end;
+
 ## centeringMatrix
-@testset "centeringMatrix                " begin   
+@testset "car!                           " begin   
     X1 = randn(32, 19)
     # CAR
-    X_car = X1 * centeringMatrix(size(X1, 2))
+    X_car = car!(copy(X1))
     @test norm(mean(X_car; dims=2))/size(X1, 1) < tol
 end;
 
 ## globalFieldPower
 @testset "globalFieldPower               " begin       
     ne = 19
-    X2 = randn(128, ne)*ℌ(ne)
+    X2 = car!(randn(128, ne))
     @test norm(globalFieldPower(X2)-sum(X2.^2; dims=2))/size(X2, 1) < tol
 end;
 
 @testset "globalFieldRMS                 " begin 
     ## globalFieldRMS
     ne = 19
-    X3 = randn(128, ne)*ℌ(ne)
+    X3 = car!(randn(128, ne))
     @test norm(globalFieldRMS(X3)-sqrt.(sum(X3.^2; dims=2)./size(X3, 2)))/size(X3, 1) < tol
 end;
 

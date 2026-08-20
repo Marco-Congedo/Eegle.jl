@@ -97,7 +97,7 @@ Contains stimulation and labeling information.
     |-------------------|------------|--------------------------------------------------|---------|
     | `labels`          | Dictionary | Mapping of class names to numeric codes          | `{right_hand: 2, feet: 3, rest: 4}` |
     | `nclasses`        | Integer    | Total number of stimulus classes                 | `3` |
-    | `trials_per_class`| Dictionary | Number of trials available for each class        | `{feet: 20, rest: 20, right_hand: 20}` |
+    | `trialsperclass`  | Dictionary | Number of trials available for each class        | `{feet: 20, rest: 20, right_hand: 20}` |
     | `offset`          | Integer    | Offset in samples from stimulation to trial start| `0` |
     | `windowlength`    | Integer    | Trial duration in samples                        | `768` |
 
@@ -177,7 +177,7 @@ stim:
     feet: 3
     rest: 4
   nclasses: 3
-  trials_per_class:
+  trialsperclass:
     right_hand: 20
     feet: 20
     rest: 20
@@ -186,6 +186,6 @@ stim:
 perf:
   right_hand-feet:
     MDM: 0.825
-    ENLR: 0.65
-    SVM: 0.675
+    TSL1LR: 0.65
+    TSSVM: 0.675
 ```

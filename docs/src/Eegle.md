@@ -4,7 +4,13 @@ CurrentModule = Eegle
 
 # Eegle
 
-**Eegle** is organized as a collection of independent modules. They are all re-exported, along with fundamental external packages,
+Is the foundational building block that enables the integration of diverse
+state-of-the-art packages specifically conceived for EEG data, 
+and leveraging the powerful [Julia](https://julialang.org/) scientific eco-system.
+
+![Figure 1](assets/Fig1_index.png)
+
+It is organized as a collection of independent modules forming the core. They are all re-exported, along with fundamental external packages,
 forming an integrated library. Thus, if you state
 
 ```julia
@@ -12,16 +18,6 @@ using Eegle
 ```
 
 you have access to all functions exported by all **Eegle** modules and by all re-exported external packages.
-
-Like external packages, **Eegle** modules can be used individually. 
-For example, if you only need some functions for preprocessing
-and signal processing, you can state
-
-```julia
-using Eegle.Preprocessing, DSP
-```
-
-In this case, however, you must install DSP.jl as well.
 
 ## Eegle Integrated Library
 
@@ -33,7 +29,7 @@ In this case, however, you must install DSP.jl as well.
 | [Database.jl](@ref) | utilities for handling databases and the [FII BCI Corpus](@ref "FII BCI Corpus Overview")|
 | [ERPs.jl](@ref) | operations on Event-Related Potentials and BCI trials |
 | [FileSystem.jl](@ref) | manipulation of files and directories |
-| [InOut.jl](@ref) | reading and writing of data |
+| [InOut.jl](@ref) | reading and writing of data (to be moved in a seperated package)|
 | [Miscellaneous.jl](@ref) | miscellaneous functions |
 | [Preprocessing.jl](@ref) | EEG preprocessing |
 | [Processing.jl](@ref) | EEG processing |
@@ -87,7 +83,24 @@ In this case, however, you must install DSP.jl as well.
     | [ZipFile](https://github.com/fhs/ZipFile.jl)| support for reading and writing ZIP archives in Julia |
     | [Test](https://github.com/JuliaLang/julia/tree/master/stdlib/Test)| for development: Julia standard library for integrating package testing |
 
-## Other Resources
+## Resources
+
+### Very useful
+
+|  Resource | Scope |
+|:-----------------------|:-----------------------|
+| [Leadfields.jl](https://github.com/Marco-Congedo/Leadfields.jl) | Leadfields for EEG inverse solutions |
+| [Xloreta](https://github.com/Marco-Congedo/Xloreta.jl) | sLORETA and eLORETA EEG distributed inverse solutions |
+| [Gedai](https://github.com/Marco-Congedo/Gedai) | automatic artifact correction for EEG |
+| [PeakFrequency](https://github.com/Lucreziadimarino/PeakFrequency.jl) | peak frequency and aperiodic component removal |
+
+### Visualization
+
+|  Resource | Scope |
+|:-----------------------|:-----------------------|
+| [EEGPlot](https://github.com/Marco-Congedo/EEGPlot.jl) | static and interactive plots for EEG and ERP data |
+| [CortexPlot](https://github.com/Marco-Congedo/CortexPlot.jl) | interactive 2D and 3D plots for EEG inverse solutions|
+| [UnfoldMakie](https://github.com/unfoldtoolbox/UnfoldMakie.jl/tree/main) | Topographic and several other plots for EEG and ERP data |
 
 ### Related to Eegle
 
@@ -96,8 +109,7 @@ In this case, however, you must install DSP.jl as well.
 | [Eegle-Tools](https://github.com/FhmDmi/Eegle-Tools) | a collection of useful scripts used to develop  and use **Eegle**  |
 | [pyLittleEegle](https://github.com/FhmDmi/pyLittleEegle) | encapsulate a subset of **Eegle**'s functions in a Python package |
 
-
-### Similar packages
+### Others
 
 There are many other Julia's packages that can be useful for EEG data analysis and classification.
 Here is a non-exhaustive list:

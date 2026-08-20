@@ -15,23 +15,103 @@ permissions:
   id-token: write
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  test:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['1.12']
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: julia-actions/setup-julia@v2
         with:
-          version: '1.11'
+          version: ${{ matrix.version }}
 
-      - uses: julia-actions/cache@v2
+      - uses: julia-actions/cache@v3
 
-      - name: Install dependencies
-        run: julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+      - name: Install package
+        run: |
+          julia --project=. -e '
+            using Pkg
+            Pkg.instantiate()
+          '
 
-      - name: Build and deploy docs
-        if: github.event_name != 'pull_request'
+      - name: Run tests
+        run: |
+          julia --project=. -e '
+            using Pkg
+            Pkg.test()
+          '
+
+      - name: Run tests with coverage
+        if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
+        run: |
+          julia --project=. --code-coverage=user -e '
+            using Pkg
+            Pkg.test(; coverage=true)
+          '
+
+      - name: Generate coverage report
+        if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
+        run: |
+          julia --project=. -e '
+            using Coverage
+            LCOV.writefile("lcov.info", process_folder(joinpath(pwd(), "src")))
+          '
+
+          python - <<'PY'
+          from pathlib import Path
+          p = Path("lcov.info")
+          p.write_text(p.read_text().replace("\\", "/"))
+          PY
+
+      - name: Check LCOV paths
+        if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
+        run: |
+          grep "SF:" lcov.info
+
+      - name: Upload coverage to Codecov
+        if: matrix.os == 'ubuntu-latest' && matrix.version == '1.12'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov.info
+          verbose: true
+
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.12'
+
+      - uses: julia-actions/cache@v3
+
+      - name: Install documentation dependencies
+        run: |
+          julia --project=docs -e '
+            using Pkg
+            Pkg.develop(PackageSpec(path=pwd()))
+            Pkg.instantiate()
+          '
+
+      - name: Build and deploy documentation
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
-        run: julia --project=docs/ docs/make.jl
+        run: |
+          julia --project=docs docs/make.jl

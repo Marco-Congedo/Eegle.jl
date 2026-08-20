@@ -1,25 +1,41 @@
-| Logo | Stable Documentation | Latest Documentation | Tutorials |
-|:-----:|:-----:|:-----:|:-----:|
-|  <img src="docs/src/assets/logo_small.png" height="90">   | [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://Marco-Congedo.github.io/Eegle.jl) | [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://Marco-Congedo.github.io/Eegle.jl) | [![](https://img.shields.io/badge/tutorials-blue.svg)](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/) |
+<img src="docs/src/assets/header1.png" width="820" style="display:block; margin-left:0;">
 
 ---
 
-**Eegle** (EEG general library) is a pure-[**julia**](https://julialang.org/) 90%-human package for human EEG (Electroencephalography) data analysis and classification.
+|Documentation & Tutorials | CI | Codecov | 
+|:-----:|:-----:|:-----:|
+| [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://Marco-Congedo.github.io/Eegle.jl) [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://marco-congedo.github.io/Eegle.jl/dev/) [![](https://img.shields.io/badge/tutorials-blue.svg)](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/) | [![CI](https://github.com/Marco-Congedo/Eegle.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/Marco-Congedo/Eegle.jl/actions/workflows/CI.yml) | [![codecov](https://codecov.io/gh/Marco-Congedo/Eegle.jl/graph/badge.svg)](https://codecov.io/gh/Marco-Congedo/Eegle.jl) |  
+
+| EEG BCI Data | Package's Clones | Unicode Symbol | Official Logo |  
+|:-----:|:-----:|:-----:|:-----:|
+| [![](https://img.shields.io/badge/Motor_Imagery-blue.svg)](https://zenodo.org/records/17801878) [![](https://img.shields.io/badge/P300-blue.svg)](https://zenodo.org/records/18379398) | [![](https://img.shields.io/badge/pyLittleEegle-blue.svg)](https://github.com/FhmDmi/pyLittleEegle) | 🦅 `\:eagle:`| <img src="docs/src/assets/logo_verysmall.png" height="48"> |  
+
+
+# Eegle (EEG general library) 
+
+This is a pure-[**julia**](https://julialang.org/) 95%-human package for human EEG (Electroencephalography) data analysis and classification.
+
 It is the fundamental brick allowing the integration of several packages dedicated to human EEG.
 
 <img src="docs/src/assets/Fig1_index.png" width="780" style="display: block; margin: auto;">
 
 ---
-## ⚙️ Installation
+
+## 🧩 Requirements
+
+**Julia**: version ≥ 1.12
+
+---
+## 📦 Installation
 
 Execute the following command in julia's REPL:
 
 ```julia
     ]add Eegle
 ```
----
-
 The package is self-contained, as it re-exports several packages and all its submodules. 
+
+---
 
 ## —͟͟͞͞★ Quick Start
 
@@ -40,10 +56,10 @@ A large collection of [tutorials](https://marco-congedo.github.io/Eegle.jl/stabl
 ---
 ## 🌱 Contribute
 
-Please contact the authors if you are interested in contributing.
+Please read the [guidelines](https://marco-congedo.github.io/Eegle.jl/stable/Eegle/#How-to-Contribute) and contact the authors if you are interested in contributing.
 
 ---
-| 🎓 **Documentation**  | 
+| 📖 **Documentation**  | 
 |:-------------------------------------:|
 | [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://Marco-Congedo.github.io/Eegle.jl/stable) | 
 | [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://Marco-Congedo.github.io/Eegle.jl) | 

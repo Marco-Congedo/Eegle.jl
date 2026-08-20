@@ -358,6 +358,8 @@ where {R<:Real, S<:Int}
 Extract trials of duration `wl` from a tagged EEG recording `X`.
 Optionally, multiply them by `weights` and compute a linear combination across sensors thereof.
 
+For automatic artifact correction before extracting trials, see [Gedai](https://github.com/Marco-Congedo/Gedai).
+
 !!! tip
     Trials of data in [NY format](@ref) are extracted by default when upon reading — see [`Eegle.InOut.readNY`](@ref); 
     to extract trials in order to compute their mean, see [`mean`](@ref);
@@ -550,7 +552,9 @@ function reject(X::Matrix{R},
     returnDetails::Bool=false) 
 where {R<:Real, S<:Int}
 ```
-Automatic rejection of artefacted trials in tagged EEG data by automatic amplitude thresholding.
+Automatic rejection of artifacted trials in tagged EEG data by automatic amplitude thresholding.
+
+For artifact correction of the EEG recording before extracting trials, see [Gedai](https://github.com/Marco-Congedo/Gedai).
 
 !!! tip "Read data and reject artifacts"
     This function is called by [`Eegle.InOut.readNY`](@ref) to perform artifact rejection while reading

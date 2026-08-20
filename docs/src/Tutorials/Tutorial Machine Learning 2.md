@@ -5,7 +5,7 @@
 A common task in [BCI](@ref "Acronyms") research is to test a *machine learning model* (MLM) on a large amount of real data.
 This tutorial uses the [FII BCI corpus](@ref "FII BCI Corpus Overview") to carry out such a task.
 
-If you did not download the corpus yet, do so before running this tutorial using the [`downloadDB`](@ref) function.
+> ❗If you did not download the corpus yet, do so before running this tutorial using the [`downloadDB`](@ref) function.
 
 The tutorial shows how to
 
@@ -23,7 +23,7 @@ The tutorial shows how to
 
     For each session, an 8-fold stratified cross-validation is run. While doing computations, summary results per session will be printed, including the mean and standard deviation of the balanced accuracy obtained across the folds as well as the p-value of the cross-validation test-statistic.
 
----
+![](../assets/banner_ML.png)
 
 Tell julia to use **Eegle**
 
@@ -36,7 +36,10 @@ Within these databases, select the sessions featuring at least 30 trials for eac
 
 ```julia
 classes = ["feet", "right_hand"];
-DBs = selectDB(:MI; classes, minTrials = 30);
+DBs = selectDB(:MI; 
+                classes, 
+                inclusion = (("tpc", x -> minimum(values(x)) > 30),)
+                );
 ```
 
 Create memory to store all accuracies.
@@ -55,7 +58,7 @@ for (db, DB) ∈ enumerate(DBs), (f, file) ∈ enumerate(DB.files)
     MIacc[db][f] = cv.avgAcc
 
     # print a summary of the cv results
-    println("\nDatabase ", DB.dbName, ", File ", f, 
+    println("\nDatabase ", DB.dbName,"-", DB.condition,  ", File ", f, 
         ": mean(sd) balanced accuracy ", round(cv.avgAcc*100, digits=2),
         "% (± ", round(cv.stdAcc*100, digits=2), "%); ", 
         "p-value ", round(cv.p; digits = 4))
@@ -72,7 +75,7 @@ using the [`weightsDB`](@ref) function and compute the weighted average balanced
 
 ```julia
 MIw = [weightsDB(db.files)[1] for db ∈ DBs]; # get weights
-MIw = [v ./= mean(v) for v ∈ w]; # normalize to unit mean
+MIw = [w ./= mean(w) for w ∈ MIw]; # normalize to unit mean
 
 MIdbAcc = [mean(w.*acc) for (w, acc) ∈ zip(MIw, allMIacc)]
 ```
@@ -106,4 +109,5 @@ using Eegle # hide
 parseTutorial("Tutorial Machine Learning 2") # hide
 ```
 
-[⬆️ Go to Top](@ref "Tutorial ML 2")
+[⬆️ Go to Top  ](@ref "Tutorial ML 2")
+[🥳 More Tutorials](@ref "Tutorials")

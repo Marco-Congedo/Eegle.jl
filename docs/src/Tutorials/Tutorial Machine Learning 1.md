@@ -15,6 +15,8 @@ For this example, we will use trials pertaining to classes "feet" and "right_han
     2. filtering the EEG data in the band-pass region 8-32 Hz (`bandPass = (8, 32)`)
     3. rejecting trials featuring abnormal amplitude (`upperLimit = 1`). 
 
+![](../assets/banner_ML.png)
+
 First, let us perform the cross validation for the MDM classifier:
 
 ```julia
@@ -145,4 +147,5 @@ using Eegle # hide
 parseTutorial("Tutorial Machine Learning 1") # hide
 ```
 
-[⬆️ Go to Top](@ref "Tutorial ML 1")
+[⬆️ Go to Top  ](@ref "Tutorial ML 1")
+[🥳 More Tutorials](@ref "Tutorials")
