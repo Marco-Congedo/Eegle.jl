@@ -30,7 +30,7 @@ bibliography: paper.bib
 
 Existing since the 1920s, Electroencephalography (EEG) is the first non-invasive neuroimaging modality developed by mankind. Despite many more sophisticated modalities having been developed since, to date EEG is still by far the most widely used. This is due to a number of distinct advantages over other modalities, such as the high temporal resolution, the low price and portability of equipment, the silent operation and the total non-invasiveness.
 
-The recent explosion of research on EEG-based Brain-Computer Interfaces (BCIs) has fostered the need for efficient tools for EEG analysis and machine learning. While such tools exist for older languages such as Python and Matlab, they are not available for the more recent Julia language, which has been specifically created with these needs in mind. *Eegle.jl* leverages the rich and efficient scientific Julia ecosystem and integrates it to offer a simple and unified framework for both EEG data analysis and machine learning. In order to promote inter-operability of Julia and Python, we also release *pyLittleEegle*, a Python clone of the BCI-related capabilities found in *Eegle.jl*. Both packages work seamlessly with the *FII BCI Corpus*, the first large curated and annotated corpus of databases for the motor imagery and P300 BCI modalities.
+The recent explosion of research on EEG-based Brain-Computer Interfaces (BCIs) has fostered the need for efficient tools for EEG analysis and machine learning. While such tools exist for older languages such as Python and MATLAB, they are not available for the more recent Julia language, which has been specifically created with these needs in mind. *Eegle.jl* leverages the rich and efficient scientific Julia ecosystem and integrates it to offer a simple and unified framework for both EEG data analysis and machine learning. In order to promote inter-operability of Julia and Python, we also release *pyLittleEegle*, a Python clone of the BCI-related capabilities found in *Eegle.jl*. Both packages work seamlessly with the *FII BCI Corpus*, the first large curated and annotated corpus of databases for the motor imagery and P300 BCI modalities.
 
 # Statement of need
 
@@ -51,7 +51,7 @@ While BCI research is relatively new, EEG has a long-standing tradition in clini
 
 # State of the field
 
-Older languages such as Python and Matlab have their established software ecosystems for EEG data analysis and machine learning. Here below are the most frequently adopted software:
+Older languages such as Python and MATLAB have their established software ecosystems for EEG data analysis and machine learning. Here below are the most frequently adopted software:
 
 ## Python
 | Package   | Description |
@@ -61,18 +61,18 @@ Older languages such as Python and Matlab have their established software ecosys
 |  MOABB [@moabb:2025] | Reproducible benchmarking for EEG-based BCIs |
 |  Braindecode [@braindecode:2025] | Braindecode: toolbox for decoding raw electrophysiological brain data with deep learning models |
 
-## Matlab
+## MATLAB
 | Package   | Description |
 |:------------|:------------|
-|  EEGLAB [@eeglab:2004] | An interactive Matlab toolbox for processing continuous and event-related EEG, MEG |
+|  EEGLAB [@eeglab:2004] | An interactive MATLAB toolbox for processing continuous and event-related EEG, MEG |
 |  FieldTrip [@fieldtrip:2011] | Open-source software for advanced analysis of MEG, EEG, and invasive electrophysiological data |
 |  Brainstorm [@brainstorm:2011] | A user-friendly application for MEG/EEG analysis |
 
 ## Julia
 
-Julia is a young open-source and cross-platform language specifically conceived for scientific computing [@julia:2017]. It is rapidly gaining momentum in the scientific community thanks to its conceptual affinity with mathematics and compatibility with the best available computing protocols. Although it is a high-level language, like Python and Matlab, it is (just-in-time) compiled, thus efficient. Moreover, Julia's syntax is elegant and permissive, allowing the programmer to adopt his/her preferred writing style. That is to say, the same routine in Julia can be written using a syntax closely resembling C, Python, or Matlab, to name a few. This accelerates the learning curve for people knowing other programming languages.
+Julia is a young open-source and cross-platform language specifically conceived for scientific computing [@julia:2017]. It is rapidly gaining momentum in the scientific community thanks to its conceptual affinity with mathematics and compatibility with the best available computing protocols. Although it is a high-level language, like Python and MATLAB, it is (just-in-time) compiled, thus efficient. Moreover, Julia's syntax is elegant and permissive, allowing the programmer to adopt his/her preferred writing style. That is to say, the same routine in Julia can be written using a syntax closely resembling C, Python, or MATLAB, to name a few. This accelerates the learning curve for people knowing other programming languages.
 
-For these reasons, the use of Julia may greatly benefit the field of EEG data analysis and machine learning. However, there are only a few active projects at the moment. The most active are `NeuroAnalyzer.jl` [@Wysokinski:2024] and `unfold.jl` [@ehinger:2026]. The first is a general package for importing/processing/analyzing and visualization of EEG and other neurophysiological data. The second focuses on event-related potentials. `Eegle.jl` is a generic package for EEG, thus its scope intersects only with `NeuroAnalyzer.jl`, from which, however, it differs by design.
+For these reasons, the use of Julia may greatly benefit the field of EEG data analysis and machine learning. However, there are only a few active projects at the moment. The most active are `NeuroAnalyzer.jl` [@Wysokinski:2024] and `Unfold.jl` [@ehinger:2026]. The first is a general package for importing/processing/analyzing and visualization of EEG and other neurophysiological data. The second focuses on event-related potentials. `Eegle.jl` is a generic package for EEG, thus its scope intersects only with `NeuroAnalyzer.jl`, from which, however, it differs by design.
 
 # Software design
 
