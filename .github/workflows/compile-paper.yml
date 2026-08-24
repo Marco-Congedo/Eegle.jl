@@ -26,8 +26,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apt-get update
-          apt-get install -y pandoc texlive-xetex texlive-fonts-recommended texlive-latex-extra
+          sudo apt-get update
+          sudo apt-get install -y pandoc texlive-xetex texlive-fonts-recommended texlive-latex-extra
 
       - name: Compile paper to PDF
         run: |
