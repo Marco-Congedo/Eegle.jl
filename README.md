@@ -2,9 +2,9 @@
 
 ---
 
-|Documentation & Tutorials | CI | Codecov | 
-|:-----:|:-----:|:-----:|
-| [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://Marco-Congedo.github.io/Eegle.jl) [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://marco-congedo.github.io/Eegle.jl/dev/) [![](https://img.shields.io/badge/tutorials-blue.svg)](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/) | [![CI](https://github.com/Marco-Congedo/Eegle.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/Marco-Congedo/Eegle.jl/actions/workflows/CI.yml) | [![codecov](https://codecov.io/gh/Marco-Congedo/Eegle.jl/graph/badge.svg)](https://codecov.io/gh/Marco-Congedo/Eegle.jl) |  
+|Documentation & Tutorials | Paper | CI | Codecov | 
+|:-----:|:-----:|:-----:|:-----:|
+| [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://Marco-Congedo.github.io/Eegle.jl) [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://marco-congedo.github.io/Eegle.jl/dev/) [![](https://img.shields.io/badge/tutorials-blue.svg)](https://marco-congedo.github.io/Eegle.jl/stable/Tutorials/) | [![DOI](https://joss.theoj.org/papers/10.21105/joss.10388/status.svg)](https://doi.org/10.21105/joss.10388)| [![CI](https://github.com/Marco-Congedo/Eegle.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/Marco-Congedo/Eegle.jl/actions/workflows/CI.yml) | [![codecov](https://codecov.io/gh/Marco-Congedo/Eegle.jl/graph/badge.svg)](https://codecov.io/gh/Marco-Congedo/Eegle.jl) |  
 
 | EEG BCI Data | Package's Clones | Unicode Symbol | Official Logo |  
 |:-----:|:-----:|:-----:|:-----:|
@@ -33,7 +33,6 @@ Execute the following command in julia's REPL:
 ```julia
     ]add Eegle
 ```
-The package is self-contained, as it re-exports several packages and all its submodules. 
 
 ---
 
@@ -44,19 +43,24 @@ A large collection of [tutorials](https://marco-congedo.github.io/Eegle.jl/stabl
 ---
 ## 🤔 Disclaimer
 
-**Eegle** is currently under development and the full testing process has not been completed. 
+**Eegle** is constantly under development and the testing process is not complete. 
 
 ---
 ## ✍️ About the authors
 
-[Marco Congedo](https://sites.google.com/site/marcocongedo), corresponding author, is a Research Director of [CNRS](http://www.cnrs.fr/en) (Centre National de la Recherche Scientifique), working at [UGA](https://www.univ-grenoble-alpes.fr/english/) (University of Grenoble Alpes). **Contact**: first name dot last name at gmail dot com.
+[Marco Congedo](https://sites.google.com/site/marcocongedo), corresponding author, is a Research Director of [CNRS](http://www.cnrs.fr/en) (Centre National de la Recherche Scientifique), working at [UGA](https://www.univ-grenoble-alpes.fr/english/) (University of Grenoble Alpes). There is a non-negligible chance he has started working with EEG before you were born. **Contact**: first name dot last name at gmail dot com.
 
-[Fahim Doumi](https://www.linkedin.com/in/fahim-doumi-4888a9251/?locale=fr_FR) at the time of writing was a research ingeneer at the Department of Enginnering of the [University Federico II of Naples](https://www.unina.it/en_GB/home).
+[Fahim Doumi](https://www.linkedin.com/in/fahim-doumi-4888a9251/?locale=fr_FR) is a PhD student at [University Federico II of Naples](https://www.unina.it/en_GB/home) and UGA.
 
 ---
 ## 🌱 Contribute
 
 Please read the [guidelines](https://marco-congedo.github.io/Eegle.jl/stable/Eegle/#How-to-Contribute) and contact the authors if you are interested in contributing.
+
+---
+## 🔗 Reference
+
+Congedo M. and Doumi F. (2026) Eegle: An open-source Julia integrative package for EEG data analysis and machine learning. Journal of Open Source Software, 11(124), 10388, doi: 10.21105/joss.10388. [pdf](https://doi.org/10.21105/joss.10388).
 
 ---
 | 📖 **Documentation**  | 

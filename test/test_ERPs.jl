@@ -80,11 +80,9 @@ end
     ns = sr*100 # number of samples of the recording
     # simulate stimulations for three classes
     stim = vcat([rand()<0.01 ? rand(1:3) : 0 for i = 1:ns-wl], zeros(Int, wl))
-    for off = 1:32 # check for many offsets
-        mark = stim2mark(stim, wl; offset = 3)
-        stim2 = mark2stim(mark, ns; offset = -3)
-        @test norm(stim.-stim2) ≈ 0 atol = 0.01
-    end
+    mark = stim2mark(stim, wl; offset = 3)
+    stim2 = mark2stim(mark, ns; offset = -3)
+    @test norm(stim.-stim2) ≈ 0 atol = 0.01
 end;
 
 @testset "stim2mark code" begin

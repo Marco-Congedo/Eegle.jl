@@ -1,0 +1,38 @@
+cff-version: "1.2.0"
+authors:
+- family-names: Congedo
+  given-names: Marco
+  orcid: "https://orcid.org/0000-0003-2196-0409"
+- family-names: Doumi
+  given-names: Fahim
+  orcid: "https://orcid.org/0009-0000-0014-8468"
+contact:
+- family-names: Congedo
+  given-names: Marco
+  orcid: "https://orcid.org/0000-0003-2196-0409"
+doi: 10.5281/zenodo.21718881
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Congedo
+    given-names: Marco
+    orcid: "https://orcid.org/0000-0003-2196-0409"
+  - family-names: Doumi
+    given-names: Fahim
+    orcid: "https://orcid.org/0009-0000-0014-8468"
+  date-published: 2026-08-25
+  doi: 10.21105/joss.10388
+  issn: 2475-9066
+  issue: 124
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 10388
+  title: "Eegle: An open-source Julia integrative package for EEG data
+    analysis and machine learning"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.10388"
+  volume: 11
+title: "Eegle: An open-source Julia integrative package for EEG data
+  analysis and machine learning"

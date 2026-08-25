@@ -7,6 +7,10 @@ preprocessing and processing human Electroencephalography (EEG) data.
 
 It promotes standardization, use of conventions and a learning approach based on simple examples and tutorials.
 
+## 🔗 Reference
+
+Congedo M. and Doumi F. (2026) Eegle: An open-source Julia integrative package for EEG data analysis and machine learning. Journal of Open Source Software, 11(124), 10388, doi: 10.21105/joss.10388. [pdf](https://doi.org/10.21105/joss.10388).
+
 ## 🧩 Requirements 
 
 **Julia**: version ≥ 1.12
@@ -32,9 +36,9 @@ When you need a function, check its documentation and the examples given therein
 
 ## ✍️ About the Authors
 
-[Marco Congedo](https://sites.google.com/site/marcocongedo), corresponding author, is a Research Director of [CNRS](http://www.cnrs.fr/en) (Centre National de la Recherche Scientifique), working at [UGA](https://www.univ-grenoble-alpes.fr/english/) (University of Grenoble Alpes). **Contact**: first name dot last name at gmail dot com
+[Marco Congedo](https://sites.google.com/site/marcocongedo), corresponding author, is a Research Director of [CNRS](http://www.cnrs.fr/en) (Centre National de la Recherche Scientifique), working at [UGA](https://www.univ-grenoble-alpes.fr/english/) (University of Grenoble Alpes). There is a non-negligible chance he has started working with EEG before you were born. **Contact**: first name dot last name at gmail dot com.
 
-[Fahim Doumi](https://www.linkedin.com/in/fahim-doumi-4888a9251/?locale=fr_FR) at the time of writing was a research ingeneer at the Department of Enginnering of the [University Federico II of Naples](https://www.unina.it/en_GB/home).
+[Fahim Doumi](https://www.linkedin.com/in/fahim-doumi-4888a9251/?locale=fr_FR) is a PhD student at [University Federico II of Naples](https://www.unina.it/en_GB/home) and UGA.
 
 ---
 
