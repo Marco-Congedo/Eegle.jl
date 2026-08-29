@@ -34,7 +34,7 @@ The data curation included:
 - cleaning of NaN and zero values at the beginning and ending of the recordings,
 - conversion of the cleaned data from CSV to the [NY format](@ref), easily accessible in any programming language.
 
-For the details on the discarding procedures for each file see the *@discarded.md* file for [MI](https://zenodo.org/records/17801878/files/@discarded.md?download=1) and [P300](https://zenodo.org/records/17793672/files/@discarded.md?download=1).
+For the details on the discarding procedures for each file see the *@discarded.md* file for [MI](https://zenodo.org/records/21687278/files/@discarded.md?download=1) and [P300](https://zenodo.org/records/21688242/files/@discarded.md?download=1).
 
 For the details on the treatment that has been carried out on each database, see [Treatment MI](@ref) and [Treatment P300](@ref).
 

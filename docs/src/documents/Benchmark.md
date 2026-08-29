@@ -2,7 +2,7 @@
 
 This document reports the results of a benchmark run on the [FII BCI Corpus](@ref "FII BCI Corpus Overview") using **Eegle**.
 
-Only subjects/sessions that passed *all exclusion criteria* described in the *@discarded.md* file (see it for [MI](https://zenodo.org/records/17801878/files/@discarded.md?download=1) and [P300](https://zenodo.org/records/17793672/files/@discarded.md?download=1)) were included in this benchmark.
+Only subjects/sessions that passed *all exclusion criteria* described in the *@discarded.md* file (see it for [MI](https://zenodo.org/records/21687278/files/@discarded.md?download=1) and [P300](https://zenodo.org/records/21688242/files/@discarded.md?download=1)) were included in this benchmark.
 
 Individual subject/session accuracies are included in the `.yml` [metadata files](@ref "NY Metadata (YAML)") and are also available in CSV format in this [GitHub repository](https://github.com/FhmDmi/Eegle-Tools/tree/master/Within-Session-Evaluation/results). The repository also hosts the scripts used to make this benchmark and more information. 
 
