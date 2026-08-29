@@ -1,6 +1,6 @@
 name = "Eegle"
 uuid = "1260424e-cd79-4b74-a0ea-47c69c296663"
-version = "0.2.10"
+version = "0.2.11"
 authors = ["Marco Congedo, Fahim Doumi"]
 
 [deps]

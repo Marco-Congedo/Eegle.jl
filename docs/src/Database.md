@@ -25,7 +25,8 @@ Most functionalities of this module are also encapsulated in the [pyLittleEegle]
 |[`Eegle.Database.infoDB`](@ref)        | print, save and return metadata about a database |
 |[`Eegle.Database.selectDB`](@ref)      | select databases and sessions based on inclusion criteria
 |[`Eegle.Database.weightsDB`](@ref)     | get weights for each session of a database for statistical analysis |
-|[`Eegle.Database.downloadDB`](@ref)    | run a web-based GUI to dowload the FII BCI corpus. |
+|[`Eegle.Database.downloadDB`](@ref)    | run a web-based GUI to download the FII BCI corpus |
+|[`Eegle.Database.corpusDir`](@ref)     | return the directory where the FII BCI corpus has been downloaded |
 
 📖
 ```@docs
@@ -35,4 +36,5 @@ Most functionalities of this module are also encapsulated in the [pyLittleEegle]
     Eegle.Database.selectDB
     Eegle.Database.weightsDB
     Eegle.Database.downloadDB
+    Eegle.Database.corpusDir
 ```

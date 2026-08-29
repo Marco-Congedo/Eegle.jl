@@ -305,8 +305,26 @@ function write_in_Eegle_package(download_path, overwrite)
     end
 end
 
-# Returns the stored corpus path from Eegle’s internal configuration file.
-function _dirFII() 
+"""
+```julia
+function corpusDir()
+```
+
+If the [FII BCI corpus](@ref "FII BCI Corpus Overview") has been downloaded using [`downloadDB`](@ref),
+return the directory where it has been stored.
+
+**Example**
+```julia
+using Eegle # or using Eegle.Database
+
+# get the full path of all .npz (data) files of database AlexMI
+db = getFilesInDir(joinpath(corpusDir(), "MI", "AlexMI"); ext=(".npz", ))
+
+# process the data file by file ...
+
+```
+"""
+function corpusDir() 
     file = FII_BCI_CORPUS_PATHFILE
     isfile(file) || (return nothing)
     path = normpath(readlines(FII_BCI_CORPUS_PATHFILE)[1])

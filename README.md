@@ -8,7 +8,7 @@
 
 | EEG BCI Data | Package's Clones | Unicode Symbol | Official Logo |  
 |:-----:|:-----:|:-----:|:-----:|
-| [![](https://img.shields.io/badge/Motor_Imagery-blue.svg)](https://zenodo.org/records/17801878) [![](https://img.shields.io/badge/P300-blue.svg)](https://zenodo.org/records/18379398) | [![](https://img.shields.io/badge/pyLittleEegle-blue.svg)](https://github.com/FhmDmi/pyLittleEegle) | 🦅 `\:eagle:`| <img src="docs/src/assets/logo_verysmall.png" height="48"> |  
+| [![](https://img.shields.io/badge/Motor_Imagery-blue.svg)](https://zenodo.org/records/17801878) [![](https://img.shields.io/badge/P300-blue.svg)](https://zenodo.org/records/21687278) | [![](https://img.shields.io/badge/pyLittleEegle-blue.svg)](https://github.com/FhmDmi/pyLittleEegle) | 🦅 `\:eagle:`| <img src="docs/src/assets/logo_verysmall.png" height="48"> |  
 
 
 # Eegle (EEG general library) 
