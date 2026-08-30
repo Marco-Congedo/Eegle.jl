@@ -1,4 +1,4 @@
-using Eegle, Statistics, LinearAlgebra, Test
+using Eegle, Statistics, LinearAlgebra, Test, Random
 
 tol = 1e-12
 
