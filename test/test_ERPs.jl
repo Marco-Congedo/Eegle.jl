@@ -67,6 +67,7 @@ end
 
 ## stim2mark and mark2stim
 @testset "stim2mark and mark2stim        " begin
+    Random.seed!(42)
     sr, wl = 128, 256 # sampling rate, window length of trials
     ns = sr*100 # number of samples of the recording
     # simulate stimulations for three classes
@@ -76,6 +77,7 @@ end
     @test norm(stim.-stim2) ≈ 0 atol = 0.01
 
     # with offset
+    Random.seed!(43)
     sr, wl = 128, 256 # sampling rate, window length of trials
     ns = sr*100 # number of samples of the recording
     # simulate stimulations for three classes
