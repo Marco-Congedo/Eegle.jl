@@ -6,7 +6,7 @@ Sometimes the *power spectral density* is to be estimated on specific epochs (e.
 
 This tutorial uses the [`EXAMPLE_MI_1`](@ref) Motor Imagery (MI) Brain-Computer Interface EEG file provided with **Eegle** and shows how to
 
-1. read the MI example file (in [NY format](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/NY%20format/))
+1. read the MI example file (in [NY format](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/NY%20format/))
 2. compute and average the spectra across trials for all MI classes
 3. plot the spectra.
 

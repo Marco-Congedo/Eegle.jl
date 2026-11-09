@@ -1,6 +1,6 @@
 # Example Data
 
-**Eegle** deploys example EEG data files in [NY format](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/NY%20format/) to be used in examples and tutorials.
+**Eegle** deploys example EEG data files in [NY format](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/NY%20format/) to be used in examples and tutorials.
 This format is read by fucntion [`readNY`](@ref), which creates an [`EEG`](@ref) structure including both the data and metadata. 
 The complete path to the file is is accessible anywhere as Eegle.{CONSTANT},
 where {CONSTANT} is one of the heading here below. See the [tutorials](@ref "Tutorials").
@@ -8,8 +8,8 @@ where {CONSTANT} is one of the heading here below. See the [tutorials](@ref "Tut
 ---
 ## `EXAMPLE_MI_1`
 
-This is the file corresponding to the first [session](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Terminology/#session) of [subject](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Terminology/#subject) 3
-of motor-imagery Brain-Computer Interface database [Alex MI](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Summary%20of%20MI%20Databases/).
+This is the file corresponding to the first [session](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Terminology/#session) of [subject](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Terminology/#subject) 3
+of motor-imagery Brain-Computer Interface database [Alex MI](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Summary%20of%20MI%20Databases/).
 
 !!! details "details"
     - amplifier: *g.USBamp* (g.tec medical engineering GmbH, Graz, Austria)
@@ -26,8 +26,8 @@ See [Tutorial ML 1](@ref).
 ---
 ## `EXAMPLE_P300_1`
 
-This is the file corresponding to the first [session](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Terminology/#session) of the first [subject](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Terminology/#subject) 
-of P300 Brain-Computer Interface database [bi2012-T](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Treatment%20P300/#bi2012).
+This is the file corresponding to the first [session](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Terminology/#session) of the first [subject](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Terminology/#subject) 
+of P300 Brain-Computer Interface database [bi2012-T](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Treatment%20P300/#bi2012).
 
 !!! details "details"
     - amplifier: *NeXus-32* (TMSi, Oldenzaal, The Netherlands)

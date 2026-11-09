@@ -9,7 +9,7 @@ using Reexport
                 Diagonalizations,
                 Distributions,
                 DSP,
-                FIIBCICorpus,
+                FIIBCIcorpus,
                 FourierAnalysis,
                 LinearAlgebra,
                 NPZ,

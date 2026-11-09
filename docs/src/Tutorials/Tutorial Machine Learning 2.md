@@ -3,9 +3,9 @@
 [💻 Full Code](@ref "Code for Tutorial ML 2")
 
 A common task in [BCI](@ref "Acronyms") research is to test a *machine learning model* (MLM) on a large amount of real data.
-This tutorial uses the [FII BCI corpus](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/FII%20BCI%20Corpus%20Overview/) to carry out such a task.
+This tutorial uses the [FII BCI corpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/FII%20BCI%20Corpus%20Overview/) to carry out such a task.
 
-> ❗If you did not download the corpus yet, do so before running this tutorial using the [`downloadDB`](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/DownloadFII/#FIIBCICorpus.DownloadFII.downloadDB) function.
+> ❗If you did not download the corpus yet, do so before running this tutorial using the [`downloadDB`](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/DownloadFII/#FIIBCIcorpus.DownloadFII.downloadDB) function.
 
 The tutorial shows how to
 
@@ -14,7 +14,7 @@ The tutorial shows how to
     - availability of specific classes
     - minimum number of trials per class
 
-2. Run a cross-validation for all selected [sessions](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Terminology/#session) in all selected [databases](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Terminology/#database) and store the balanced accuracies obtained on all cross-validations
+2. Run a cross-validation for all selected [sessions](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Terminology/#session) in all selected [databases](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Terminology/#database) and store the balanced accuracies obtained on all cross-validations
 
 3. Compute the average balanced accuracy within each database using an appropriate weighting function.
 
@@ -32,7 +32,7 @@ using Eegle
 ```
 
 Select all motor imagery databases in the *FII BCI Corpus* featuring the "feet" and "right_hand" class. 
-Within these databases, select the sessions featuring at least 30 trials for each of these classes — see [selectDB](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/Database/#FIIBCICorpus.Database.selectDB).
+Within these databases, select the sessions featuring at least 30 trials for each of these classes — see [selectDB](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/Database/#FIIBCIcorpus.Database.selectDB).
 
 ```julia
 classes = ["feet", "right_hand"];
@@ -71,7 +71,7 @@ allMIacc = [round.(db; digits=3) for db ∈ MIacc]
 ```
 
 Create appropriate weights to average the balanced accuracy within each database
-using the [`weightsDB`](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/Database/#FIIBCICorpus.Database.weightsDB) function and compute the weighted average balanced accuracy within each database. 
+using the [`weightsDB`](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/Database/#FIIBCIcorpus.Database.weightsDB) function and compute the weighted average balanced accuracy within each database. 
 
 ```julia
 MIw = [weightsDB(db.files)[1] for db ∈ DBs]; # get weights

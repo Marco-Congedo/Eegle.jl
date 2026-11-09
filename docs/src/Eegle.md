@@ -33,8 +33,8 @@ you have access to all functions exported by all **Eegle** modules and by all re
 | [Preprocessing.jl](@ref) | EEG preprocessing |
 | [Processing.jl](@ref) | EEG processing |
 
-The module handling databases and the [FII BCI Corpus](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/FII%20BCI%20Corpus%20Overview/)
-([Database.jl](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/Database/)) belongs to package [FIIBCICorpus](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/),
+The module handling databases and the [FII BCI Corpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/FII%20BCI%20Corpus%20Overview/)
+([Database.jl](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/Database/)) belongs to package [FIIBCIcorpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/),
 which is re-exported by **Eegle**. Thus, its functions are available with `using Eegle`, as before,
 and the qualified names `Eegle.Database.selectDB`, ... still work.
 
@@ -48,7 +48,7 @@ and the qualified names `Eegle.Database.selectDB`, ... still work.
     | [Diagonalizations](https://github.com/Marco-Congedo/Diagonalizations.jl) | spatial filters, (approximate joint) diagonalization algorithms |
     | [Distributions](https://github.com/JuliaStats/Distributions.jl) | Julia standard package for statistical distributions |
     | [DSP](https://github.com/JuliaDSP/DSP.jl) | Julia standard package for digital signal processing |
-    | [FIIBCICorpus](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/) | download, locate and select the databases of the FII BCI Corpus |
+    | [FIIBCIcorpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/) | download, locate and select the databases of the FII BCI Corpus |
     | [FourierAnalysis](https://github.com/Marco-Congedo/FourierAnalysis.jl) | FFT-based frequency domain and time-frequency domain analysis |
     | [LinearAlgebra](https://bit.ly/2W5Wq8W) | Julia standard package for matrix types and linear algebra (BLAS, LAPACK) |
     | [NPZ](https://github.com/fhs/NPZ.jl) | support for the *NPZ* (NumPy) binary data format |
