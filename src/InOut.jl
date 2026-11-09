@@ -59,7 +59,7 @@ struct EEG
     trials          :: Union{Vector{Matrix{T}}, Nothing} 
 where T<:Real 
 ```
-Data structure for an EEG BCI (Brain-Computer Interface) [session](@ref), holding data and metadata.
+Data structure for an EEG BCI (Brain-Computer Interface) [session](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Terminology/#session), holding data and metadata.
 
 It is written by [`readNY`](@ref).
 
@@ -67,11 +67,11 @@ While conceived specifically for BCI sessions, the structure can be used also fo
 
 **Fields**
 
-- `db`: name of the [database](@ref) to which the recording belongs
+- `db`: name of the [database](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Terminology/#database) to which the recording belongs
 - `paradigm`: BCI paradigm
-- `subject`: serial number of the present [subject](@ref) in the above database
-- `session`: serial number of the present [session](@ref) for the above subject
-- `run`: serial number of the present [run](@ref) of the above session
+- `subject`: serial number of the present [subject](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Terminology/#subject) in the above database
+- `session`: serial number of the present [session](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Terminology/#session) for the above subject
+- `run`: serial number of the present [run](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/Terminology/#run) of the above session
 - `nTrials`: a dictionary mapping each class label to a vector containing the number of trials per session for that class. 
 - `perf`: performance of the session obtained via the Eegle benchmark per task
 - `sensors`: labels of the scalp electrode leads in standard notation (10-20, 10-10,...)
@@ -87,7 +87,7 @@ While conceived specifically for BCI sessions, the structure can be used also fo
 - `X`: the ``T×N`` EEG data, with ``T`` and ``N`` the number of samples and channels (sensors), respectively
 - `trials`: a vector of trials, each of size ``N×wl``, extracted in the order of tags given in `stim` (optional)
 - `y`: the non-zero tags of `stim` as a vector. Each tag is the class label of the corresponding trial
-- dictionaries `id`, `acquisition`, and `documentation` — see [NY Metadata (YAML)](@ref)). Their keys are:
+- dictionaries `id`, `acquisition`, and `documentation` — see [NY Metadata (YAML)](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/yamlstruct/)). Their keys are:
 
 | id          | acquisition   |documentation  |
 |:------------|:--------------|:--------------|
@@ -263,7 +263,7 @@ function readNY(filename :: AbstractString;
     stdClass    :: Bool = true, 
     msg         :: String="") 
 ```
-Read EEG/BCI data in [NY format](#NY-format), prepreprocess them if desired, and create an [`EEG`](@ref) structure.
+Read EEG/BCI data in [NY format](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/NY%20format/), prepreprocess them if desired, and create an [`EEG`](@ref) structure.
 
 If requested, the preprocessing operations are performed in the order of the [kwargs](@ref Acronyms)
 as listed here below.

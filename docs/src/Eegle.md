@@ -26,13 +26,17 @@ you have access to all functions exported by all **Eegle** modules and by all re
 | Code Unit   | Description |
 |:------------|:------------|
 | [BCI.jl](@ref) | Brain-Computer Interface machine learning based on Riemannian geometry |
-| [Database.jl](@ref) | utilities for handling databases and the [FII BCI Corpus](@ref "FII BCI Corpus Overview")|
 | [ERPs.jl](@ref) | operations on Event-Related Potentials and BCI trials |
 | [FileSystem.jl](@ref) | manipulation of files and directories |
 | [InOut.jl](@ref) | reading and writing of data (to be moved in a seperated package)|
 | [Miscellaneous.jl](@ref) | miscellaneous functions |
 | [Preprocessing.jl](@ref) | EEG preprocessing |
 | [Processing.jl](@ref) | EEG processing |
+
+The module handling databases and the [FII BCI Corpus](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/documents/FII%20BCI%20Corpus%20Overview/)
+([Database.jl](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/Database/)) belongs to package [FIIBCICorpus](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/),
+which is re-exported by **Eegle**. Thus, its functions are available with `using Eegle`, as before,
+and the qualified names `Eegle.Database.selectDB`, ... still work.
 
 ### Re-exported external packages
 
@@ -44,6 +48,7 @@ you have access to all functions exported by all **Eegle** modules and by all re
     | [Diagonalizations](https://github.com/Marco-Congedo/Diagonalizations.jl) | spatial filters, (approximate joint) diagonalization algorithms |
     | [Distributions](https://github.com/JuliaStats/Distributions.jl) | Julia standard package for statistical distributions |
     | [DSP](https://github.com/JuliaDSP/DSP.jl) | Julia standard package for digital signal processing |
+    | [FIIBCICorpus](https://fhmdmi.github.io/FIIBCICorpus.jl/dev/) | download, locate and select the databases of the FII BCI Corpus |
     | [FourierAnalysis](https://github.com/Marco-Congedo/FourierAnalysis.jl) | FFT-based frequency domain and time-frequency domain analysis |
     | [LinearAlgebra](https://bit.ly/2W5Wq8W) | Julia standard package for matrix types and linear algebra (BLAS, LAPACK) |
     | [NPZ](https://github.com/fhs/NPZ.jl) | support for the *NPZ* (NumPy) binary data format |
@@ -62,25 +67,16 @@ you have access to all functions exported by all **Eegle** modules and by all re
     |:-----------------------|:-----------------------|
     | [Artifacts](https://github.com/JuliaLang/julia/blob/master/stdlib/Artifacts/src/Artifacts.jl)| Julia support for artifacts |
     | [ArtifactUtils](https://github.com/JuliaPackaging/ArtifactUtils.jl)| a tool for working with artifacts |
-    | [Bonito](https://github.com/SimonDanisch/Bonito.jl)| build interactive web applications, dashboards, and visualizations |
     | [CSV](https://github.com/JuliaData/CSV.jl) | support for the *CSV* format |
-    | [DataFrames](https://github.com/JuliaData/DataFrames.jl) | manipulation of tables|
     | [Dates](https://github.com/JuliaStdlibs/Dates.jl)| standard Julia support for dates and time manipulation |
-    | [Downloads](https://github.com/JuliaLang/Downloads.jl) | standard Julia download functionality |
     | [EzXML](https://github.com/JuliaIO/EzXML.jl)| support for the *XML*/*HTML* data formats |
     | [Folds](https://github.com/JuliaFolds/Folds.jl)| multi-threaded basic functions |
     | [HDF5](https://github.com/JuliaIO/HDF5.jl)| Support for the *HDF5* data format |
-    | [HTTP](https://github.com/JuliaWeb/HTTP.jl)| Support for *HTTP* |
-    | [IsURL](https://github.com/zlatanvasovic/IsURL.jl)| utilities to work with URLs |
-    | [JSON](https://github.com/JuliaIO/JSON.jl)| Support for the *JSON* data format |
-    | [NativeFileDialog](https://github.com/JuliaGraphics/NativeFileDialog.jl)| native OS dialogs, e.g., for selecting files |
     | [PrecompileSignatures](https://github.com/rikhuijzer/PrecompileSignatures.jl)| generate precompile directives |
-    | [PrettyTables](https://github.com/ronisbr/PrettyTables.jl)| print data in tables and matrices in a human-readable format |
     | [Random](https://github.com/JuliaStdlibs/Random.jl) | Julia standard random generators |
     | [YAML](https://github.com/JuliaData/YAML.jl)| support for the *YAML* data format |
     | [Reexport](https://github.com/simonster/Reexport.jl)| for development: julia macro to re-export symbols |
     | [Revise](https://github.com/timholy/Revise.jl)| for development: automatically update function definitions in a running Julia session |
-    | [ZipFile](https://github.com/fhs/ZipFile.jl)| support for reading and writing ZIP archives in Julia |
     | [Test](https://github.com/JuliaLang/julia/tree/master/stdlib/Test)| for development: Julia standard library for integrating package testing |
 
 ## Resources
