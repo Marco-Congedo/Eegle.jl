@@ -26,6 +26,14 @@ Execute the following commands in Julia's REPL:
 ```
 then hit the 'back' keyboard key to exit the REPL package manager mode.
 
+To download and select the databases of the [FII BCI Corpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/FII%20BCI%20Corpus%20Overview/), also install the companion package [FIIBCIcorpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/), which is not a dependency of **Eegle**:
+
+```julia
+]add https://github.com/FhmDmi/FIIBCIcorpus.jl/tree/master
+```
+
+and load both with `using Eegle, FIIBCIcorpus`.
+
 ---
 
 ## —͟͟͞͞★ Quick Start
@@ -46,7 +54,7 @@ When you need a function, check its documentation and the examples given therein
 
 | Contributor | Contribution |
 |:----------|:----------|
-| [Abdeljalil Anajjar](https://github.com/AbdeljalilAnajjar) | web GUI for downloading the [FII BCI Corpus](@ref "FII BCI Corpus Overview") and Julia artifacts for data example files |
+| [Abdeljalil Anajjar](https://github.com/AbdeljalilAnajjar) | web GUI for downloading the [FII BCI Corpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/FII%20BCI%20Corpus%20Overview/) and Julia artifacts for data example files |
 | [Alexandre Bleuzé](https://www.linkedin.com/in/alexandre-bleuz%C3%A9-069b37154/) | Toeplitz algebra for multivariate regression mean ERP estimations |
 
 ---
@@ -84,7 +92,6 @@ Pages = [       "index.md",
                 "Processing.md",
                 "ERPs.md",
                 "BCI.md",
-                "Database.md",
                 "InOut.md",
                 "FileSystem.md",
                 "Miscellaneous.md",

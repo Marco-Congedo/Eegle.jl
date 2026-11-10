@@ -57,7 +57,6 @@ include("Processing.jl");       @reexport using .Processing
 include("ERPs.jl");             @reexport using .ERPs
 include("InOut.jl");            @reexport using .InOut
 include("BCI.jl");              @reexport using .BCI
-include("Database.jl");         @reexport using .Database
 
 # Generate and run `precompile` directives.
 @precompile_signatures(Eegle)

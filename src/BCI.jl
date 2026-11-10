@@ -229,7 +229,7 @@ For details, see *Appendix I* in [Congedo2017Review](@cite).
 - `o`: an instance of the [`EEG`](@ref) data structure containing trials and metadata.
 
 **Optional Keyword Arguments**
-- `paradigm`: [BCI paradigm](@ref), either `:ERP`, `:P300`, or `:MI`. By default it is used the paradigm stored in `o`.
+- `paradigm`: [BCI paradigm](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Terminology/#BCI-paradigm), either `:ERP`, `:P300`, or `:MI`. By default it is used the paradigm stored in `o`.
     - for `:ERP`, prototypes for all classes are stacked and covariance is computed on super-trials
     - for `:P300`, only the target class prototype is stacked
     - for `:MI`, no prototype is used; covariance is computed on the trial as it is.
@@ -380,7 +380,7 @@ function crval( filename    :: AbstractString,
 
 [Tutorial ML 1](@ref), [Tutorial ML 2](@ref)
 
-Perform cross-validations of a BCI [session](@ref) stored in [NY format](@ref). 
+Perform cross-validations of a BCI [session](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Terminology/#session) stored in [NY format](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/NY%20format/). 
 
 This function runs in sequence the following three functions:
 
@@ -390,11 +390,11 @@ This function runs in sequence the following three functions:
 
 **Arguments**
 
-- `filename`: the complete path of either the *.npz* or the *.yml* file of the [session](@ref) to be used
+- `filename`: the complete path of either the *.npz* or the *.yml* file of the [session](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Terminology/#session) to be used
 - `model` : any classifier of type [MLmodel](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/MainModule/#MLmodel). Default: the default [MDM](https://marco-congedo.github.io/PosDefManifoldML.jl/stable/mdm/#PosDefManifoldML.MDM) classifier.
 
 !!! note "BCI paradigm"
-    The [BCI paradigm](@ref) is assumed to be the one stored in the metadata of file `filename` (either `:ERP`, `:P300`, or `:MI`)
+    The [BCI paradigm](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Terminology/#BCI-paradigm) is assumed to be the one stored in the metadata of file `filename` (either `:ERP`, `:P300`, or `:MI`)
 
 **Optional Keyword Arguments**
 

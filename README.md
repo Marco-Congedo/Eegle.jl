@@ -34,6 +34,14 @@ Execute the following command in julia's REPL:
     ]add Eegle
 ```
 
+To download and select the databases of the [FII BCI Corpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/FII%20BCI%20Corpus%20Overview/), also install the companion package [FIIBCIcorpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/), which is not a dependency of **Eegle**:
+
+```julia
+    ]add https://github.com/FhmDmi/FIIBCIcorpus.jl/tree/master
+```
+
+and load both with `using Eegle, FIIBCIcorpus`.
+
 ---
 
 ## —͟͟͞͞★ Quick Start

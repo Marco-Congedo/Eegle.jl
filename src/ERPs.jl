@@ -361,7 +361,7 @@ Optionally, multiply them by `weights` and compute a linear combination across s
 For automatic artifact correction before extracting trials, see [Gedai](https://github.com/Marco-Congedo/Gedai).
 
 !!! tip
-    Trials of data in [NY format](@ref) are extracted by default when upon reading — see [`Eegle.InOut.readNY`](@ref); 
+    Trials of data in [NY format](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/NY%20format/) are extracted by default when upon reading — see [`Eegle.InOut.readNY`](@ref); 
     to extract trials in order to compute their mean, see [`mean`](@ref);
     for segmenting non-tagged data, see [`Eegle.Processing.epoching`](@ref).
 
@@ -558,7 +558,7 @@ For artifact correction of the EEG recording before extracting trials, see [Geda
 
 !!! tip "Read data and reject artifacts"
     This function is called by [`Eegle.InOut.readNY`](@ref) to perform artifact rejection while reading
-    EEG data in the [NY format](@ref). In turn, this is called by several functions, for example [`Eegle.BCI.crval`](@ref),
+    EEG data in the [NY format](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/NY%20format/). In turn, this is called by several functions, for example [`Eegle.BCI.crval`](@ref),
     thus in general it is not needed.
 
 **Arguments**

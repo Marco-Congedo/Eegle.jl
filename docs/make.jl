@@ -14,8 +14,7 @@ using   Eegle,
         Eegle.Miscellaneous, 
         Eegle.ERPs, 
         Eegle.InOut, 
-        Eegle.BCI,
-        Eegle.Database
+        Eegle.BCI
 
 CI = get(ENV, "CI", "false") == "true"        
 
@@ -35,7 +34,7 @@ makedocs(;
    #),
    modules = [Eegle, Eegle.Miscellaneous, Eegle.Processing, Eegle.FileSystem, 
                Eegle.Preprocessing, Eegle.ERPs, Eegle.InOut, 
-               Eegle.BCI, Eegle.Database],
+               Eegle.BCI],
    # remotes = nothing, # ELIMINATE for deploying
  pages = [
         "index.md",
@@ -46,7 +45,6 @@ makedocs(;
             "Processing" => "Processing.md",
             "Event-Related Potentials" => "ERPs.md",
             "Brain-Computer Interface" => "BCI.md",
-            "Database" => "Database.md",
         ],
         "🔧 Utilities" => [
             "Input/Output" => "InOut.md",
@@ -55,17 +53,6 @@ makedocs(;
         ],
         "🗄️ Data" => [
             "Example Data" => "documents/Example Data.md",
-            "FII BCI Corpus" => [
-                "FII BCI Corpus" => "documents/FII BCI Corpus Overview.md",
-                "Terminology" => "documents/Terminology.md",
-                "Summary of MI Databases" => "documents/Summary of MI Databases.md",
-                "Treatment MI" => "documents/Treatment MI.md",
-                "Summary of P300 Databases" => "documents/Summary of P300 Databases.md",
-                "Treatment P300" => "documents/Treatment P300.md",
-                "NY format"=> "documents/NY format.md",
-                "NY metadata (YAML)" => "documents/yamlstruct.md",
-                "Benchmark" => "documents/Benchmark.md",
-            ]
         ],
         "🎓 References" => "references.md"
     ]
