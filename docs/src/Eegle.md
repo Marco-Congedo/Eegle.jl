@@ -34,9 +34,8 @@ you have access to all functions exported by all **Eegle** modules and by all re
 | [Processing.jl](@ref) | EEG processing |
 
 The module handling databases and the [FII BCI Corpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/FII%20BCI%20Corpus%20Overview/)
-([Database.jl](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/Database/)) belongs to package [FIIBCIcorpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/),
-which is re-exported by **Eegle**. Thus, its functions are available with `using Eegle`, as before,
-and the qualified names `Eegle.Database.selectDB`, ... still work.
+([Database.jl](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/Database/)) belongs to the separate package [FIIBCIcorpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/),
+which is not a dependency of **Eegle**. To use its functions, install it and add `using FIIBCIcorpus`.
 
 ### Re-exported external packages
 
@@ -48,7 +47,6 @@ and the qualified names `Eegle.Database.selectDB`, ... still work.
     | [Diagonalizations](https://github.com/Marco-Congedo/Diagonalizations.jl) | spatial filters, (approximate joint) diagonalization algorithms |
     | [Distributions](https://github.com/JuliaStats/Distributions.jl) | Julia standard package for statistical distributions |
     | [DSP](https://github.com/JuliaDSP/DSP.jl) | Julia standard package for digital signal processing |
-    | [FIIBCIcorpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/) | download, locate and select the databases of the FII BCI Corpus |
     | [FourierAnalysis](https://github.com/Marco-Congedo/FourierAnalysis.jl) | FFT-based frequency domain and time-frequency domain analysis |
     | [LinearAlgebra](https://bit.ly/2W5Wq8W) | Julia standard package for matrix types and linear algebra (BLAS, LAPACK) |
     | [NPZ](https://github.com/fhs/NPZ.jl) | support for the *NPZ* (NumPy) binary data format |
@@ -168,9 +166,9 @@ The reminder of this page is of interest only for contributing code and document
     - When using a method of the **Eegle** package, qualify the module it is taken from, for example: 
         - `Eegle.FileSystem.getFilesInDir(dbDir; ext=(".npz", ), isin)`
     - Communicate the module and function when printing a messages within a function, for example: 
-        - `@warn "Eegle.Database, function loadDB: the $filemane files has not been found:\n"`
+        - `@warn "Eegle.InOut, function readNY: the file $filename has not been found"`
     - The name of internal functions (not-exported) begins by an underscore, for example: 
-        - `function _weightsDB(...)`
+        - `function _standardizeClasses(...)`
     - The name of functions modifying one or more arguments ends with an exclamation mark, for example:
         - `function myFunc!(...)`
     - Whenever appropriate, methods should give feedback to the user. Use meaningful symbols such as:
@@ -178,7 +176,7 @@ The reminder of this page is of interest only for contributing code and document
     - For name of functions composed by several words, capitalize the words starting from the second, for example:
         - `function myFunc(...)`
     - Acronyms in name of functions may or may not be fully capitalized, for example: 
-        - `function weightsDB(...)`
+        - `function readNY(...)`
     - If you add a new public function in a module, make sure to: 
         - add the documentation right on top of the function (no blank lines)
         - add the function in the `export` section of the module

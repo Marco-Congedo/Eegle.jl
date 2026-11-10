@@ -13,7 +13,6 @@ DSP = "717857b8-e6f2-59f4-9121-6e50c889abd2"
 Diagonalizations = "9cd687f3-b62d-43f3-8fd3-ffcd9e581047"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
-FIIBCIcorpus = "3c66b73d-d676-47f4-a036-f20befcb0b39"
 FourierAnalysis = "e7e9c730-dc46-11e9-3633-f1ab55cc17e1"
 HDF5 = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
@@ -37,7 +36,6 @@ DSP = "0.8.5"
 Diagonalizations = "0.2"
 Distributions = "0.25"
 EzXML = "1.2"
-FIIBCIcorpus = "0.1"
 FourierAnalysis = "1.1, 1.2"
 HDF5 = "0.17"
 LinearAlgebra = "1"
@@ -51,9 +49,6 @@ Statistics = "1"
 StatsBase = "0.34"
 YAML = "0.4"
 julia = "1.12"
-
-[sources]
-FIIBCIcorpus = {url = "https://github.com/FhmDmi/FIIBCIcorpus.jl", rev = "master"}
 
 [extras]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"

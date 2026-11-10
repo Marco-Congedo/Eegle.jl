@@ -5,6 +5,8 @@
 A common task in [BCI](@ref "Acronyms") research is to test a *machine learning model* (MLM) on a large amount of real data.
 This tutorial uses the [FII BCI corpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/FII%20BCI%20Corpus%20Overview/) to carry out such a task.
 
+> ❗This tutorial also needs package [FIIBCIcorpus](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/), which is not installed with **Eegle**: `]add https://github.com/FhmDmi/FIIBCIcorpus.jl/tree/master`
+
 > ❗If you did not download the corpus yet, do so before running this tutorial using the [`downloadDB`](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/DownloadFII/#FIIBCIcorpus.DownloadFII.downloadDB) function.
 
 The tutorial shows how to
@@ -28,7 +30,7 @@ The tutorial shows how to
 Tell julia to use **Eegle**
 
 ```julia
-using Eegle
+using Eegle, FIIBCIcorpus
 ```
 
 Select all motor imagery databases in the *FII BCI Corpus* featuring the "feet" and "right_hand" class. 
