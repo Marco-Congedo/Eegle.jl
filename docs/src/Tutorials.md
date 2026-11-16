@@ -52,7 +52,7 @@
 |Tutorial  | Description|
 |:----|:----|
 |[Tutorial ML 1](@ref) | run a cross-validation comparing two Riemannian classifiers |
-|[Tutorial ML 2](@ref) | select [databases](@ref "database") and [sessions](@ref "session"); run a cross-validation for all of them |
+|[Tutorial ML 2](@ref) | select [databases](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Terminology/#database) and [sessions](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/Terminology/#session); run a cross-validation for all of them |
 
 [Themes](@ref)
 

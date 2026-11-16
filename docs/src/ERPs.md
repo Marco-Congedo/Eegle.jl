@@ -60,7 +60,7 @@ the [`stim2mark`](@ref) and [`mark2stim`](@ref) functions.
     ```
 
     !!! warning "Data in NY format"
-        When data in [NY format](@ref) is read, the offset is applied and reset to zero — see [`readNY`](@ref).
+        When data in [NY format](https://fhmdmi.github.io/FIIBCIcorpus.jl/dev/documents/NY%20format/) is read, the offset is applied and reset to zero — see [`readNY`](@ref).
 
 #### overlapping
 
